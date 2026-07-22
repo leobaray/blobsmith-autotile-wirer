@@ -1,0 +1,32 @@
+# Godot 4+ specific ignores
+.godot/
+
+# Godot editor imports and generated data
+.import/
+export.cfg
+export_presets.cfg
+
+# Imported translations (auto-generated from CSV)
+*.translation
+
+# Mono / C# (if ever added)
+.mono/
+data_*/
+mono_crash.*.json
+
+# Verification script output artifact
+tiles/addon_out.tres
+
+# Environment / secrets
+.env
+.env.*
+*.local
+
+# Editor / OS cruft
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
