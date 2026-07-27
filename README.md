@@ -158,3 +158,8 @@ The `examples/` sheet is produced by [Blobsmith](https://blobsmith.itch.io/blobs
 ## License
 
 Released under the MIT License.
+
+## More from the studio
+
+- **[Blobsmith](https://blobsmith.itch.io/blobsmith)** — draw 6 tiles, get a full 47-blob autotile sheet + a wired Godot 4 TileSet ([free in-browser version](https://blobsmith.itch.io/blobsmith-lite))
+- **[LocGuard](https://github.com/leobaray/locguard)** — localization QA linter for Godot 4: missing keys, placeholder drift, broken BBCode ([Pro: in-editor dock + CI gate](https://blobsmith.itch.io/locguard))
