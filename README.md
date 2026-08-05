@@ -38,6 +38,8 @@ SW   S  SE         32  16   8
 
 A **corner** bit only counts when both of its adjacent side bits are present — a lone diagonal neighbor does not create a distinct tile. Collapsing every 8-bit combination to that rule yields exactly 47 canonical masks, which is why the blob layout has 47 tiles. `blob47()` returns those masks in ascending order; tile *i* in the sheet is expected at column `i % 8`, row `i / 8`.
 
+> Painting the generated `TileSet` from outside the editor? **[The `tile_map_data` binary format](docs/tile-map-data-format.md)** documents the bytes a `TileMapLayer` stores its cells in — header, 12-byte cell record, transform flags, and the erased-cell and int16-truncation traps — with a headless script that re-verifies every claim against your Godot build.
+
 ## Stack
 
 | Piece | Detail |
@@ -137,6 +139,9 @@ blobsmith-autotile-wirer/
 │       ├── plugin.cfg          # plugin manifest (name, version 1.0.0, entry script)
 │       ├── plugin.gd           # EditorPlugin: Tools-menu item + generator dialog
 │       └── wirer_core.gd       # BlobsmithWirerCore: mask math + TileSet builder (no UI)
+├── docs/
+│   ├── tile-map-data-format.md # the TileMapLayer tile_map_data byte layout
+│   └── verify_tile_map_data.gd # headless script proving every claim in that doc
 ├── examples/
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
 │   └── blobsmith-demo.gif      # the companion Blobsmith tool painting a sheet
