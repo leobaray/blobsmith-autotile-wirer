@@ -14,6 +14,12 @@ That is a fully painted layer with one tile in it. This page documents the
 layout so you can read or write those bytes from outside the engine — a map
 generator, a migration script, a diff tool, a linter in CI.
 
+There is a version of this page with a decoder in it:
+**<https://blobsmith.lbwma.com/godot-tile-map-data/>** — paste your buffer and
+get the cell table, the tombstones and the malformed-buffer diagnosis back,
+or build a buffer from a cell table. It runs in the browser; nothing is
+uploaded.
+
 Everything below was measured against **Godot 4.7 stable** with
 [`verify_tile_map_data.gd`](verify_tile_map_data.gd), which sits next to this
 file and re-checks all 46 claims on demand:
@@ -25,6 +31,18 @@ godot --headless --script verify_tile_map_data.gd
 
 If a future Godot version changes something here, that script tells you which
 line — it fails loudly rather than drifting quietly out of date.
+
+Two more scripts sit next to it, both there so the decoder on the page is judged
+by the engine instead of by this prose:
+
+- [`dump_tile_map_fixtures.gd`](dump_tile_map_fixtures.gd) paints, erases and
+  reloads real layers and writes [`tile-map-data-fixtures.json`](tile-map-data-fixtures.json)
+  — twelve buffers plus the cells the engine reads back out of each one. The
+  worked example below is one of them, so the bytes printed here are the
+  engine's own, not a transcription.
+- [`check_js_buffers.gd`](check_js_buffers.gd) goes the other way: it loads
+  buffers built outside the engine and reports what a `TileMapLayer` paints from
+  them, and what it re-serializes them to.
 
 ## The layout
 
