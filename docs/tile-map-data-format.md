@@ -307,6 +307,47 @@ Not format details, but the things that actually cost us time while producing
   why a blob autotile has 47 tiles and not 256 — see
   [Neighbor bit layout](../README.md#neighbor-bit-layout).
 
+## Testing your own parser: the fixture corpus
+
+Prose can be read wrong, so the measurements ship as data too.
+[`tile-map-data-fixtures.json`](tile-map-data-fixtures.json) holds **12 buffers a
+real Godot 4.7 wrote, each paired with the cells that same engine reads back out
+of it**. That pairing is the whole point: the interesting cases are the ones
+where the bytes and the cells disagree, and no parser gets those right by
+guessing.
+
+```json
+{
+  "name": "tombstone",
+  "note": "two cells painted, the first erased — the record stays",
+  "bytes": [0,0, 1,0,1,0,255,255,255,255,255,255,255,255, 2,0,2,0,7,0,1,0,0,0,0,0],
+  "engine_cells": [
+    {"x": 2, "y": 2, "source_id": 7, "atlas_x": 1, "atlas_y": 0,
+     "alternative": 0, "flip_h": false, "flip_v": false, "transpose": false}
+  ]
+}
+```
+
+Two 12-byte records, **one** cell. A parser that reports two tiles here is the
+bug this file exists to catch.
+
+The 12 cases: `painted_three`, `transform_flags`, `tombstone`,
+`all_tombstones`, `duplicate_coords`, `tombstone_over_painted`,
+`int16_extremes`, `wrapped_coords`, `empty_layer`, `truncated_record`,
+`bad_header`, `header_only`. The last three are malformed on purpose — note that
+`bad_header` is a **no-op**, not a clear: the layer keeps whatever it had before
+the assignment, so its `engine_cells` are the previous contents.
+
+- Regenerate against your own build (a newer Godot may disagree — that is the
+  point of keeping the generator):
+  `godot --headless --script docs/dump_tile_map_fixtures.gd`
+- Writing buffers rather than reading them? `docs/check_js_buffers.gd` takes
+  buffers produced anywhere, hands them to a real `TileMapLayer`, and reports
+  the cells it painted plus its own re-serialization of them — so you can prove
+  your encoder both means what you intended and round-trips byte-for-byte.
+
+MIT, like the rest of this repo. Use it in your own test suite.
+
 ## Further reading
 
 - [`TileMapLayer` class reference](https://docs.godotengine.org/en/stable/classes/class_tilemaplayer.html) — the public API this format backs.
