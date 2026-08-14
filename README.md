@@ -38,6 +38,16 @@ SW   S  SE         32  16   8
 
 A **corner** bit only counts when both of its adjacent side bits are present — a lone diagonal neighbor does not create a distinct tile. Collapsing every 8-bit combination to that rule yields exactly 47 canonical masks, which is why the blob layout has 47 tiles. `blob47()` returns those masks in ascending order; tile *i* in the sheet is expected at column `i % 8`, row `i / 8`.
 
+> That rule is a claim about what the engine does, so it was asked: a headless
+> script paints all 256 neighborhoods with `set_cells_terrain_connect()` and
+> reads the peering bits back off the tile Godot 4.7 *chose* — 256/256 agree,
+> and the engine distinguishes exactly 47 tiles. Toggle the eight neighbors and
+> see which of the 47 answers your case (and how many of the 256 share it) at
+> **<https://blobsmith.lbwma.com/godot-autotile-47-tiles/>**. The same page
+> takes a `TileSet` `.tres` and lists the neighborhoods your set *cannot*
+> answer — measured, a missing tile produces no error and no empty cell: the
+> engine silently substitutes a tile claiming a corner the area does not have.
+
 > Painting the generated `TileSet` from outside the editor? **[The `tile_map_data` binary format](docs/tile-map-data-format.md)** documents the bytes a `TileMapLayer` stores its cells in — header, 12-byte cell record, transform flags, and the erased-cell and int16-truncation traps — with a headless script that re-verifies every claim against your Godot build.
 > Have a buffer in front of you right now?
 > **<https://blobsmith.lbwma.com/godot-tile-map-data/>** decodes it in the
