@@ -48,6 +48,18 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > answer — measured, a missing tile produces no error and no empty cell: the
 > engine silently substitutes a tile claiming a corner the area does not have.
 
+> **[Why a blob autotile has 47 tiles and not 256](docs/why-47-tiles-not-256.md)**
+> is the long form of the paragraph above: the collapse rule and why it is about
+> what the tile can *draw*, the closed-form count (a tile answers
+> `2^(4 - adjacent side pairs)` neighborhoods, which is why the totals are
+> 7×16 + 8×8 + 16×4 + 16×1 = 256), the engine transcript, the silent-substitution
+> experiment, why a sides-only terrain set is 16 tiles instead, and the full
+> 256 → 47 table with each tile's cell in the sheet.
+> [`docs/verify_blob47.gd`](docs/verify_blob47.gd) is the sweep itself and takes
+> **your** tileset — `godot --headless --script docs/verify_blob47.gd -- res://your.tres`
+> prints every neighborhood your set cannot answer and the tile the engine
+> substitutes for it.
+
 > Painting the generated `TileSet` from outside the editor? **[The `tile_map_data` binary format](docs/tile-map-data-format.md)** documents the bytes a `TileMapLayer` stores its cells in — header, 12-byte cell record, transform flags, and the erased-cell and int16-truncation traps — with a headless script that re-verifies every claim against your Godot build.
 > Have a buffer in front of you right now?
 > **<https://blobsmith.lbwma.com/godot-tile-map-data/>** decodes it in the
