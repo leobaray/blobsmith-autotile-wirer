@@ -60,6 +60,20 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > prints every neighborhood your set cannot answer and the tile the engine
 > substitutes for it.
 
+> **[Terrain painting put the wrong tile down — what the engine actually does](docs/why-terrain-paints-the-wrong-tile.md)**
+> settles the two answers search gives you, neither of which is measured. It is
+> **not** random (same paint 30× → one tile, including the ambiguous cases), and
+> it picks the tile that **disagrees with the fewest peering bits** among tiles
+> belonging to the terrain you are painting — never leaving the cell empty and
+> never borrowing from another terrain, which is exactly why you get an ugly
+> tile instead of an error. Delete the fully-surrounded tile and the engine
+> silently places the one that is a single corner bit off. Also: why the empty
+> cells around your painted region are constraints, why `ignore_empty_terrains`
+> is not the lever people think it is (a measured negative, stated as such), and
+> how the terrain *mode* caps 47 tiles down to 16 without telling you.
+> [`docs/verify_terrain_choice.gd`](docs/verify_terrain_choice.gd) asserts all
+> 22 claims against your Godot build.
+
 > Painting the generated `TileSet` from outside the editor? **[The `tile_map_data` binary format](docs/tile-map-data-format.md)** documents the bytes a `TileMapLayer` stores its cells in — header, 12-byte cell record, transform flags, and the erased-cell and int16-truncation traps — with a headless script that re-verifies every claim against your Godot build.
 > Have a buffer in front of you right now?
 > **<https://blobsmith.lbwma.com/godot-tile-map-data/>** decodes it in the
