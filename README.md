@@ -74,6 +74,21 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > [`docs/verify_terrain_choice.gd`](docs/verify_terrain_choice.gd) asserts all
 > 22 claims against your Godot build.
 
+> **[Thin lines between tiles — what actually causes them](docs/why-tiles-have-seams.md)**
+> separates the four causes that every answer piles into one paragraph. The most
+> repeated fix, *Rendering → Quality → 2D → Enable Pixel Snap*, is a **Godot 3
+> setting that does not exist in Godot 4** — its replacement is two settings, both
+> shipping off. The default canvas filter in a new project is **Linear, not
+> Nearest** (and the same integer `1` means Linear in the project setting and
+> Nearest on the node). Re-exporting your atlas with gutters is usually redundant:
+> `use_texture_padding` is on by default and already spaces 16px tiles 18px apart
+> in the copy the GPU samples — a hand-cut gutter only costs you grid cells.
+> 26 claims, all asserted on a real build by
+> [`docs/verify_tile_seams.gd`](docs/verify_tile_seams.gd), plus
+> [`docs/find_tile_seam_causes.js`](docs/find_tile_seam_causes.js) —
+> `node docs/find_tile_seam_causes.js /path/to/your/project` reads your
+> `project.godot`, `.tscn` and `.tres` and tells you which of the four is yours.
+
 > Painting the generated `TileSet` from outside the editor? **[The `tile_map_data` binary format](docs/tile-map-data-format.md)** documents the bytes a `TileMapLayer` stores its cells in — header, 12-byte cell record, transform flags, and the erased-cell and int16-truncation traps — with a headless script that re-verifies every claim against your Godot build.
 > Have a buffer in front of you right now?
 > **<https://blobsmith.lbwma.com/godot-tile-map-data/>** decodes it in the
@@ -181,6 +196,9 @@ blobsmith-autotile-wirer/
 │       ├── plugin.gd           # EditorPlugin: Tools-menu item + generator dialog
 │       └── wirer_core.gd       # BlobsmithWirerCore: mask math + TileSet builder (no UI)
 ├── docs/
+│   ├── why-tiles-have-seams.md      # the four causes of a line between two tiles
+│   ├── verify_tile_seams.gd         # 26 claims asked of a real engine (+ .sh runner)
+│   ├── find_tile_seam_causes.js     # scans YOUR project for those causes, no deps
 │   ├── tile-map-data-format.md      # the TileMapLayer tile_map_data byte layout
 │   ├── verify_tile_map_data.gd      # headless script proving every claim in that doc
 │   ├── tile-map-data-fixtures.json  # 12 buffers a real 4.7 wrote + the cells it reads back
