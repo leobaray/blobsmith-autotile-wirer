@@ -156,8 +156,17 @@ engine would have done for you.
 
 ---
 
-Part of [Blobsmith Autotile Wirer](../README.md), the free Godot 4 plugin that
-wires a flat autotile sheet into a `TileSet`. Related measured references in this
-repo: [why a blob autotile is 47 tiles and not 256](why-47-tiles-not-256.md),
+Part of [Blobsmith Autotile Wirer](../README.md), the free Godot 4 plugin (MIT)
+that wires a flat autotile sheet into a `TileSet`. Related measured references in
+this repo: [why a blob autotile is 47 tiles and not 256](why-47-tiles-not-256.md),
 [why terrain painting puts the wrong tile down](why-terrain-paints-the-wrong-tile.md),
 and [the byte layout of `tile_map_data`](tile-map-data-format.md).
+
+Note which half of the problem each tool owns: everything on this page is
+settings and atlas geometry, and the plugin above does not change any of it —
+`S26` is the case where the seam is painted into the PNG itself. Drawing a sheet
+whose tiles actually meet at the edges is what the separate
+[Blobsmith](https://blobsmith.itch.io/blobsmith) pixel-art tool is for; there is
+a free browser version at [Blobsmith
+Lite](https://blobsmith.itch.io/blobsmith-lite) if you just want to see the
+47-blob layout being drawn.

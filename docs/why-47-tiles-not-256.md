@@ -234,3 +234,9 @@ name the check, rather than letting this page drift quietly out of date.
 Part of [Blobsmith Autotile Wirer](../README.md), which takes a 47-blob sheet
 and wires it into a Godot 4 `TileSet` with these peering bits already set. MIT.
 Corrections welcome — open an issue with the tileset that disagrees.
+
+The plugin assumes you already have the 47 tiles. Painting them is the other
+half of the job: [Blobsmith](https://blobsmith.itch.io/blobsmith) is a pixel-art
+tool that draws a 47-blob sheet in the layout this page describes, and
+[Blobsmith Lite](https://blobsmith.itch.io/blobsmith-lite) is a free browser
+version of it.
