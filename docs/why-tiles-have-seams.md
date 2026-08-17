@@ -21,7 +21,10 @@ Measured on **4.7-stable (official)**. Run it on your build before believing any
 of it; the script prints the number it measured next to each claim, so a
 disagreement comes back as a number and not as an argument.
 
-To find which of the four is in *your* project, there is a scanner further down.
+To find which of the four is in *your* project, there is a scanner further down —
+and, if you would rather not clone anything, the same scanner runs in a browser at
+[blobsmith.lbwma.com/godot-tilemap-lines-between-tiles](https://blobsmith.lbwma.com/godot-tilemap-lines-between-tiles/):
+paste `project.godot` there and it answers with the same rules, from the same file.
 
 ---
 
@@ -142,6 +145,11 @@ before you drew a single tile:
 It separates **causes** (`▲`, exit 1) from **notes** (`·`, exit 0): a hand-cut
 gutter is reported, but as a note, because it is not a bug — it is just work the
 engine would have done for you.
+
+The rules themselves live in [`seam-scan-core.js`](seam-scan-core.js), which has no
+filesystem in it, so the identical bytes run in the CLI above and in the browser
+page linked at the top of this file. That is enforced, not promised: the page ships
+a copy of that file and a test refuses to pass if the two differ.
 
 ## The whole fix, in the order that matters
 
