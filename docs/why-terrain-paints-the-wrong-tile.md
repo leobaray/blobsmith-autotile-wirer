@@ -171,13 +171,18 @@ godot --headless --script docs/verify_terrain_choice.gd -- res://your_tileset.tr
 godot --headless --script docs/verify_terrain_choice.gd -- res://your_tileset.tres res://sides16.tres
 ```
 
-With no arguments it looks for `res://tiles/blobsmith_tileset.tres`, which is
-where our own test project keeps it; in a fresh clone that path does not exist
-and `T0` fails. The other two edges are just as loud on purpose: a path that
-does not load fails `T0` and exits 1, and a set that is *not* in corners-and-
-sides mode prints `SKIP` and exits 1 rather than pretending the corner claims
-were checked. Omit arg 2 and `T10-T13` print `SKIP` — the remaining 18 still
-run and still gate the exit code.
+The two defaults are `res://tiles/blobsmith_tileset.tres` and
+`res://tiles/sides16.tres`, which is where our own test project keeps them; in
+a fresh clone neither path exists and `T0` fails. The other edges are just as
+loud on purpose: a path that does not load fails `T0` and exits 1, and a set
+that is *not* in corners-and-sides mode prints `SKIP` and exits 1 rather than
+pretending the corner claims were checked. Omit arg 2 and the six claims that
+need a sides-only set (`T10-T15`) print `SKIP` — the remaining **16** still run
+and still gate the exit code.
+
+Measured on 2026-08-16 against 4.7.stable: with both sets, 22 PASS / 0 SKIP,
+exit 0; with arg 1 only, in a throwaway project holding nothing but the tileset
+and this script, 16 PASS / 2 SKIP lines, exit 0.
 
 It prints `PASS`/`FAIL` per claim and exits non-zero if any stops holding, so
 pointing it at a newer Godot tells you exactly which line of this page changed.

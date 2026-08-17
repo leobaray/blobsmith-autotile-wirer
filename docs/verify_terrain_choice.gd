@@ -349,33 +349,38 @@ func _initialize() -> void:
 	# --------------------------------------- D. issue #76493: tiles from another terrain
 	# Same terrain set, two terrains, and terrain 0 cannot answer every
 	# neighbourhood. Does the engine reach into terrain 1?
-	var mixed: TileSet = load("res://tiles/sides16.tres")
-	mixed.add_terrain(0)
-	mixed.set_terrain_name(0, 1, "other")
-	var src: TileSetAtlasSource = mixed.get_source(mixed.get_source_id(0)) as TileSetAtlasSource
-	var moved := 0
-	# Hand the last few tiles to the second terrain, so the set has tiles that
-	# are NOT terrain 0 sitting in the same terrain set.
-	for i in range(src.get_tiles_count()):
-		var coords := src.get_tile_id(i)
-		var td := src.get_tile_data(coords, 0)
-		if td.terrain == 0 and moved < 4:
-			td.terrain = 1
-			moved += 1
-	check("T14", "built a 2-terrain set for the cross-terrain test (%d tiles moved)" % moved, moved == 4)
+	# Loaded fresh from the same path as T10-T13, because this test MUTATES the
+	# set (adds a terrain and reassigns tiles) and must not disturb section C.
+	var mixed: TileSet = load(sides_path) if ResourceLoader.exists(sides_path) else null
+	if mixed == null:
+		print("SKIP  no sides-only set at %s; T14-T15 skipped" % sides_path)
+	else:
+		mixed.add_terrain(0)
+		mixed.set_terrain_name(0, 1, "other")
+		var src: TileSetAtlasSource = mixed.get_source(mixed.get_source_id(0)) as TileSetAtlasSource
+		var moved := 0
+		# Hand the last few tiles to the second terrain, so the set has tiles that
+		# are NOT terrain 0 sitting in the same terrain set.
+		for i in range(src.get_tiles_count()):
+			var coords := src.get_tile_id(i)
+			var td := src.get_tile_data(coords, 0)
+			if td.terrain == 0 and moved < 4:
+				td.terrain = 1
+				moved += 1
+		check("T14", "built a 2-terrain set for the cross-terrain test (%d tiles moved)" % moved, moved == 4)
 
-	var foreign := 0
-	var foreign_example := ""
-	for mask in range(256):
-		var l := paint(mixed, cells_for(mask), false)
-		var t := terrain_of(l, Vector2i(0, 0))
-		if t != 0 and t != -1:
-			foreign += 1
-			if foreign_example == "":
-				foreign_example = "mask %d -> terrain %d" % [mask, t]
-		l.queue_free()
-	check("T15", "painting terrain 0 never places a tile belonging to terrain 1 (%d of 256 did%s)" % [
-		foreign, ("" if foreign_example == "" else ", e.g. " + foreign_example)], foreign == 0)
+		var foreign := 0
+		var foreign_example := ""
+		for mask in range(256):
+			var l := paint(mixed, cells_for(mask), false)
+			var t := terrain_of(l, Vector2i(0, 0))
+			if t != 0 and t != -1:
+				foreign += 1
+				if foreign_example == "":
+					foreign_example = "mask %d -> terrain %d" % [mask, t]
+			l.queue_free()
+		check("T15", "painting terrain 0 never places a tile belonging to terrain 1 (%d of 256 did%s)" % [
+			foreign, ("" if foreign_example == "" else ", e.g. " + foreign_example)], foreign == 0)
 
 	# And the centre is always the terrain we asked for.
 	var wrong_terrain := 0
