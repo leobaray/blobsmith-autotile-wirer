@@ -209,7 +209,11 @@ func _initialize() -> void:
 	# Case 2: the flag is about CANDIDATE TILES, not about neighbours. Make the
 	# only exact match for a fully-surrounded cell a tile that belongs to no
 	# terrain at all, and see whether the engine is allowed to use it.
-	var noterr: TileSet = load("res://tiles/blobsmith_tileset.tres")
+	# CACHE_MODE_IGNORE_DEEP for the same reason as `holed` below: this block takes
+	# a tile OUT of terrain 0 (sets terrain = -1), and load() returns the object
+	# `full` holds. Measured 18/08: with load(), the "complete set" of T16 and the
+	# hole sweep of T20 were short one tile and nothing said so.
+	var noterr: TileSet = ResourceLoader.load("res://tiles/blobsmith_tileset.tres", "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
 	var nsrc: TileSetAtlasSource = noterr.get_source(noterr.get_source_id(0)) as TileSetAtlasSource
 	var interior := Vector2i(-1, -1)
 	for i in range(nsrc.get_tiles_count()):
@@ -297,7 +301,11 @@ func _initialize() -> void:
 	# ------------------------------- C2. a corners-and-sides set with a tile MISSING
 	# The page-1 diagnosis is "you are missing a tile variation". So remove the
 	# one the engine wants for a fully-surrounded cell and watch what it does.
-	var holed: TileSet = load("res://tiles/blobsmith_tileset.tres")
+	# CACHE_MODE_IGNORE_DEEP, not load(): this block REMOVES a tile, and load()
+	# hands back the very object `full` is holding, so a plain load() would empty
+	# the "complete set" T16 sweeps 200 lines below. Measured 18/08: with load(),
+	# T16 ran against 46 tiles while its own message said "with a complete set".
+	var holed: TileSet = ResourceLoader.load("res://tiles/blobsmith_tileset.tres", "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
 	var hsrc: TileSetAtlasSource = holed.get_source(holed.get_source_id(0)) as TileSetAtlasSource
 	var want_gone := Vector2i(-1, -1)
 	for i in range(hsrc.get_tiles_count()):
@@ -333,8 +341,16 @@ func _initialize() -> void:
 	var got_score := popcount(got ^ 255)
 	check("T18", "the substitute is a minimum-mismatch tile (its score %d, best available %d)" % [got_score, best],
 		got_score == best)
+	# available.count(got) used to stand in for "how many tiles tie" here, and it
+	# is not that: it is how many times ONE mask appears in the array, which in a
+	# set with no duplicate tiles is always 1. The doc quoted it as "exactly one
+	# tile ties at 1" for months. Count the ties properly; T21 sweeps all 47.
+	var tie_count := 0
+	for m in available:
+		if popcount(m ^ 255) == got_score:
+			tie_count += 1
 	note("hole test: wanted mask 255, engine placed mask %d (%d bits off; %d tiles tie at that score)" % [
-		got, got_score, available.count(got)])
+		got, got_score, tie_count])
 
 	# And it is still deterministic with the hole in place.
 	var hole_runs := {}
@@ -351,7 +367,9 @@ func _initialize() -> void:
 	# neighbourhood. Does the engine reach into terrain 1?
 	# Loaded fresh from the same path as T10-T13, because this test MUTATES the
 	# set (adds a terrain and reassigns tiles) and must not disturb section C.
-	var mixed: TileSet = load(sides_path) if ResourceLoader.exists(sides_path) else null
+	# Same reason as `holed` above: this block adds a terrain and reassigns tiles,
+	# and the cached object is the one `sides` used for T10-T13.
+	var mixed: TileSet = ResourceLoader.load(sides_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP) if ResourceLoader.exists(sides_path) else null
 	if mixed == null:
 		print("SKIP  no sides-only set at %s; T14-T15 skipped" % sides_path)
 	else:
@@ -391,6 +409,76 @@ func _initialize() -> void:
 		l.queue_free()
 	check("T16", "with a complete set the painted cell always belongs to the requested terrain (%d wrong)" % wrong_terrain,
 		wrong_terrain == 0)
+
+	# --------------------------------------- E. every hole, not just one (T20-T21)
+	# C2 removes ONE tile and checks the substitute. That is a single sample, and
+	# the doc built a sentence on it ("exactly one tile ties at 1") that C2 never
+	# asserted: its NOTE printed available.count(got), the multiplicity of one
+	# mask in the array, not the number of tiles sharing the best score.
+	# So sweep it: knock out each of the set's tiles in turn, ask for exactly the
+	# neighbourhood that tile answered, and score what comes back.
+	var sweep_holes := 0
+	var not_minimum := 0
+	var unique_best := 0
+	var worst_example := ""
+	var tie_min := 99
+	var tie_max := 0
+	var base_masks: Array[int] = []
+	var bsrc: TileSetAtlasSource = full.get_source(full.get_source_id(0)) as TileSetAtlasSource
+	for i in range(bsrc.get_tiles_count()):
+		var td := bsrc.get_tile_data(bsrc.get_tile_id(i), 0)
+		if td.terrain == 0:
+			base_masks.append(tile_mask(full, td))
+
+	for target in base_masks:
+		# Fresh copy per hole — see the note on `holed`.
+		var ts: TileSet = ResourceLoader.load(full_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
+		var src2: TileSetAtlasSource = ts.get_source(ts.get_source_id(0)) as TileSetAtlasSource
+		var gone := Vector2i(-1, -1)
+		for i in range(src2.get_tiles_count()):
+			var co := src2.get_tile_id(i)
+			if tile_mask(ts, src2.get_tile_data(co, 0)) == target:
+				gone = co
+				break
+		if gone == Vector2i(-1, -1):
+			continue
+		src2.remove_tile(gone)
+		var avail: Array[int] = []
+		for i in range(src2.get_tiles_count()):
+			var co := src2.get_tile_id(i)
+			var td := src2.get_tile_data(co, 0)
+			if td.terrain == 0:
+				avail.append(tile_mask(ts, td))
+		if avail.is_empty():
+			continue
+		var best2 := 99
+		for m in avail:
+			best2 = min(best2, popcount(m ^ target))
+		var ties := 0
+		for m in avail:
+			if popcount(m ^ target) == best2:
+				ties += 1
+		var l2 := paint(ts, cells_for(target), false)
+		var placed := mask_of(l2, Vector2i(0, 0))
+		l2.queue_free()
+		sweep_holes += 1
+		if placed == -1 or popcount(placed ^ target) != best2:
+			not_minimum += 1
+			if worst_example == "":
+				worst_example = "mask %d -> %d" % [target, placed]
+		if ties == 1:
+			unique_best += 1
+		tie_min = min(tie_min, ties)
+		tie_max = max(tie_max, ties)
+
+	check("T20", "over all %d holes the substitute is always a minimum-mismatch tile (%d were not%s)" % [
+		sweep_holes, not_minimum, ("" if worst_example == "" else ", e.g. " + worst_example)],
+		sweep_holes > 0 and not_minimum == 0)
+	check("T21", "the best score is reached by SEVERAL tiles, so it does not name one (%d of %d holes had a unique best; ties ranged %d-%d)" % [
+		unique_best, sweep_holes, tie_min, tie_max],
+		sweep_holes > 0 and unique_best == 0)
+	note("hole sweep: %d holes, every substitute minimum-mismatch, %d..%d tiles tied for best, %d holes decided by score alone" % [
+		sweep_holes, tie_min, tie_max, unique_best])
 
 	print("---")
 	for n in notes:

@@ -12,8 +12,11 @@ id (`T1`, `T4`, …) and is asserted by
 [`verify_terrain_choice.gd`](verify_terrain_choice.gd), which re-runs the whole
 thing against your Godot build and exits non-zero if any of it stops holding.
 
-Measured against **Godot 4.7.stable.official.5b4e0cb0f**, 22 checks, two
-identical runs.
+Measured against **Godot 4.7.stable.official.5b4e0cb0f**, 24 checks, two
+identical runs. Last re-run **2026-08-18**.
+
+There is a browser version of the sweep, with a region you paint and no install:
+[**godot-terrain-wrong-tile**](https://blobsmith.lbwma.com/godot-terrain-wrong-tile/).
 
 ---
 
@@ -31,7 +34,7 @@ neighbourhood** — not that the algorithm misfired.
 
 ## It is not random
 
-The "non-deterministic" claim does not reproduce. Three ways of asking:
+The "non-deterministic" claim does not reproduce. Five ways of asking:
 
 | id | what was done | result |
 |----|---------------|--------|
@@ -59,12 +62,39 @@ placed:  247  = N NE E    S SW W NW      (247 = 255 - 8, the SE corner bit)
                         ^^ one bit off
 ```
 
-That is the **unique** minimum-mismatch tile in the set: no remaining tile
-disagrees on fewer than 1 bit, and exactly one tile ties at 1 (`T18`). The
-engine scored every candidate and took the best. Visually: a field cell that
-renders with a notch cut out of its bottom-right corner. Nothing about that
-looks like "you are missing a tile", which is why people go looking for a bug
-in the algorithm.
+One bit off is the best any remaining tile can do (`T18`): the engine scored
+every candidate and took a minimum. Visually: a field cell that renders with a
+notch cut out of its bottom-right corner. Nothing about that looks like "you are
+missing a tile", which is why people go looking for a bug in the algorithm.
+
+But **247 is not the only tile that scores 1**. So do `127`, `223` and `253`,
+and nothing in the score decides between the four.
+
+### The score tells you how wrong, never which tile
+
+This page used to say "exactly one tile ties at 1", citing `T18`. `T18` never
+asserted that: the note beside it printed `available.count(got)`, which is how
+many times *one* mask appears in the array — in a set with no duplicate tiles,
+always 1. Corrected on 2026-08-18, and replaced with a sweep instead of a single
+sample. Knock out each of the 47 tiles in turn and ask for exactly the
+neighbourhood that tile answered:
+
+| id | over all 47 holes | result |
+|----|-------------------|--------|
+| `T20` | is the substitute always a minimum-mismatch tile? | **47 of 47** — yes, every time |
+| `T21` | how often does exactly one tile reach that minimum? | **0 of 47**. Between **3 and 8** tiles tie |
+
+So the rule in "the short answer" holds everywhere, and it is *not* a rule that
+names a tile. Which of the tied tiles you get is deterministic (`T19`) but is not
+the lowest-numbered one (2 of 47) and not the first one in the atlas (7 of 47).
+Predict how wrong the cell will look; do not predict what goes in it.
+
+Three of the checks above only started measuring the whole set on 2026-08-18.
+`load()` on the same path hands back the same cached `TileSet`, so the blocks
+that *mutate* a set — deleting a tile for the hole test, moving a tile out of
+terrain 0 — were quietly editing the "complete set" that later checks swept.
+`T16` said "with a complete set" while running against 46 tiles. The three now
+load with `CACHE_MODE_IGNORE_DEEP`; if you vendor this script, keep that.
 
 The same rule with a sides-only set (`T12`): the fallback still matches **every
 side** the neighbourhood asked for, and only ever gives up corner information.
@@ -158,6 +188,32 @@ In the order worth checking:
 4. **The cell is on the border of what you painted**, against empty cells. Not a
    bug; see above.
 
+## The same sweep without an engine
+
+`verify_terrain_choice.gd` needs Godot. The sweep of *your* set does not, because
+the neighbourhood each cell asks for is decided by the region you paint
+(`T4`/`T5`/`T9`) and the tiles you own are in the `.tres`:
+
+```bash
+# which cells of a 5x3 block your set has no tile for
+node docs/predict_terrain_paint.js your_tileset.tres --rect 5x3
+
+# and what the chunk seam does to the first half (T9)
+node docs/predict_terrain_paint.js your_tileset.tres --rect 6x3 --chunks
+```
+
+No dependencies, exits 1 if any cell of the region has no exact tile, `--json`
+for a build script. The logic is [`terrain-choice-core.js`](terrain-choice-core.js),
+which is also the file the web page runs, byte for byte.
+
+It is a model of the engine, so it is pinned to the engine:
+[`dump_terrain_paint_fixtures.gd`](dump_terrain_paint_fixtures.gd) reads the
+masks Godot actually places for 12 regions in both terrain modes into
+[`terrain-paint-fixtures.json`](terrain-paint-fixtures.json), and
+`test/web-terrain.test.js` replays **258 cells** and fails on one disagreement.
+It reports the tie set and refuses to name the placed tile, for the reason `T21`
+measured above.
+
 ## Run it yourself
 
 Copy the script into a Godot project and point it at **your** `.tres` — this
@@ -180,9 +236,8 @@ pretending the corner claims were checked. Omit arg 2 and the six claims that
 need a sides-only set (`T10-T15`) print `SKIP` — the remaining **16** still run
 and still gate the exit code.
 
-Measured on 2026-08-16 against 4.7.stable: with both sets, 22 PASS / 0 SKIP,
-exit 0; with arg 1 only, in a throwaway project holding nothing but the tileset
-and this script, 16 PASS / 2 SKIP lines, exit 0.
+Measured on 2026-08-18 against 4.7.stable: with both sets, 24 PASS / 0 SKIP,
+exit 0.
 
 It prints `PASS`/`FAIL` per claim and exits non-zero if any stops holding, so
 pointing it at a newer Godot tells you exactly which line of this page changed.
