@@ -71,8 +71,16 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > cells around your painted region are constraints, why `ignore_empty_terrains`
 > is not the lever people think it is (a measured negative, stated as such), and
 > how the terrain *mode* caps 47 tiles down to 16 without telling you.
+> The score says how *wrong* the substitute is and never *which tile* you get:
+> over all 47 holes the engine always lands on a minimum-mismatch tile, and not
+> once is one tile alone at that minimum — between 3 and 8 tie every time.
 > [`docs/verify_terrain_choice.gd`](docs/verify_terrain_choice.gd) asserts all
-> 22 claims against your Godot build.
+> 24 claims against your Godot build, and
+> [`docs/predict_terrain_paint.js`](docs/predict_terrain_paint.js) predicts a
+> painted region from your `.tres` alone, no engine — exiting non-zero on the
+> first cell your set cannot answer. The same logic runs, byte for byte, at
+> **<https://blobsmith.lbwma.com/godot-terrain-wrong-tile/>**, where you paint a
+> region in the page and it names the cells with no exact tile.
 
 > **[Thin lines between tiles — what actually causes them](docs/why-tiles-have-seams.md)**
 > separates the four causes that every answer piles into one paragraph. The most
@@ -203,7 +211,13 @@ blobsmith-autotile-wirer/
 │   ├── verify_tile_map_data.gd      # headless script proving every claim in that doc
 │   ├── tile-map-data-fixtures.json  # 12 buffers a real 4.7 wrote + the cells it reads back
 │   ├── dump_tile_map_fixtures.gd    # regenerates that file from your own Godot build
-│   └── check_js_buffers.gd          # hands buffers built elsewhere to a real TileMapLayer
+│   ├── check_js_buffers.gd          # hands buffers built elsewhere to a real TileMapLayer
+│   ├── why-terrain-paints-the-wrong-tile.md  # what the engine picks when your set falls short
+│   ├── verify_terrain_choice.gd     # 24 claims asked of a real engine
+│   ├── terrain-choice-core.js       # the choice logic the CLI and the web page share
+│   ├── predict_terrain_paint.js     # predicts a painted region from YOUR .tres, no engine
+│   ├── terrain-paint-fixtures.json  # neighbourhood masks dumped straight out of 4.7
+│   └── dump_terrain_paint_fixtures.gd  # regenerates that file from your own Godot build
 ├── examples/
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
 │   └── blobsmith-demo.gif      # the companion Blobsmith tool painting a sheet
