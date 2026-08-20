@@ -97,6 +97,39 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > `node docs/find_tile_seam_causes.js /path/to/your/project` reads your
 > `project.godot`, `.tscn` and `.tres` and tells you which of the four is yours.
 
+> **[The tiles are y-sorted and they still draw in the wrong order](docs/why-y-sort-draws-the-wrong-order.md)**
+> measures what decides draw order instead of repeating the advice that does not
+> work. Ticking **Y Sort Enabled** and dragging **Texture Origin** — the two steps
+> every answer gives, in that order — move the picture and never the sort key: at
+> `texture_origin.y = -64` the art is four rows from home and the tile below is
+> still on top. The field that moves the key is `TileData.y_sort_origin`, and the
+> key itself is *the centre of the cell*, `cell.y * tile_size.y + tile_size.y/2 +
+> y_sort_origin` — which is why "set the origin to the tile's feet" is right in
+> spirit and useless as an instruction. Two layers *do* sort against each other,
+> per tile, but only with `y_sort_enabled` ticked on each layer **and** on the
+> node they hang from; tick one and the pixels do not move at all. And a single
+> tile left at `TileData.z_index = 1` outranks the whole arrangement silently.
+> Draw order is not a property you can print, so all 28 claims are measured by
+> rendering each scene into a SubViewport and reading the contested pixel back:
+> [`docs/verify_y_sort.gd`](docs/verify_y_sort.gd), run by
+> [`docs/verify_y_sort.sh`](docs/verify_y_sort.sh) — which needs `xvfb-run`,
+> because the headless build swaps in a dummy renderer and there is no pixel to
+> read. [`docs/find_y_sort_causes.js`](docs/find_y_sort_causes.js) walks your own
+> `.tscn`/`.tres` for those causes and cites the claim id behind each one.
+
+> **Which painted tiles will a body walk straight through?**
+> [`node docs/find_tile_collision_gaps.js /path/to/project`](docs/find_tile_collision_gaps.js)
+> names them, from the text resources the editor already wrote — no engine, no
+> project import, no dependencies. The failure is silent by design: a tile with no
+> collision polygon is not an error, not a warning and not visibly different in
+> the tile picker, and `Visible Collision Shapes` draws the shapes that are there,
+> never the ones that are missing. On a 47-tile blob set that is 47 chances to
+> miss one. Its rules — including what a physics layer does and does not imply,
+> and how an alternative tile inherits (or does not inherit) a shape — are
+> asserted against a real 4.7 build by
+> [`docs/verify_tile_collision.gd`](docs/verify_tile_collision.gd) (26 claims,
+> run by [`docs/verify_tile_collision.sh`](docs/verify_tile_collision.sh)).
+
 > Painting the generated `TileSet` from outside the editor? **[The `tile_map_data` binary format](docs/tile-map-data-format.md)** documents the bytes a `TileMapLayer` stores its cells in — header, 12-byte cell record, transform flags, and the erased-cell and int16-truncation traps — with a headless script that re-verifies every claim against your Godot build.
 > Have a buffer in front of you right now?
 > **<https://blobsmith.lbwma.com/godot-tile-map-data/>** decodes it in the
@@ -217,7 +250,13 @@ blobsmith-autotile-wirer/
 │   ├── terrain-choice-core.js       # the choice logic the CLI and the web page share
 │   ├── predict_terrain_paint.js     # predicts a painted region from YOUR .tres, no engine
 │   ├── terrain-paint-fixtures.json  # neighbourhood masks dumped straight out of 4.7
-│   └── dump_terrain_paint_fixtures.gd  # regenerates that file from your own Godot build
+│   ├── dump_terrain_paint_fixtures.gd  # regenerates that file from your own Godot build
+│   ├── why-y-sort-draws-the-wrong-order.md  # what actually decides tile draw order
+│   ├── verify_y_sort.gd             # 28 claims measured by reading rendered pixels (+ .sh runner, needs xvfb)
+│   ├── find_y_sort_causes.js        # scans YOUR project for those causes, no deps
+│   ├── ysort-scan-core.js           # the y-sort rules, filesystem-free (same bytes run in a browser)
+│   ├── find_tile_collision_gaps.js  # painted tiles with no collision polygon, from .tres/.tscn alone
+│   └── verify_tile_collision.gd     # 26 collision claims asked of a real engine (+ .sh runner)
 ├── examples/
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
 │   └── blobsmith-demo.gif      # the companion Blobsmith tool painting a sheet

@@ -47,6 +47,17 @@ if (!fs.existsSync(file)) {
   console.error('no such file: ' + file);
   process.exit(2);
 }
+// A directory exists, so the check above lets it through and readFileSync then
+// throws EISDIR with a stack trace. Passing a project folder is the reasonable
+// first guess — the glyph, frozen-translation and seam scanners all take one —
+// so say what this scanner wants instead of looking broken.
+if (fs.statSync(file).isDirectory()) {
+  console.error(`${file} is a directory — this scanner reads ONE TileSet resource, not a project.`);
+  console.error('Point it at the .tres itself, e.g.:');
+  console.error(`  node predict_terrain_paint.js ${path.join(file, 'your_tileset.tres')}`);
+  console.error("  (find them with: find . -name '*.tres')");
+  process.exit(2);
+}
 
 const rect = String(flag('--rect', '3x3')).match(/^(\d+)x(\d+)$/);
 if (!rect) { console.error('--rect wants WxH, e.g. --rect 5x3'); process.exit(2); }
