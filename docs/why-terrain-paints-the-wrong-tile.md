@@ -247,8 +247,9 @@ pointing it at a newer Godot tells you exactly which line of this page changed.
 Part of [Blobsmith Autotile Wirer](../README.md), which turns 6 hand-drawn tiles
 into a wired 47-tile Godot 4 `TileSet`. Related measurements in this repo:
 [why a blob autotile has 47 tiles and not 256](why-47-tiles-not-256.md),
-[why tiles show thin seams between them](why-tiles-have-seams.md) and
-[the `tile_map_data` binary format](tile-map-data-format.md).
+[why tiles show thin seams between them](why-tiles-have-seams.md),
+[the `tile_map_data` binary format](tile-map-data-format.md) and
+[which painted tiles a body walks straight through](why-tiles-do-not-collide.md).
 
 If the wrong tile is going down because the sheet itself is in an unexpected
 order, [Blobsmith](https://blobsmith.itch.io/blobsmith) is the pixel-art tool

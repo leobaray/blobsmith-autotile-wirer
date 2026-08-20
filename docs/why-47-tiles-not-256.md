@@ -228,6 +228,7 @@ name the check, rather than letting this page drift quietly out of date.
 - [`TileSet` terrain modes](https://docs.godotengine.org/en/stable/classes/class_tileset.html#enum-tileset-terrainmode) — the enum behind the table above.
 - [`set_cells_terrain_connect`](https://docs.godotengine.org/en/stable/classes/class_tilemaplayer.html#class-tilemaplayer-method-set-cells-terrain-connect) — the call the sweep drives.
 - [The `tile_map_data` binary format](tile-map-data-format.md) — what a painted layer serialises to, if you are generating maps outside the editor.
+- [Which of your painted tiles a body walks straight through](why-tiles-do-not-collide.md) — a 47-tile set is 47 chances to leave one without a collision polygon, and the engine says nothing about any of them.
 
 ---
 

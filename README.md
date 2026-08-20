@@ -128,7 +128,11 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > and how an alternative tile inherits (or does not inherit) a shape — are
 > asserted against a real 4.7 build by
 > [`docs/verify_tile_collision.gd`](docs/verify_tile_collision.gd) (26 claims,
-> run by [`docs/verify_tile_collision.sh`](docs/verify_tile_collision.sh)).
+> run by [`docs/verify_tile_collision.sh`](docs/verify_tile_collision.sh)). All
+> 26 are written out — the six silent ways through, the `collision_mask` column
+> that cannot cause any of them, and what a clean scan does not prove — in
+> **[why your player walks through a painted
+> tile](docs/why-tiles-do-not-collide.md)**.
 
 > Painting the generated `TileSet` from outside the editor? **[The `tile_map_data` binary format](docs/tile-map-data-format.md)** documents the bytes a `TileMapLayer` stores its cells in — header, 12-byte cell record, transform flags, and the erased-cell and int16-truncation traps — with a headless script that re-verifies every claim against your Godot build.
 > Have a buffer in front of you right now?
@@ -255,6 +259,7 @@ blobsmith-autotile-wirer/
 │   ├── verify_y_sort.gd             # 28 claims measured by reading rendered pixels (+ .sh runner, needs xvfb)
 │   ├── find_y_sort_causes.js        # scans YOUR project for those causes, no deps
 │   ├── ysort-scan-core.js           # the y-sort rules, filesystem-free (same bytes run in a browser)
+│   ├── why-tiles-do-not-collide.md  # the six ways a body goes through a painted tile
 │   ├── find_tile_collision_gaps.js  # painted tiles with no collision polygon, from .tres/.tscn alone
 │   └── verify_tile_collision.gd     # 26 collision claims asked of a real engine (+ .sh runner)
 ├── examples/

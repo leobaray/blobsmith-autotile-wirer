@@ -169,5 +169,7 @@ If you came here from a search, the scanner and the verify scripts above are MIT
 and cost nothing. The related measured write-ups in this repo are
 [why a blob autotile is 47 tiles](why-47-tiles-not-256.md),
 [why terrain paints the wrong tile](why-terrain-paints-the-wrong-tile.md),
-[why tiles have seams](why-tiles-have-seams.md) and
-[what `tile_map_data` actually encodes](tile-map-data-format.md).
+[why tiles have seams](why-tiles-have-seams.md),
+[what `tile_map_data` actually encodes](tile-map-data-format.md) and
+[which painted tiles a body walks straight through](why-tiles-do-not-collide.md)
+— the other half of "the tile is there and the player goes through it".
