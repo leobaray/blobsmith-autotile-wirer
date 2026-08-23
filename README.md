@@ -171,7 +171,7 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 | Piece | Detail |
 |-------|--------|
 | Language | GDScript (`@tool`) |
-| Engine | Godot 4.2+ (uses the static `EditorInterface` API) |
+| Engine | Godot 4.3+ (the dialog uses the static `EditorInterface` API, which exists on 4.2, but `TileMapLayer` does not — so the `.tres` it writes has nothing to paint on there) |
 | Plugin entry | `EditorPlugin` registered via `plugin.cfg` v1.0.0 |
 | Output | `TileSet` `.tres` (`ResourceSaver`) |
 | Verification | Headless `SceneTree` script (uses `TileMapLayer`, so Godot 4.3+) |
