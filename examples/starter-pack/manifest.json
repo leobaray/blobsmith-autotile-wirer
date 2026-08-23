@@ -1,0 +1,58 @@
+[
+  {
+    "base": "grass_47blob_16px",
+    "terrain": "Grass",
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 96
+  },
+  {
+    "base": "grass_47blob_32px",
+    "terrain": "Grass",
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 192
+  },
+  {
+    "base": "stone_47blob_16px",
+    "terrain": "Stone",
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 96
+  },
+  {
+    "base": "stone_47blob_32px",
+    "terrain": "Stone",
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 192
+  },
+  {
+    "base": "sand_47blob_16px",
+    "terrain": "Sand",
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 96
+  },
+  {
+    "base": "sand_47blob_32px",
+    "terrain": "Sand",
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 192
+  },
+  {
+    "base": "water_47blob_16px",
+    "terrain": "Water",
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 96
+  },
+  {
+    "base": "water_47blob_32px",
+    "terrain": "Water",
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 192
+  }
+]

@@ -3,7 +3,7 @@
 A Godot 4 editor plugin that turns a flat autotile sheet (PNG) into a fully wired `TileSet` resource: a terrain set, the correct terrain peering bits on every tile, and optional collision — in one click or one GDScript call.
 
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
-![Godot 4](https://img.shields.io/badge/Godot-4.2%2B-478cbf.svg)
+![Godot 4](https://img.shields.io/badge/Godot-4.3%2B-478cbf.svg)
 ![GDScript](https://img.shields.io/badge/GDScript-100%25-355570.svg)
 
 Wiring a blob autotile in Godot by hand means clicking the peering bits for 47 tiles, one neighbor at a time, without getting a single mask wrong. This plugin does the whole pass from the tile's position in the sheet: it knows which of the 47 canonical blob masks each cell represents, and sets the matching terrain bits, terrain mode and collisions automatically.
@@ -11,6 +11,31 @@ Wiring a blob autotile in Godot by hand means clicking the peering bits for 47 t
 ![The companion Blobsmith pixel-art tool painting a 47-blob sheet](examples/blobsmith-demo.gif)
 
 *Above: the separate [Blobsmith](https://blobsmith.itch.io/blobsmith) pixel-art tool used to paint a 47-blob source sheet. This plugin is the next step — it takes such a sheet and wires it into a Godot 4 TileSet.*
+
+## Free tileset pack — no install, no account, MIT
+
+**[⬇ Download the 47-blob starter pack (8 wired TileSets, 154 KB)](examples/godot-47blob-starter-pack.zip?raw=1)** · [browse the files](examples/starter-pack/)
+
+Four terrains — **grass, stone, sand, water** — each at **16px and 32px**, each
+shipped as a `.png` sheet plus an already-wired `.tres`. You do not need this
+plugin, or any plugin, to use them: drop both files of a pair into your project,
+add a `TileMapLayer`, set its `TileSet`, and paint in the Terrains tab.
+
+| | 16px | 32px |
+|---|---|---|
+| Grass | `grass_47blob_16px` | `grass_47blob_32px` |
+| Stone | `stone_47blob_16px` | `stone_47blob_32px` |
+| Sand | `sand_47blob_16px` | `sand_47blob_32px` |
+| Water | `water_47blob_16px` | `water_47blob_32px` |
+
+All 47 tiles carry their terrain peering bits and a collision polygon; terrain
+mode is Match Corners and Sides. Each of the eight was loaded headless in
+**Godot 4.3, 4.4 and 4.7 stable**, painted with `set_cells_terrain_connect` and
+read back — **104 checks, 104 passing on each of the three**
+(`verify_starter_pack.gd`). It is procedural
+placeholder art, not a hand-drawn asset pack: use it to prototype, to learn how
+Godot terrains behave, and as a known-correct reference when your own sheet
+paints the wrong tile. Details and per-file checks: [`examples/starter-pack/README.md`](examples/starter-pack/README.md).
 
 ## Features
 
@@ -179,7 +204,10 @@ The UI (`plugin.gd`) only collects parameters and reports status. All of the mas
 
 ### Prerequisites
 
-- Godot **4.2 or newer** (the bundled verification script uses `TileMapLayer`, which needs **4.3+**).
+- Godot **4.3 or newer**. Measured on 2026-08-20 by running the four engine scripts on each stable
+  build: **4.3, 4.4 and 4.7 pass** (15 + 23 checks, plus 16-mode and the nasty-name round-trip); **4.2 fails**
+  — `TileMapLayer` does not exist before 4.3, so neither the verification script nor the workflow the plugin
+  tells you to use ("add a TileMapLayer, set its TileSet") is available there.
 - An autotile sheet in the expected layout: 8 columns, tiles in ascending canonical-mask order — a **47-blob** sheet (8×6 tiles) or a **16-tile** sheet (8×2 tiles). The sheet under `examples/` is one such sheet.
 
 ### Install
@@ -231,6 +259,15 @@ godot --headless --script res://test_verify_addon.gd
 
 It checks the mask tables, layout detection, a full build from the sample sheet, a save/reload round-trip, an actual terrain paint on a `TileMapLayer`, and the 16-tile mode.
 
+Engines it has actually been run on (`Godot_v<x>-stable_linux.x86_64`, headless):
+
+| Godot | Result |
+|---|---|
+| 4.2.stable | fails to parse — no `TileMapLayer` |
+| 4.3.stable | pass |
+| 4.4.stable | pass |
+| 4.7.stable | pass |
+
 ## Project structure
 
 ```
@@ -263,6 +300,12 @@ blobsmith-autotile-wirer/
 │   ├── find_tile_collision_gaps.js  # painted tiles with no collision polygon, from .tres/.tscn alone
 │   └── verify_tile_collision.gd     # 26 collision claims asked of a real engine (+ .sh runner)
 ├── examples/
+│   ├── starter-pack/           # 8 free wired TileSets (grass/stone/sand/water × 16/32px)
+│   │   ├── *_47blob_*.png      # the sheets
+│   │   ├── *_47blob_*.tres     # the already-wired TileSets — no plugin needed to use these
+│   │   ├── manifest.json       # what the engine gate iterates over
+│   │   └── README.md           # import steps, what is checked, honest note on the art
+│   ├── godot-47blob-starter-pack.zip  # the same eight in one download
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
 │   └── blobsmith-demo.gif      # the companion Blobsmith tool painting a sheet
 ├── test_verify_addon.gd        # headless SceneTree verification script
@@ -288,4 +331,5 @@ Released under the MIT License.
 
 - **[Blobsmith](https://blobsmith.itch.io/blobsmith)** — draw 6 tiles, get a full 47-blob autotile sheet + a wired Godot 4 TileSet ([free in-browser version](https://blobsmith.itch.io/blobsmith-lite))
 - **[LocGuard](https://github.com/leobaray/locguard)** — localization QA linter for Godot 4: missing keys, placeholder drift, broken BBCode ([Pro: in-editor dock + CI gate](https://blobsmith.itch.io/locguard))
+- **[The nine Godot 4 scanners, one zip](https://blobsmith.lbwma.com/godot-scanners/)** — the four tile scanners from `docs/` above plus five localization ones, MIT, no install and no account: what each one printed against `godotengine/godot-demo-projects` is on the page
 - **[blobsmith.lbwma.com](https://blobsmith.lbwma.com/)** — the studio site: every release in one place, plus free browser tools (nonogram solver, puzzle generators) and printable PDFs
