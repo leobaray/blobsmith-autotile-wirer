@@ -14,7 +14,7 @@ Wiring a blob autotile in Godot by hand means clicking the peering bits for 47 t
 
 ## Free tileset pack — no install, no account, MIT
 
-**[⬇ Download the 47-blob starter pack (8 wired TileSets, 154 KB)](examples/godot-47blob-starter-pack.zip?raw=1)** · [browse the files](examples/starter-pack/)
+**[⬇ Download the 47-blob starter pack (8 wired TileSets, 154 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/starter-pack-v1/godot-47blob-starter-pack.zip)** · [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/starter-pack-v1) · [browse the files](examples/starter-pack/)
 
 Four terrains — **grass, stone, sand, water** — each at **16px and 32px**, each
 shipped as a `.png` sheet plus an already-wired `.tres`. You do not need this
@@ -166,6 +166,24 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > table back (coords, source id, atlas coords, alternative, flip/transpose), or
 > type a cell table and get the bytes to paste in. Nothing is uploaded.
 
+> **`TileMap` is deprecated since Godot 4.3, and the editor converts one scene at
+> a time, by hand, and only scenes it can open.**
+> [`node docs/convert_tilemap_to_tilemaplayer.js /path/to/project`](docs/convert_tilemap_to_tilemaplayer.js)
+> converts the whole project in one pass: every `TileMap` becomes a `Node2D` with
+> one `TileMapLayer` child per layer, `layer_N/tile_data` is re-encoded into
+> `tile_map_data`, and every block it does not own comes back byte for byte. It
+> writes nothing without `--write`, keeps a `.tscn.bak` when it does, and
+> **refuses** rather than guesses — a script on the node, an unknown `layer_N/`
+> key, a duplicate layer name, an unchecked `format`. Over Godot's own demo
+> projects at branch `4.2` (298 scenes): 14 nodes and 3 427 cells converted, **3
+> refused, all three carrying scripts**. The engine reads both versions back cell
+> by cell in [`docs/verify_tilemap_convert.sh`](docs/verify_tilemap_convert.sh) —
+> **640 checks green** across 4.3, 4.4, 4.7 and a 4.2 → 4.7 cross-version pass.
+> No terminal? The same file runs in the browser:
+> **<https://blobsmith.lbwma.com/godot-tilemap-to-tilemaplayer/>** — paste a
+> `.tscn`, get the converted scene back. Full write-up:
+> **[converting `TileMap` to `TileMapLayer`](docs/converting-tilemap-to-tilemaplayer.md)**.
+
 ## Stack
 
 | Piece | Detail |
@@ -297,6 +315,11 @@ blobsmith-autotile-wirer/
 │   ├── find_y_sort_causes.js        # scans YOUR project for those causes, no deps
 │   ├── ysort-scan-core.js           # the y-sort rules, filesystem-free (same bytes run in a browser)
 │   ├── why-tiles-do-not-collide.md  # the six ways a body goes through a painted tile
+│   ├── converting-tilemap-to-tilemaplayer.md  # TileMap -> TileMapLayer, and what it refuses
+│   ├── convert_tilemap_to_tilemaplayer.js    # converts a whole project, no engine, no deps
+│   ├── tilemap-convert-core.js      # the rules; the browser page runs these same bytes
+│   ├── verify_tilemap_convert.gd    # the engine reads before and after, cell by cell
+│   ├── verify_tilemap_convert.sh    # 640 checks: 4.3, 4.4, 4.7 and 4.2 -> 4.7
 │   ├── find_tile_collision_gaps.js  # painted tiles with no collision polygon, from .tres/.tscn alone
 │   └── verify_tile_collision.gd     # 26 collision claims asked of a real engine (+ .sh runner)
 ├── examples/
