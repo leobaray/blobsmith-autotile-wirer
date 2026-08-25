@@ -110,8 +110,11 @@ project quietly, and you find out three weeks later. Each of these stops that
 node, prints why, and leaves the file exactly as it was:
 
 - **a `script` on the node** — a script that `extends TileMap` cannot extend the
-  `Node2D` the node becomes. Port it to `TileMapLayer` first. This is the one
-  case where a human has to decide something, and it is not rare (see below);
+  `Node2D` the node becomes. Port it to `TileMapLayer` first — call by call, in
+  the browser, at
+  <https://blobsmith.lbwma.com/godot-tilemap-script-to-tilemaplayer/>, or with
+  [`docs/scan_tilemap_script.js`](scan_tilemap_script.js) on the file. This is the
+  one case where a human has to decide something, and it is not rare (see below);
 - **an unknown `layer_N/` key** — anything outside the table above would be
   silently dropped;
 - **`format` other than `2`** — only the value this has been checked against is
@@ -197,6 +200,18 @@ real-world `TileMap` in six carries a script, and there is no automatic answer
 for a script that extends a node which is about to stop being that node. A tool
 that claimed to handle everything would have rewritten those three into a broken
 scene tree.
+
+> **Amended 25/08.** "No automatic answer" was true of *this* tool and is still
+> true of the decision — nothing here picks, for you, what a script that
+> `extends TileMap` should extend instead. What has changed is that the human no
+> longer does the lookup: the 63-method table behind
+> <https://blobsmith.lbwma.com/godot-tilemap-script-to-tilemaplayer/> is dumped
+> from `ClassDB` on 4.2, 4.3, 4.4 and 4.7, names the replacement for each removed
+> call, turns the layer-index argument into a layer node, and returns the calls it
+> cannot decide as questions. `docs/verify_tilemap_script_api.sh` holds it to 31
+> checks per engine, and carries one round trip end to end: the scanner ports the
+> scripted fixture (22 rewrites, 0 left for a human), the converter then accepts
+> the scene it refused, and Godot 4.7 reads it back to an identical digest.
 
 The same corpus at `master`: 396 scenes, **zero** `TileMap` nodes left. The demos
 have finished this migration — which is why the measurement uses the 4.2 branch,

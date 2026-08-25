@@ -184,6 +184,21 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > `.tscn`, get the converted scene back. Full write-up:
 > **[converting `TileMap` to `TileMapLayer`](docs/converting-tilemap-to-tilemaplayer.md)**.
 
+> **The three it refuses are the scripted ones, and those now have a second
+> pass.** A script that `extends TileMap` cannot extend the `Node2D` the node
+> becomes, so the scene converter stops — but the port itself is mechanical:
+> **<https://blobsmith.lbwma.com/godot-tilemap-script-to-tilemaplayer/>** takes
+> the `.gd` and returns it call by call. The layer index argument becomes a layer
+> node, every removed method gets its replacement named, and anything that needs
+> a human decision comes back as a question instead of a silent rewrite. The
+> replacement table is dumped from `ClassDB` on 4.2, 4.3, 4.4 and 4.7 rather than
+> typed from the docs, and
+> [`docs/verify_tilemap_script_api.sh`](docs/verify_tilemap_script_api.sh) re-checks
+> it against your own build: **31 checks green** on each engine that has
+> `TileMapLayer`, plus a round trip where the tools port a scripted scene end to
+> end (22 rewrites, 0 left for a human) and the engine confirms the ported script
+> reads the converted scene exactly as the original read the original.
+
 ## Stack
 
 | Piece | Detail |
