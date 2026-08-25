@@ -567,12 +567,16 @@ function formatReport(result, label) {
   return out.join('\n');
 }
 
-const API = {
+// Named, not `API`: the page that ships this file also loads
+// tilemap-convert-core.js to read the layer names out of a scene, and two plain
+// <script> tags share one global scope — a second `const API` there is an
+// uncaught SyntaxError that takes the whole page down, not a shadowed variable.
+const SCRIPT_SCAN_API = {
   API_TABLE, GONE_REPLACEMENTS, ENUM_CONSTANTS, PROPERTY_RENAMES,
   maskLiterals, matchBracket, splitArgs, receiverBefore,
   scanScriptText, formatReport,
 };
 
 // Node (CLI + tests) and the browser (the page) load the same bytes.
-if (typeof module !== 'undefined' && module.exports) module.exports = API;
-else if (typeof window !== 'undefined') window.TileMapScriptScan = API;
+if (typeof module !== 'undefined' && module.exports) module.exports = SCRIPT_SCAN_API;
+else if (typeof window !== 'undefined') window.TileMapScriptScan = SCRIPT_SCAN_API;
