@@ -28,6 +28,43 @@ func _initialize() -> void:
 	check("detect 16 layout", Core.detect_layout(256, 64) == { "tile_size": 32, "sides_only": true })
 	check("reject bad layout", Core.detect_layout(100, 100).is_empty())
 
+	# What the dialog says when detect_layout said no. Dimensions only —
+	# these are the sheets people actually drop on an autotile wirer.
+	var c6: Dictionary = Core.classify_sheet(48, 32)          # 3x2 base tiles at 16px
+	check("6-tile base sheet named", c6.kind == "base6" and c6.tile_size == 16
+		and c6.cols == 3 and c6.rows == 2)
+	check("base6 hint says it is the input", c6.hint.contains("6 base tiles"))
+	var c9: Dictionary = Core.classify_sheet(48, 48)          # 3x3-minimal, Godot 3 autotile
+	check("3x3-minimal named", c9.kind == "minimal9" and c9.tile_size == 16)
+	var c16: Dictionary = Core.classify_sheet(64, 64)         # 4x4 wang, not 8x2
+	check("16 tiles in 4x4 named", c16.kind == "wang16" and c16.tile_size == 16
+		and c16.cols == 4 and c16.rows == 4)
+	var c48: Dictionary = Core.classify_sheet(96, 128)        # 6x8: right count, wrong shape
+	check("47-blob in wrong shape named", c48.kind == "blob47" and c48.cols == 6
+		and c48.rows == 8)
+	# 256x256 is honestly ambiguous: 4x4 at 64px and 16x16 at 16px are both
+	# real sheets. The bigger tile is the pick; the other reading is said out
+	# loud instead of being swallowed.
+	var c256: Dictionary = Core.classify_sheet(256, 256)
+	check("ambiguous sheet picks the larger tile",
+		c256.kind == "wang16" and c256.tile_size == 64)
+	check("second reading is disclosed", c256.hint.contains("16x16 tiles at 16px"))
+	var cfull: Dictionary = Core.classify_sheet(512, 128)     # 32x8 at 16px
+	check("256-tile row named", cfull.cols * cfull.rows in [16, 256])
+	var cgrid: Dictionary = Core.classify_sheet(160, 96)      # 5x3 at 32px — nothing known
+	check("plain grid measured", cgrid.kind == "grid" and cgrid.tile_size == 32
+		and cgrid.cols == 5 and cgrid.rows == 3)
+	var codd: Dictionary = Core.classify_sheet(130, 97)       # prime-ish: margins/separation
+	check("undividable sheet admits it", codd.kind == "unknown"
+		and codd.tile_size == 0)
+	check("unknown hint blames margins", codd.hint.contains("margin"))
+	check("every classification carries a hint",
+		c6.hint != "" and c9.hint != "" and c16.hint != "" and c48.hint != ""
+		and c256.hint != "" and cgrid.hint != "" and codd.hint != "")
+	# the sheets the wirer DOES accept must never reach the classifier path
+	check("valid 47 sheet still detected", not Core.detect_layout(128, 96).is_empty())
+	check("valid 16 sheet still detected", not Core.detect_layout(256, 64).is_empty())
+
 	# build from the real example sheet
 	var tex: Texture2D = load("res://tiles/grass_47blob_16px.png")
 	check("example sheet loads", tex != null)

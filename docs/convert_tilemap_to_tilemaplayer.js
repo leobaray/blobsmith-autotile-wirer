@@ -46,9 +46,13 @@ function main(argv) {
   const args = argv.slice(2);
   const write = args.includes('--write');
   const json = args.includes('--json');
+  // Only for a project whose scripts have already been ported — see
+  // docs/scan_tilemap_script.js, which does the porting and says what is left.
+  const keepScripts = args.includes('--script-ported');
   const target = args.find((a) => !a.startsWith('--'));
   if (!target) {
-    console.error('usage: node docs/convert_tilemap_to_tilemaplayer.js <project-dir|scene.tscn> [--write] [--json]');
+    console.error('usage: node docs/convert_tilemap_to_tilemaplayer.js <project-dir|scene.tscn> '
+      + '[--write] [--json] [--script-ported]');
     return 2;
   }
   let files;
@@ -71,7 +75,7 @@ function main(argv) {
 
     let result;
     try {
-      result = CONVERT.convertSceneText(text, { label: file });
+      result = CONVERT.convertSceneText(text, { label: file, keepScripts });
     } catch (e) {
       report.blocked.push({ file, node: '-', reason: `converter error: ${e.message}` });
       continue;

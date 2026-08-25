@@ -247,6 +247,19 @@ Then in the editor: **Project → Project Settings → Plugins →** enable *Blo
 4. Press **Generate TileSet**. A wired `<sheet>_tileset.tres` appears next to the PNG.
 5. Add a `TileMapLayer`, assign the generated `TileSet`, and paint in its **Terrains** tab.
 
+**If your sheet is not in this layout**, step 2 now says what it *is* instead of
+just refusing. From the pixel size alone the dialog names the reading — 6 base
+tiles, the Godot 3 3×3-minimal set, 16 tiles in a 4×4 Wang square, the 47-blob
+count in the wrong arrangement, a plain grid — and, when a sheet has more than
+one honest reading (256×256 is 4×4 tiles at 64px *and* 16×16 at 16px), it says
+the second one out loud instead of picking silently. A sheet no square tile size
+divides is reported as exactly that: margins or separation between tiles, which
+this wirer does not read. The same line offers the
+[free pack](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/starter-pack-v1),
+because "set tile size manually" is useless advice when the file you have cannot
+be wired at any tile size. `BlobsmithWirerCore.classify_sheet(width, height)` is
+the same function, callable from a script.
+
 ### Use it (script)
 
 ```gdscript

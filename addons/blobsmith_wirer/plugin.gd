@@ -2,6 +2,7 @@
 extends EditorPlugin
 
 const MENU_LABEL := "Blobsmith Autotile Wirer..."
+const PACK_URL := "https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/starter-pack-v1"
 var _dialog: AcceptDialog
 var _file_dialog: EditorFileDialog
 var _path_edit: LineEdit
@@ -10,6 +11,7 @@ var _mode: OptionButton
 var _collision: CheckBox
 var _terrain_name: LineEdit
 var _status: Label
+var _pack_link: LinkButton
 
 
 func _enter_tree() -> void:
@@ -91,6 +93,16 @@ func _build_dialog() -> void:
 	promo.uri = "https://blobsmith.itch.io/blobsmith"
 	vb.add_child(promo)
 
+	# Only shown when the picked sheet is not in Blobsmith layout: at that
+	# moment "set tile size manually" is useless advice, because the file the
+	# reader has cannot be wired at any tile size. The pack is 8 wired TileSets,
+	# MIT, no account.
+	_pack_link = LinkButton.new()
+	_pack_link.text = "Or take 8 ready-to-paint TileSets, free →"
+	_pack_link.uri = PACK_URL
+	_pack_link.visible = false
+	vb.add_child(_pack_link)
+
 	_dialog.add_child(vb)
 	EditorInterface.get_base_control().add_child(_dialog)
 
@@ -118,11 +130,15 @@ func _on_file(path: String) -> void:
 	if tex:
 		var layout := BlobsmithWirerCore.detect_layout(tex.get_width(), tex.get_height())
 		if layout.is_empty():
-			_status.text = "⚠ %d×%d doesn't match a Blobsmith layout (8×6 or 8×2 tiles) — set tile size manually." % [tex.get_width(), tex.get_height()]
+			var what := BlobsmithWirerCore.classify_sheet(tex.get_width(), tex.get_height())
+			_status.text = "⚠ %d×%d is not a Blobsmith layout. %s" % [
+				tex.get_width(), tex.get_height(), what.hint]
+			_pack_link.visible = true
 		else:
 			_tile_size.value = layout.tile_size
 			_mode.selected = 1 if layout.sides_only else 0
 			_status.text = "Detected: %dpx tiles, %s." % [layout.tile_size, "16 sides-only" if layout.sides_only else "47-blob"]
+			_pack_link.visible = false
 
 
 func _generate() -> void:

@@ -282,12 +282,29 @@ function convertSceneText(text, opts = {}) {
         continue;  // the wrapper is a Node2D; it has no format
       }
       if (p.key === 'script') {
-        blockers.push({
+        // Default: refuse. A script that `extends TileMap` cannot extend the Node2D
+        // this node becomes, and rewriting it is not a text transform.
+        //
+        // `keepScripts` is the caller saying it already ported the script — that is
+        // what docs/scan_tilemap_script.js produces. Then the script line simply
+        // rides along on the wrapper, which keeps the node's name, path and
+        // transform, so `$Level/TileMap` still finds the script it always found.
+        if (!opts.keepScripts) {
+          blockers.push({
+            ...where,
+            reason: 'the node carries a script. A script that extends TileMap cannot extend the '
+              + 'Node2D this node becomes; port it first — docs/scan_tilemap_script.js reads the '
+              + '.gd and names every call that has to change — then convert with keepScripts.',
+          });
+          refused = true;
+          continue;
+        }
+        notes.push({
           ...where,
-          reason: 'the node carries a script. A script that extends TileMap cannot extend the '
-            + 'Node2D this node becomes; port it to TileMapLayer first.',
+          note: 'script kept on the Node2D wrapper (keepScripts) — it must already extend Node2D '
+            + 'and address the layers as child nodes',
         });
-        refused = true;
+        keepProps.push(p);
         continue;
       }
       if (p.key in MAP_KEY_MAP) { mapProps.push(p); continue; }

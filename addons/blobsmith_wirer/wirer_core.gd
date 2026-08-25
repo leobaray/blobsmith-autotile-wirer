@@ -70,6 +70,78 @@ static func detect_layout(width: int, height: int) -> Dictionary:
 		return { "tile_size": t, "sides_only": true }
 	return {}
 
+## Known tile counts a sheet that ISN'T in Blobsmith layout usually has.
+const _KNOWN_COUNTS := [6, 9, 16, 47, 48, 256]
+
+## Names what a sheet probably is from its pixel size alone, for the case where
+## `detect_layout` said no. Dimensions are all we have here: the wirer never
+## reads pixels to guess.
+##
+## A sheet often has more than one honest reading — 256x256 is 4x4 tiles at
+## 64px AND 16x16 tiles at 16px. The largest tile size wins (2px "tiles" divide
+## almost anything), and any second reading is named in the hint instead of
+## being hidden.
+##
+## Returns { kind, tile_size, cols, rows, hint } — `kind` is one of
+## "base6", "minimal9", "wang16", "blob47", "full256", "grid", "unknown".
+## `tile_size` is 0 and `cols`/`rows` are 0 when nothing divides the sheet.
+static func classify_sheet(width: int, height: int) -> Dictionary:
+	if width <= 0 or height <= 0:
+		return { "kind": "unknown", "tile_size": 0, "cols": 0, "rows": 0,
+			"hint": "empty image." }
+
+	var readings: Array[Vector3i] = []   # (tile_size, cols, rows), largest tile first
+	var fallback_t := 0
+	var t := mini(width, height)
+	while t >= 2:
+		if width % t == 0 and height % t == 0:
+			var cols := width / t
+			var rows := height / t
+			if cols * rows in _KNOWN_COUNTS:
+				readings.append(Vector3i(t, cols, rows))
+			if fallback_t == 0 and t >= 8:
+				fallback_t = t
+		t -= 1
+
+	if readings.is_empty():
+		if fallback_t == 0:
+			return { "kind": "unknown", "tile_size": 0, "cols": 0, "rows": 0,
+				"hint": "no square tile size of 8px or more divides %dx%d evenly. Sheets with a margin or separation between tiles are not read by this wirer." % [width, height] }
+		var fc := width / fallback_t
+		var fr := height / fallback_t
+		return { "kind": "grid", "tile_size": fallback_t, "cols": fc, "rows": fr,
+			"hint": "%dx%d tiles at %dpx (%d in all). Blobsmith layout is 8 columns: 8x6 for 47-blob, 8x2 for 16 sides-only." % [fc, fr, fallback_t, fc * fr] }
+
+	var pick := readings[0]
+	var best_t := pick.x
+	var cols := pick.y
+	var rows := pick.z
+	var count := cols * rows
+	var kind := "grid"
+	var hint := ""
+	match count:
+		6:
+			kind = "base6"
+			hint = "6 tiles at %dpx (%dx%d). That is Blobsmith's INPUT, not a wired sheet: Blobsmith draws the full 47-tile sheet from exactly 6 base tiles." % [best_t, cols, rows]
+		9:
+			kind = "minimal9"
+			hint = "9 tiles at %dpx (%dx%d) — the 3x3-minimal layout Godot 3 autotile used. Godot 4 terrains need 47 tiles (corners and sides) or 16 (sides only)." % [best_t, cols, rows]
+		16:
+			kind = "wang16"
+			hint = "16 tiles at %dpx (%dx%d). This wirer reads 16-tile sheets as 8 columns by 2 rows — re-arrange to 8x2 and pick the 16-tile mode." % [best_t, cols, rows]
+		47, 48:
+			kind = "blob47"
+			hint = "%d slots at %dpx (%dx%d) — the 47-blob count, in the wrong arrangement. This wirer reads 8 columns by 6 rows." % [count, best_t, cols, rows]
+		256:
+			kind = "full256"
+			hint = "256 tiles at %dpx (%dx%d). Only 47 of the 256 neighbourhoods are distinct — see docs/why-47-tiles-not-256.md in this repo." % [best_t, cols, rows]
+	if readings.size() > 1:
+		var alt := readings[1]
+		hint += " It also reads as %dx%d tiles at %dpx (%d in all)." % [
+			alt.y, alt.z, alt.x, alt.y * alt.z]
+	return { "kind": kind, "tile_size": best_t, "cols": cols, "rows": rows, "hint": hint }
+
+
 ## Builds the wired TileSet. `texture` must be sized for the chosen layout.
 static func build_tileset(texture: Texture2D, tile_size: int, sides_only: bool,
 		collision: bool, terrain_name: String) -> TileSet:
