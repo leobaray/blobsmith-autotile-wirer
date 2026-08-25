@@ -37,6 +37,53 @@ placeholder art, not a hand-drawn asset pack: use it to prototype, to learn how
 Godot terrains behave, and as a known-correct reference when your own sheet
 paints the wrong tile. Details and per-file checks: [`examples/starter-pack/README.md`](examples/starter-pack/README.md).
 
+## `TileMap` is deprecated — convert the whole project
+
+**[⬇ Download the converter (2 scripts, no dependencies, 29 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/tilemap-to-tilemaplayer-v1/godot-tilemap-to-tilemaplayer.zip)** · [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/tilemap-to-tilemaplayer-v1) · or run them out of [`docs/`](docs/) after cloning.
+
+Node 18+, MIT, reads and writes only your `.tscn` and `.gd` files — no engine,
+no install, no network. The two blocks below are what they do, and what they
+refuse to do.
+
+> **`TileMap` is deprecated since Godot 4.3, and the editor converts one scene at
+> a time, by hand, and only scenes it can open.**
+> [`node docs/convert_tilemap_to_tilemaplayer.js /path/to/project`](docs/convert_tilemap_to_tilemaplayer.js)
+> converts the whole project in one pass: every `TileMap` becomes a `Node2D` with
+> one `TileMapLayer` child per layer, `layer_N/tile_data` is re-encoded into
+> `tile_map_data`, and every block it does not own comes back byte for byte. It
+> writes nothing without `--write`, keeps a `.tscn.bak` when it does, and
+> **refuses** rather than guesses — a script on the node, an unknown `layer_N/`
+> key, a duplicate layer name, an unchecked `format`. Over Godot's own demo
+> projects at branch `4.2` (298 scenes): 14 nodes and 3 427 cells converted, **3
+> refused, all three carrying scripts**. The engine reads both versions back cell
+> by cell in [`docs/verify_tilemap_convert.sh`](docs/verify_tilemap_convert.sh) —
+> **640 checks green** across 4.3, 4.4, 4.7 and a 4.2 → 4.7 cross-version pass.
+> No terminal? The same file runs in the browser:
+> **<https://blobsmith.lbwma.com/godot-tilemap-to-tilemaplayer/>** — paste a
+> `.tscn`, get the converted scene back. Full write-up:
+> **[converting `TileMap` to `TileMapLayer`](docs/converting-tilemap-to-tilemaplayer.md)**.
+
+> **The three it refuses are the scripted ones, and those now have a second
+> pass.** A script that `extends TileMap` cannot extend the `Node2D` the node
+> becomes, so the scene converter stops — but the port itself is mechanical:
+> [`node docs/scan_tilemap_script.js /path/to/project`](docs/scan_tilemap_script.js)
+> takes the `.gd` and returns it call by call. The layer index argument becomes a
+> layer node — given the scene (or `--layers=Ground,Walls`) `set_cell(0, …)` comes
+> back as `$Ground.set_cell(…)` and not as a shrug — every removed method gets its
+> replacement named, and anything that needs a human decision comes back as a
+> question instead of a silent rewrite. `--write` applies only the rewrites marked
+> safe and leaves the rest alone; the exit code is 1 while anything still needs a
+> human, so it drops into a build script. No terminal? The same file runs in the
+> browser: **<https://blobsmith.lbwma.com/godot-tilemap-script-to-tilemaplayer/>**.
+> The
+> replacement table is dumped from `ClassDB` on 4.2, 4.3, 4.4 and 4.7 rather than
+> typed from the docs, and
+> [`docs/verify_tilemap_script_api.sh`](docs/verify_tilemap_script_api.sh) re-checks
+> it against your own build: **31 checks green** on each engine that has
+> `TileMapLayer`, plus a round trip where the tools port a scripted scene end to
+> end (22 rewrites, 0 left for a human) and the engine confirms the ported script
+> reads the converted scene exactly as the original read the original.
+
 ## Features
 
 - **One-click wiring** — pick a sheet, press *Generate TileSet*, get a wired `<sheet>_tileset.tres` saved next to the PNG.
@@ -165,39 +212,6 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > browser — paste the `PackedByteArray` out of your `.tscn` and get the cell
 > table back (coords, source id, atlas coords, alternative, flip/transpose), or
 > type a cell table and get the bytes to paste in. Nothing is uploaded.
-
-> **`TileMap` is deprecated since Godot 4.3, and the editor converts one scene at
-> a time, by hand, and only scenes it can open.**
-> [`node docs/convert_tilemap_to_tilemaplayer.js /path/to/project`](docs/convert_tilemap_to_tilemaplayer.js)
-> converts the whole project in one pass: every `TileMap` becomes a `Node2D` with
-> one `TileMapLayer` child per layer, `layer_N/tile_data` is re-encoded into
-> `tile_map_data`, and every block it does not own comes back byte for byte. It
-> writes nothing without `--write`, keeps a `.tscn.bak` when it does, and
-> **refuses** rather than guesses — a script on the node, an unknown `layer_N/`
-> key, a duplicate layer name, an unchecked `format`. Over Godot's own demo
-> projects at branch `4.2` (298 scenes): 14 nodes and 3 427 cells converted, **3
-> refused, all three carrying scripts**. The engine reads both versions back cell
-> by cell in [`docs/verify_tilemap_convert.sh`](docs/verify_tilemap_convert.sh) —
-> **640 checks green** across 4.3, 4.4, 4.7 and a 4.2 → 4.7 cross-version pass.
-> No terminal? The same file runs in the browser:
-> **<https://blobsmith.lbwma.com/godot-tilemap-to-tilemaplayer/>** — paste a
-> `.tscn`, get the converted scene back. Full write-up:
-> **[converting `TileMap` to `TileMapLayer`](docs/converting-tilemap-to-tilemaplayer.md)**.
-
-> **The three it refuses are the scripted ones, and those now have a second
-> pass.** A script that `extends TileMap` cannot extend the `Node2D` the node
-> becomes, so the scene converter stops — but the port itself is mechanical:
-> **<https://blobsmith.lbwma.com/godot-tilemap-script-to-tilemaplayer/>** takes
-> the `.gd` and returns it call by call. The layer index argument becomes a layer
-> node, every removed method gets its replacement named, and anything that needs
-> a human decision comes back as a question instead of a silent rewrite. The
-> replacement table is dumped from `ClassDB` on 4.2, 4.3, 4.4 and 4.7 rather than
-> typed from the docs, and
-> [`docs/verify_tilemap_script_api.sh`](docs/verify_tilemap_script_api.sh) re-checks
-> it against your own build: **31 checks green** on each engine that has
-> `TileMapLayer`, plus a round trip where the tools port a scripted scene end to
-> end (22 rewrites, 0 left for a human) and the engine confirms the ported script
-> reads the converted scene exactly as the original read the original.
 
 ## Stack
 
@@ -346,6 +360,9 @@ blobsmith-autotile-wirer/
 │   ├── converting-tilemap-to-tilemaplayer.md  # TileMap -> TileMapLayer, and what it refuses
 │   ├── convert_tilemap_to_tilemaplayer.js    # converts a whole project, no engine, no deps
 │   ├── tilemap-convert-core.js      # the rules; the browser page runs these same bytes
+│   ├── scan_tilemap_script.js       # ports the GDScript the converter refuses, call by call
+│   ├── tilemap-script-scan-core.js  # the ClassDB replacement table (same bytes run in a browser)
+│   ├── verify_tilemap_script_api.sh # 31 checks per engine + a scripted round trip
 │   ├── verify_tilemap_convert.gd    # the engine reads before and after, cell by cell
 │   ├── verify_tilemap_convert.sh    # 640 checks: 4.3, 4.4, 4.7 and 4.2 -> 4.7
 │   ├── find_tile_collision_gaps.js  # painted tiles with no collision polygon, from .tres/.tscn alone
