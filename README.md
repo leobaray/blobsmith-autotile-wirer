@@ -275,7 +275,15 @@ The UI (`plugin.gd`) only collects parameters and reports status. All of the mas
 
 ### Install
 
-Copy the addon folder into your Godot project, then enable it:
+**[⬇ Download the addon (v1.1.0, 16 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/v1.1.0/blobsmith-autotile-wirer-1.1.0.zip)** · [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/v1.1.0)
+
+Unzip it in your project root. It creates `addons/blobsmith_wirer/` and nothing
+else — no file lands anywhere but that folder, which a test asserts on every run
+by unpacking the published zip into an empty project. An example 47-blob sheet
+rides along in `addons/blobsmith_wirer/examples/` so there is something to wire
+before you have drawn your own.
+
+Or copy the folder out of a clone:
 
 ```bash
 # from your Godot project root
@@ -283,6 +291,11 @@ cp -r /path/to/blobsmith-autotile-wirer/addons/blobsmith_wirer addons/
 ```
 
 Then in the editor: **Project → Project Settings → Plugins →** enable *Blobsmith Autotile Wirer*.
+
+> The Godot **Asset Library** listing is registered under 4.7 and still serves
+> the July build, so installing from the editor's AssetLib tab gives you neither
+> this version nor, on 4.3–4.6, any result at all. The zip above is the current
+> addon; the repository is the current everything.
 
 ### Use it (editor)
 
