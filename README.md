@@ -37,6 +37,22 @@ placeholder art, not a hand-drawn asset pack: use it to prototype, to learn how
 Godot terrains behave, and as a known-correct reference when your own sheet
 paints the wrong tile. Details and per-file checks: [`examples/starter-pack/README.md`](examples/starter-pack/README.md).
 
+> **The sheet is yours and you do not want a plugin?** The same wiring runs in
+> the browser: **<https://blobsmith.lbwma.com/godot-tileset-tres-generator/>** —
+> drop the PNG, get the `.tres` back. It reads the tile size off the image
+> instead of asking (the `classify_sheet` pass from this repo, ported), and
+> **names the ambiguous readings rather than picking one**. Before offering the
+> download it scans the alpha of every slot and names the wired ones that came
+> back fully transparent — a blank cell in a wired sheet is the failure the
+> editor never reports: no error, no gap, just a hole that paints wrong later. What it cannot
+> wire it refuses (wrong column count, missing rows, a tile size that does not
+> divide the sheet) instead of writing a `.tres` that opens and misbehaves.
+> Checked against this repository, not against itself: the generator reproduces
+> **all 8 starter-pack `.tres` byte for byte**, and the page hands a stranger
+> those same bytes — 65 assertions in a real browser over HTTP
+> (`test/web-tres-generator.test.js`), including a sheet with three slots
+> cleared by hand and a 3x3 sheet that has to be refused.
+
 ## `TileMap` is deprecated — convert the whole project
 
 **[⬇ Download the converter (2 scripts, no dependencies, 29 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/tilemap-to-tilemaplayer-v1/godot-tilemap-to-tilemaplayer.zip)** · [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/tilemap-to-tilemaplayer-v1) · or run them out of [`docs/`](docs/) after cloning.
