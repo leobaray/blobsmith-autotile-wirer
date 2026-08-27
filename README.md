@@ -416,4 +416,9 @@ Released under the MIT License.
 - **[Blobsmith](https://blobsmith.itch.io/blobsmith)** — draw 6 tiles, get a full 47-blob autotile sheet + a wired Godot 4 TileSet ([free in-browser version](https://blobsmith.itch.io/blobsmith-lite))
 - **[LocGuard](https://github.com/leobaray/locguard)** — localization QA linter for Godot 4: missing keys, placeholder drift, broken BBCode ([Pro: in-editor dock + CI gate](https://blobsmith.itch.io/locguard))
 - **[The nine Godot 4 scanners, one zip](https://blobsmith.lbwma.com/godot-scanners/)** — the four tile scanners from `docs/` above plus five localization ones, MIT, no install and no account: what each one printed against `godotengine/godot-demo-projects` is on the page
+- **Four Godot 4 tools that run in the browser** — no install, no account, nothing uploaded; each one refuses what it cannot answer instead of guessing:
+  [wire a sheet into a `.tres`](https://blobsmith.lbwma.com/godot-tileset-tres-generator/) ·
+  [which neighbourhoods your `TileSet` cannot answer](https://blobsmith.lbwma.com/godot-autotile-47-tiles/) ·
+  [convert a `TileMap` scene](https://blobsmith.lbwma.com/godot-tilemap-to-tilemaplayer/) ·
+  [port a script that `extends TileMap`](https://blobsmith.lbwma.com/godot-tilemap-script-to-tilemaplayer/)
 - **[blobsmith.lbwma.com](https://blobsmith.lbwma.com/)** — the studio site: every release in one place, plus free browser tools (nonogram solver, puzzle generators) and printable PDFs
