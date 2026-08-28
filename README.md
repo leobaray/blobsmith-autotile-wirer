@@ -221,6 +221,13 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > that cannot cause any of them, and what a clean scan does not prove — in
 > **[why your player walks through a painted
 > tile](docs/why-tiles-do-not-collide.md)**.
+>
+> No terminal? The same rules run in the browser:
+> **<https://blobsmith.lbwma.com/godot-tilemap-collision-not-working/>** — paste
+> the `.tres` and get the same list, plus the six causes as toggles over a body
+> that actually stops or drops. The page loads
+> [`docs/collision-scan-core.js`](docs/collision-scan-core.js), the identical
+> bytes this command loads, so the two cannot name different tiles for one file.
 
 > Painting the generated `TileSet` from outside the editor? **[The `tile_map_data` binary format](docs/tile-map-data-format.md)** documents the bytes a `TileMapLayer` stores its cells in — header, 12-byte cell record, transform flags, and the erased-cell and int16-truncation traps — with a headless script that re-verifies every claim against your Godot build.
 > Have a buffer in front of you right now?
@@ -395,6 +402,7 @@ blobsmith-autotile-wirer/
 │   ├── verify_tilemap_convert.gd    # the engine reads before and after, cell by cell
 │   ├── verify_tilemap_convert.sh    # 640 checks: 4.3, 4.4, 4.7 and 4.2 -> 4.7
 │   ├── find_tile_collision_gaps.js  # painted tiles with no collision polygon, from .tres/.tscn alone
+│   ├── collision-scan-core.js       # those rules, filesystem-free (same bytes run in a browser)
 │   └── verify_tile_collision.gd     # 26 collision claims asked of a real engine (+ .sh runner)
 ├── examples/
 │   ├── starter-pack/           # 8 free wired TileSets (grass/stone/sand/water × 16/32px)
@@ -429,9 +437,10 @@ Released under the MIT License.
 - **[Blobsmith](https://blobsmith.itch.io/blobsmith)** — draw 6 tiles, get a full 47-blob autotile sheet + a wired Godot 4 TileSet ([free in-browser version](https://blobsmith.itch.io/blobsmith-lite))
 - **[LocGuard](https://github.com/leobaray/locguard)** — localization QA linter for Godot 4: missing keys, placeholder drift, broken BBCode ([Pro: in-editor dock + CI gate](https://blobsmith.itch.io/locguard))
 - **[The nine Godot 4 scanners, one zip](https://blobsmith.lbwma.com/godot-scanners/)** — the four tile scanners from `docs/` above plus five localization ones, MIT, no install and no account: what each one printed against `godotengine/godot-demo-projects` is on the page
-- **Four Godot 4 tools that run in the browser** — no install, no account, nothing uploaded; each one refuses what it cannot answer instead of guessing:
+- **Five Godot 4 tools that run in the browser** — no install, no account, nothing uploaded; each one refuses what it cannot answer instead of guessing:
   [wire a sheet into a `.tres`](https://blobsmith.lbwma.com/godot-tileset-tres-generator/) ·
   [which neighbourhoods your `TileSet` cannot answer](https://blobsmith.lbwma.com/godot-autotile-47-tiles/) ·
   [convert a `TileMap` scene](https://blobsmith.lbwma.com/godot-tilemap-to-tilemaplayer/) ·
-  [port a script that `extends TileMap`](https://blobsmith.lbwma.com/godot-tilemap-script-to-tilemaplayer/)
+  [port a script that `extends TileMap`](https://blobsmith.lbwma.com/godot-tilemap-script-to-tilemaplayer/) ·
+  [why the player falls through a painted tile](https://blobsmith.lbwma.com/godot-tilemap-collision-not-working/)
 - **[blobsmith.lbwma.com](https://blobsmith.lbwma.com/)** — the studio site: every release in one place, plus free browser tools (nonogram solver, puzzle generators) and printable PDFs
