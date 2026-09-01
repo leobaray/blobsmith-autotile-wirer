@@ -236,6 +236,30 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > table back (coords, source id, atlas coords, alternative, flip/transpose), or
 > type a cell table and get the bytes to paste in. Nothing is uploaded.
 
+> **[A flipped tile is not a new tile — what the three transform bits actually buy you](docs/why-a-flipped-tile-is-not-a-new-tile.md)**
+> answers the two questions that pull in opposite directions: *can I draw half a
+> symmetric sheet and flip the rest?* and *did my collision flip too?* A flip is a
+> property of the **cell**, not the tile — three bits (`4096`, `8192`, `16384`)
+> OR-ed into the `alternative_tile` argument of `set_cell()`, authoring nothing
+> and creating no alternative. So the answer to the first is **no, and not by a
+> little**: the terrain autotiler never emits a transform bit, measured with the
+> mirror tile deliberately withheld — the cell that needed it got a *middle* tile
+> pointing into empty space instead, the same silent substitution the
+> [terrain-choice page](docs/why-terrain-paints-the-wrong-tile.md) describes. Draw
+> all 47. The second answer is the trap: a flipped cell's
+> `get_cell_tile_data()` returns the **same TileData object** as the unflipped one
+> and reports the collision polygon **as authored**, while the shape the physics
+> server actually holds **is mirrored**. Both readings are true, so anyone who
+> inspects `TileData` and concludes "collision does not follow the flip" has read
+> a correct value and drawn a false conclusion. Also: why a terrain repaint erases
+> a hand-placed flip, and why an authored alternative — not a transform bit — is
+> the thing that can carry its own terrain bits, custom data or navigation.
+> 33 claims, each with an id and four of them controls that fail if the check
+> stops discriminating, asserted against **4.3, 4.4 and 4.7** by
+> [`docs/verify_tile_transforms.gd`](docs/verify_tile_transforms.gd), run by
+> [`docs/verify_tile_transforms.sh`](docs/verify_tile_transforms.sh) — headless is
+> enough, because the physics server is real in a headless build.
+
 ## Stack
 
 | Piece | Detail |
