@@ -14,28 +14,36 @@ Wiring a blob autotile in Godot by hand means clicking the peering bits for 47 t
 
 ## Free tileset pack — no install, no account, MIT
 
-**[⬇ Download the 47-blob starter pack (8 wired TileSets, 154 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/starter-pack-v1/godot-47blob-starter-pack.zip)** · [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/starter-pack-v1) · [browse the files](examples/starter-pack/)
+**[⬇ Download the starter pack (16 wired TileSets, 200 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/starter-pack-v2/godot-47blob-starter-pack.zip)** · [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/starter-pack-v2) · [browse the files](examples/starter-pack/)
 
-Four terrains — **grass, stone, sand, water** — each at **16px and 32px**, each
-shipped as a `.png` sheet plus an already-wired `.tres`. You do not need this
-plugin, or any plugin, to use them: drop both files of a pair into your project,
-add a `TileMapLayer`, set its `TileSet`, and paint in the Terrains tab.
+Four terrains — **grass, stone, sand, water** — each at **16px and 32px**, in
+**both of Godot 4's terrain layouts**, each shipped as a `.png` sheet plus an
+already-wired `.tres`. You do not need this plugin, or any plugin, to use them:
+drop both files of a pair into your project, add a `TileMapLayer`, set its
+`TileSet`, and paint in the Terrains tab.
 
-| | 16px | 32px |
+| | Match Corners and Sides (47 tiles, 8×6) | Match Sides (16 tiles, 8×2) |
 |---|---|---|
-| Grass | `grass_47blob_16px` | `grass_47blob_32px` |
-| Stone | `stone_47blob_16px` | `stone_47blob_32px` |
-| Sand | `sand_47blob_16px` | `sand_47blob_32px` |
-| Water | `water_47blob_16px` | `water_47blob_32px` |
+| Grass | `grass_47blob_16px` · `grass_47blob_32px` | `grass_16sides_16px` · `grass_16sides_32px` |
+| Stone | `stone_47blob_16px` · `stone_47blob_32px` | `stone_16sides_16px` · `stone_16sides_32px` |
+| Sand | `sand_47blob_16px` · `sand_47blob_32px` | `sand_16sides_16px` · `sand_16sides_32px` |
+| Water | `water_47blob_16px` · `water_47blob_32px` | `water_16sides_16px` · `water_16sides_32px` |
 
-All 47 tiles carry their terrain peering bits and a collision polygon; terrain
-mode is Match Corners and Sides. Each of the eight was loaded headless in
-**Godot 4.3, 4.4 and 4.7 stable**, painted with `set_cells_terrain_connect` and
-read back — **104 checks, 104 passing on each of the three**
-(`verify_starter_pack.gd`). It is procedural
-placeholder art, not a hand-drawn asset pack: use it to prototype, to learn how
-Godot terrains behave, and as a known-correct reference when your own sheet
-paints the wrong tile. Details and per-file checks: [`examples/starter-pack/README.md`](examples/starter-pack/README.md).
+Pick the 47-blob files for ground that meets other ground (they resolve
+diagonals); pick the 16-tile files for pipes, fences, wires, roads and cave walls,
+where a diagonal touch should *not* connect — and where you only have to draw a
+third as many tiles when you replace this art with your own. Each `.tres`
+declares its own terrain mode, so you do not have to set it.
+
+Every tile carries its terrain peering bits and a collision polygon. Each of the
+sixteen was loaded headless in **Godot 4.3, 4.4 and 4.7 stable**, painted with
+`set_cells_terrain_connect` and read back — **216 checks, 216 passing on each of
+the three** (`verify_starter_pack.gd`, which reads each file's tile count and
+terrain mode from the pack manifest rather than assuming one shape). It is
+procedural placeholder art, not a hand-drawn asset pack: use it to prototype, to
+learn how Godot terrains behave, and as a known-correct reference when your own
+sheet paints the wrong tile. Details and per-file checks:
+[`examples/starter-pack/README.md`](examples/starter-pack/README.md).
 
 > **The sheet is yours and you do not want a plugin?** The same wiring runs in
 > the browser: **<https://blobsmith.lbwma.com/godot-tileset-tres-generator/>** —
@@ -344,7 +352,7 @@ one honest reading (256×256 is 4×4 tiles at 64px *and* 16×16 at 16px), it say
 the second one out loud instead of picking silently. A sheet no square tile size
 divides is reported as exactly that: margins or separation between tiles, which
 this wirer does not read. The same line offers the
-[free pack](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/starter-pack-v1),
+[free pack](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/starter-pack-v2),
 because "set tile size manually" is useless advice when the file you have cannot
 be wired at any tile size. `BlobsmithWirerCore.classify_sheet(width, height)` is
 the same function, callable from a script.
@@ -429,12 +437,13 @@ blobsmith-autotile-wirer/
 │   ├── collision-scan-core.js       # those rules, filesystem-free (same bytes run in a browser)
 │   └── verify_tile_collision.gd     # 26 collision claims asked of a real engine (+ .sh runner)
 ├── examples/
-│   ├── starter-pack/           # 8 free wired TileSets (grass/stone/sand/water × 16/32px)
-│   │   ├── *_47blob_*.png      # the sheets
-│   │   ├── *_47blob_*.tres     # the already-wired TileSets — no plugin needed to use these
-│   │   ├── manifest.json       # what the engine gate iterates over
+│   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
+│   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
+│   │   ├── *_16sides_*.png     # the 8×2 sheets — Match Sides
+│   │   ├── *.tres              # the already-wired TileSets — no plugin needed to use these
+│   │   ├── manifest.json       # base, size, layout, tile count and mode the engine gate iterates over
 │   │   └── README.md           # import steps, what is checked, honest note on the art
-│   ├── godot-47blob-starter-pack.zip  # the same eight in one download
+│   ├── godot-47blob-starter-pack.zip  # the same sixteen in one download
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
 │   └── blobsmith-demo.gif      # the companion Blobsmith tool painting a sheet
 ├── test_verify_addon.gd        # headless SceneTree verification script
