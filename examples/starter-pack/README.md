@@ -78,7 +78,7 @@ matches the corresponding sheet's ordering, it will wire up exactly the same way
   Free in-browser version: <https://blobsmith.itch.io/blobsmith-lite> ·
   full version: <https://blobsmith.itch.io/blobsmith>
 - Already have a sheet of your own? The addon in this repo — **Blobsmith
-  Autotile Wirer**, MIT, also on the Godot Asset Library — turns it into a wired
+  Autotile Wirer**, MIT — turns it into a wired
   `.tres` in one click, in either layout:
   `Project > Tools > Blobsmith Autotile Wirer…`
 - Why 47 and not 256, and what "Match Corners and Sides" actually matches:

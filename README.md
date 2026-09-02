@@ -56,10 +56,13 @@ sheet paints the wrong tile. Details and per-file checks:
 > wire it refuses (wrong column count, missing rows, a tile size that does not
 > divide the sheet) instead of writing a `.tres` that opens and misbehaves.
 > Checked against this repository, not against itself: the generator reproduces
-> **all 8 starter-pack `.tres` byte for byte**, and the page hands a stranger
-> those same bytes — 65 assertions in a real browser over HTTP
-> (`test/web-tres-generator.test.js`), including a sheet with three slots
-> cleared by hand and a 3x3 sheet that has to be refused.
+> **all 16 starter-pack `.tres` byte for byte — both terrain layouts**, and the
+> page hands a stranger those same bytes: 164 assertions
+> (`test/web-tres-generator.test.js`), the download stages in a real browser over
+> HTTP, including a sheet with three slots cleared by hand and a 3x3 sheet that
+> has to be refused. The list of files it must reproduce is read from the pack's
+> `manifest.json`, so a tileset added to the pack cannot skip the comparison —
+> that is how the eight 16-tile files came under it the day they were published.
 
 ## `TileMap` is deprecated — convert the whole project
 
@@ -331,10 +334,11 @@ cp -r /path/to/blobsmith-autotile-wirer/addons/blobsmith_wirer addons/
 
 Then in the editor: **Project → Project Settings → Plugins →** enable *Blobsmith Autotile Wirer*.
 
-> The Godot **Asset Library** listing is registered under 4.7 and still serves
-> the July build, so installing from the editor's AssetLib tab gives you neither
-> this version nor, on 4.3–4.6, any result at all. The zip above is the current
-> addon; the repository is the current everything.
+> **Nothing to find on the editor's AssetLib tab.** Searching the Godot Asset
+> Library for this addon returns no result — it is not listed there. Checked
+> 2026-09-01 against the Asset Library API for every 4.x from 4.3 to 4.7, with a
+> control term that does return results, so the zero is ours and not the query's.
+> The zip above is the current addon; the repository is the current everything.
 
 ### Use it (editor)
 
