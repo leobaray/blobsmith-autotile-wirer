@@ -45,6 +45,24 @@ learn how Godot terrains behave, and as a known-correct reference when your own
 sheet paints the wrong tile. Details and per-file checks:
 [`examples/starter-pack/README.md`](examples/starter-pack/README.md).
 
+> **Want the four terrains in ONE `TileSet`?** Godot 4 can add a source to a
+> `TileSet` you already have open, but nothing in the engine takes two `.tres`
+> TileSet resources and gives you a third — so the usual answer is to paste them
+> together in a text editor. That is the dangerous version *for these files in
+> particular*: every `.tres` in this pack declares its atlas as
+> `[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bsmith"]`, so a
+> hand-pasted file has two `sources/` entries resolving to the **same**
+> sub-resource — one terrain is silently gone, in a file that loads with no error
+> and no warning. **<https://blobsmith.lbwma.com/godot-tileset-merge/>** does it
+> in the browser: drop the files, get one `TileSet` with every terrain in it, ids
+> renumbered, physics and custom-data layers deduped, terrain sets grouped by
+> mode — plus the new source id and terrain index for each input, which is what
+> the `TileMapLayer`s you already painted are storing. Checked against this
+> repository: three starter-pack terrains merged and loaded in **Godot 4.3 and
+> 4.7**, each input also loaded alone so the engine's own reading is compared
+> tile by tile, and the hand merge built and loaded too, to show it losing the
+> terrain — 107 assertions (`tres-merge`, `web-tres-merge`).
+
 > **The sheet is yours and you do not want a plugin?** The same wiring runs in
 > the browser: **<https://blobsmith.lbwma.com/godot-tileset-tres-generator/>** —
 > drop the PNG, get the `.tres` back. It reads the tile size off the image
@@ -476,6 +494,7 @@ Released under the MIT License.
 - **[The nine Godot 4 scanners, one zip](https://blobsmith.lbwma.com/godot-scanners/)** — the four tile scanners from `docs/` above plus five localization ones, MIT, no install and no account: what each one printed against `godotengine/godot-demo-projects` is on the page
 - **Five Godot 4 tools that run in the browser** — no install, no account, nothing uploaded; each one refuses what it cannot answer instead of guessing:
   [wire a sheet into a `.tres`](https://blobsmith.lbwma.com/godot-tileset-tres-generator/) ·
+  [merge two `TileSet` resources into one](https://blobsmith.lbwma.com/godot-tileset-merge/) ·
   [which neighbourhoods your `TileSet` cannot answer](https://blobsmith.lbwma.com/godot-autotile-47-tiles/) ·
   [convert a `TileMap` scene](https://blobsmith.lbwma.com/godot-tilemap-to-tilemaplayer/) ·
   [port a script that `extends TileMap`](https://blobsmith.lbwma.com/godot-tilemap-script-to-tilemaplayer/) ·
