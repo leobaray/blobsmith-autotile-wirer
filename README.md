@@ -62,6 +62,16 @@ sheet paints the wrong tile. Details and per-file checks:
 > 4.7**, each input also loaded alone so the engine's own reading is compared
 > tile by tile, and the hand merge built and loaded too, to show it losing the
 > terrain — 107 assertions (`tres-merge`, `web-tres-merge`).
+>
+> **Merging them yourself, in a script or by hand?**
+> **[What actually has to be remapped](docs/merging-two-tilesets.md)** is the
+> list: `add_source(other.get_source(id))` is a *move* that empties the donor,
+> `duplicate(true)` keeps both but copies every index unchanged — and a terrain
+> set, a custom data layer or a physics layer is only meaningful inside the
+> TileSet that owns it, so the number survives while the meaning changes.
+> 22 checks, run them on your own build with
+> `docs/verify_tileset_merge.sh /path/to/godot`; identical results on 4.2, 4.3,
+> 4.4 and 4.7.
 
 > **The sheet is yours and you do not want a plugin?** The same wiring runs in
 > the browser: **<https://blobsmith.lbwma.com/godot-tileset-tres-generator/>** —
@@ -431,6 +441,7 @@ blobsmith-autotile-wirer/
 │   ├── why-tiles-have-seams.md      # the four causes of a line between two tiles
 │   ├── verify_tile_seams.gd         # 26 claims asked of a real engine (+ .sh runner)
 │   ├── find_tile_seam_causes.js     # scans YOUR project for those causes, no deps
+│   ├── merging-two-tilesets.md      # what a TileSet merge has to remap, and why it fails silently
 │   ├── tile-map-data-format.md      # the TileMapLayer tile_map_data byte layout
 │   ├── verify_tile_map_data.gd      # headless script proving every claim in that doc
 │   ├── tile-map-data-fixtures.json  # 12 buffers a real 4.7 wrote + the cells it reads back
