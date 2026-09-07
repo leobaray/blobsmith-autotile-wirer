@@ -73,6 +73,30 @@ sheet paints the wrong tile. Details and per-file checks:
 > `docs/verify_tileset_merge.sh /path/to/godot`; identical results on 4.2, 4.3,
 > 4.4 and 4.7.
 
+> **Coming from Godot 3 — Tilesetter, TilePipe2, or your own old project?**
+> **[Your Godot 3 tileset does not open empty in Godot 4 — it opens without the
+> autotile](docs/why-a-godot-3-tileset-does-not-open-empty.md)**. Godot 4 does
+> have a compatibility path for `format=2`, and it is not the "no importer at
+> all" the forums say: the sources, the texture and the single tiles arrive.
+> Every **autotile** arrives as a source with **zero tiles** and `margins (0,0)`,
+> so even its region is gone, and the engine says so once, as a WARNING you
+> probably never scrolled to. Two more things it does not say: a collision shape
+> **shared** by several tiles is re-origined once **per sharer**, so the second
+> tile's collision sits half a tile off and the third a whole tile off; and the
+> source ids are re-issued, so a painted map is pointing at numbers that moved.
+> 15 checks on your own build with
+> `docs/verify_godot3_tileset.sh /path/to/godot`; identical on 4.3, 4.4 and 4.7.
+>
+> [`node docs/convert_godot3_tileset.js old_tileset.tres`](docs/convert_godot3_tileset.js)
+> does the conversion the engine skips — geometry exactly (the two region
+> formulas are the same expression), bitmasks canonicalised into Godot 4 terrain
+> bits, tile ids kept as source ids, each polygon re-origined from the tile that
+> owns it — and reports every mask it had to change and every pair that
+> collapsed onto one neighbourhood, by tile and subtile coordinate. It refuses
+> instead of guessing on occluders, navigation polygons, priority maps, rotated
+> shapes and `tex_offset`. No terminal? The identical rules run in the browser:
+> <https://blobsmith.lbwma.com/godot-3-tileset-to-godot-4/>
+
 > **The sheet is yours and you do not want a plugin?** The same wiring runs in
 > the browser: **<https://blobsmith.lbwma.com/godot-tileset-tres-generator/>** —
 > drop the PNG, get the `.tres` back. It reads the tile size off the image
@@ -468,7 +492,11 @@ blobsmith-autotile-wirer/
 │   ├── verify_tilemap_convert.sh    # 640 checks: 4.3, 4.4, 4.7 and 4.2 -> 4.7
 │   ├── find_tile_collision_gaps.js  # painted tiles with no collision polygon, from .tres/.tscn alone
 │   ├── collision-scan-core.js       # those rules, filesystem-free (same bytes run in a browser)
-│   └── verify_tile_collision.gd     # 26 collision claims asked of a real engine (+ .sh runner)
+│   ├── verify_tile_collision.gd     # 26 collision claims asked of a real engine (+ .sh runner)
+│   ├── why-a-godot-3-tileset-does-not-open-empty.md  # what Godot 4 keeps, drops and displaces from a format=2 TileSet
+│   ├── convert_godot3_tileset.js    # Godot 3 -> Godot 4 TileSet, with a report of what could not carry over
+│   ├── tres3-convert-core.js        # those rules, filesystem-free (same bytes run in a browser)
+│   └── verify_godot3_tileset.gd     # 15 claims asked of a real engine (+ .sh runner)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
