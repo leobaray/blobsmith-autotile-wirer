@@ -315,6 +315,22 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > (`docs/verify_tile_data_sharing.sh`, which also runs against your own
 > `.tres`).
 
+> **[My agent will not walk on the tiles I painted](docs/why-tiles-are-not-walkable.md)**
+> is the eight causes with the guesswork taken out, and the headline is that the
+> most repeated fix is not one: there is **no number of frames** to wait before
+> the first query. On an idle machine the corridor answers on frame 1 (4.3), 2
+> (4.4) and 4 (4.7) — six runs each, identical, which is what makes the table
+> look like a fact — and the same 4.7 binary under load answered on frames 2,
+> 11, 13 and 20, crossing the values tabled for the other builds. Poll
+> `map_get_iteration_id()` instead; the same code is correct on all three (N30).
+> `map_force_update()` publishes the regions without making the map answer
+> (N12/N12b), a polygon authored `(0,0)-(16,16)` lands half a tile down-right
+> because the region sits at the cell centre (N13-N17), and a corridor blocked
+> halfway comes back **shorter**, not empty, so `if path.is_empty()` never fires
+> (N23/N24). 31 checks, 31/31 on 4.3, 4.4 and 4.7
+> (`docs/verify_tile_navigation.sh`); `docs/find_tile_navigation_gaps.js` scans
+> your own `.tres`/`.tscn`/`.gd` for the five causes that are readable in a file.
+
 > **[A flipped tile is not a new tile — what the three transform bits actually buy you](docs/why-a-flipped-tile-is-not-a-new-tile.md)**
 > answers the two questions that pull in opposite directions: *can I draw half a
 > symmetric sheet and flip the rest?* and *did my collision flip too?* A flip is a
@@ -500,6 +516,10 @@ blobsmith-autotile-wirer/
 │   ├── why-tiles-do-not-collide.md  # the six ways a body goes through a painted tile
 │   ├── why-one-cell-changed-every-cell.md  # a cell never owns its TileData; the TileSet does
 │   ├── verify_tile_data_sharing.gd   # 22 claims asked of a real engine (+ .sh runner, takes your .tres)
+│   ├── why-tiles-are-not-walkable.md   # the eight causes of an agent that will not move
+│   ├── verify_tile_navigation.gd     # 31 claims asked of a real engine (+ .sh runner)
+│   ├── find_tile_navigation_gaps.js  # scans YOUR project for the five readable causes
+│   ├── nav-scan-core.js              # those rules, filesystem-free
 │   ├── converting-tilemap-to-tilemaplayer.md  # TileMap -> TileMapLayer, and what it refuses
 │   ├── convert_tilemap_to_tilemaplayer.js    # converts a whole project, no engine, no deps
 │   ├── tilemap-convert-core.js      # the rules; the browser page runs these same bytes
