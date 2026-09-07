@@ -299,6 +299,22 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > table back (coords, source id, atlas coords, alternative, flip/transpose), or
 > type a cell table and get the bytes to paste in. Nothing is uploaded.
 
+> **[I changed one tile at runtime and every copy of it changed](docs/why-one-cell-changed-every-cell.md)**
+> is the rule the flip case is one instance of, and it is the one that bites in
+> gameplay code: `layer.get_cell_tile_data(cell).set_custom_data("hp", 3)` does
+> not set the hp of a *cell*. A cell never owns a `TileData` — the TileSet does,
+> and every cell drawn from that tile, in every `TileMapLayer` sharing that
+> TileSet, is looking at the same object. The write reads back through all of
+> them, and `ResourceSaver.save()` then writes your runtime value into the
+> `.tres` under version control. Two open engine issues
+> ([#108067](https://github.com/godotengine/godot/issues/108067),
+> [#93327](https://github.com/godotengine/godot/issues/93327)) are the same
+> fact reported from opposite ends — too wide, and not durable. There is also
+> no private copy to take: `TileData` extends `Object`, not `Resource`, and has
+> no `duplicate()`. 22 checks, identical on 4.3, 4.4 and 4.7
+> (`docs/verify_tile_data_sharing.sh`, which also runs against your own
+> `.tres`).
+
 > **[A flipped tile is not a new tile — what the three transform bits actually buy you](docs/why-a-flipped-tile-is-not-a-new-tile.md)**
 > answers the two questions that pull in opposite directions: *can I draw half a
 > symmetric sheet and flip the rest?* and *did my collision flip too?* A flip is a
@@ -482,6 +498,8 @@ blobsmith-autotile-wirer/
 │   ├── find_y_sort_causes.js        # scans YOUR project for those causes, no deps
 │   ├── ysort-scan-core.js           # the y-sort rules, filesystem-free (same bytes run in a browser)
 │   ├── why-tiles-do-not-collide.md  # the six ways a body goes through a painted tile
+│   ├── why-one-cell-changed-every-cell.md  # a cell never owns its TileData; the TileSet does
+│   ├── verify_tile_data_sharing.gd   # 22 claims asked of a real engine (+ .sh runner, takes your .tres)
 │   ├── converting-tilemap-to-tilemaplayer.md  # TileMap -> TileMapLayer, and what it refuses
 │   ├── convert_tilemap_to_tilemaplayer.js    # converts a whole project, no engine, no deps
 │   ├── tilemap-convert-core.js      # the rules; the browser page runs these same bytes
