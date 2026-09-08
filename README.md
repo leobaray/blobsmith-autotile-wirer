@@ -225,8 +225,19 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > The score says how *wrong* the substitute is and never *which tile* you get:
 > over all 47 holes the engine always lands on a minimum-mismatch tile, and not
 > once is one tile alone at that minimum — between 3 and 8 tie every time.
+> Separately measured on the same page: **"I changed a cell and the neighbours
+> did not update"**, the complaint behind three open engine issues (#64674,
+> #69737, #89844). One rule covers all of it — terrain fitting travels **one
+> cell out and only across a shared edge**. `set_cell()`/`erase_cell()` re-fit
+> nothing and no refresh call makes them; `set_cells_terrain_connect()` does
+> rewrite cells you did not pass, but never past the edge-adjacent ring, and a
+> cell touching your terrain only at a **corner** is never connected in either
+> direction. Same numbers on 4.3, 4.4 and 4.7.
 > [`docs/verify_terrain_choice.gd`](docs/verify_terrain_choice.gd) asserts all
-> 24 claims against your Godot build, and
+> 33 claims against your Godot build —
+> [`docs/verify_terrain_choice.sh`](docs/verify_terrain_choice.sh) runs it in a
+> throwaway project built from the tilesets in `examples/starter-pack`, so a
+> fresh clone needs no arguments and no test project — and
 > [`docs/predict_terrain_paint.js`](docs/predict_terrain_paint.js) predicts a
 > painted region from your `.tres` alone, no engine — exiting non-zero on the
 > first cell your set cannot answer. The same logic runs, byte for byte, at
@@ -504,7 +515,8 @@ blobsmith-autotile-wirer/
 │   ├── dump_tile_map_fixtures.gd    # regenerates that file from your own Godot build
 │   ├── check_js_buffers.gd          # hands buffers built elsewhere to a real TileMapLayer
 │   ├── why-terrain-paints-the-wrong-tile.md  # what the engine picks when your set falls short
-│   ├── verify_terrain_choice.gd     # 24 claims asked of a real engine
+│   ├── verify_terrain_choice.gd     # 33 claims asked of a real engine
+│   ├── verify_terrain_choice.sh     # runs them on your binary, no test project needed
 │   ├── terrain-choice-core.js       # the choice logic the CLI and the web page share
 │   ├── predict_terrain_paint.js     # predicts a painted region from YOUR .tres, no engine
 │   ├── terrain-paint-fixtures.json  # neighbourhood masks dumped straight out of 4.7

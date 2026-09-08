@@ -480,6 +480,15 @@ func _initialize() -> void:
 	note("hole sweep: %d holes, every substitute minimum-mismatch, %d..%d tiles tied for best, %d holes decided by score alone" % [
 		sweep_holes, tie_min, tie_max, unique_best])
 
+	# A fresh copy, not `full`: the blocks above hand `load()` the same cached
+	# object, and the U checks below paint into it. CACHE_MODE_IGNORE_DEEP is the
+	# discipline the T20/T21 sweep already uses for the same reason.
+	var upd: TileSet = ResourceLoader.load(full_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
+	if upd == null:
+		print("SKIP  U1-U8: could not reload %s" % full_path)
+	else:
+		measure_updates(upd)
+
 	print("---")
 	for n in notes:
 		print("NOTE " + n)
@@ -490,3 +499,136 @@ func _initialize() -> void:
 	else:
 		print("TERRAIN CHOICE: %d FAILURES" % failures)
 		quit(1)
+
+
+# ---------------------------------------------------------------------------
+# U1..U8 — "I changed a cell and the neighbours did not update"
+#
+# Three open engine issues describe this: godotengine/godot#64674 ("Terrain
+# tiles not updating"), #69737 ("auto-tiles not updating adjacent tiles
+# consistently") and #89844 ("set_cells_terrain_connect() ignores diagonal
+# tiles connections"). What follows measures which of those the engine
+# actually does, instead of restating the reports.
+# ---------------------------------------------------------------------------
+func block(from: Vector2i, to: Vector2i) -> Array[Vector2i]:
+	var out: Array[Vector2i] = []
+	for y in range(from.y, to.y + 1):
+		for x in range(from.x, to.x + 1):
+			out.append(Vector2i(x, y))
+	return out
+
+func snapshot(layer: TileMapLayer, cells: Array[Vector2i]) -> Dictionary:
+	var d := {}
+	for c in cells:
+		d[c] = tile_of(layer, c)
+	return d
+
+func changed(before: Dictionary, layer: TileMapLayer) -> Array[Vector2i]:
+	var out: Array[Vector2i] = []
+	for c in before:
+		if tile_of(layer, c) != before[c]:
+			out.append(c)
+	return out
+
+func measure_updates(ts: TileSet) -> void:
+	var area := block(Vector2i(-2, -2), Vector2i(7, 7))
+	var centre := Vector2i(2, 2)
+
+	# --- set_cell does not re-fit anything -------------------------------
+	var l1 := paint(ts, block(Vector2i(0, 0), Vector2i(4, 4)), false)
+	var before1 := snapshot(l1, area)
+	l1.set_cell(centre, -1)                      # plain erase, the API most code uses
+	var moved1 := changed(before1, l1)
+	check("U1", "set_cell() re-fits NOTHING: only the cell you touched changed (%d cells changed)" % moved1.size(),
+		moved1.size() == 1 and moved1[0] == centre)
+
+	# --- and no "refresh" call brings the neighbours back ------------------
+	var after_setcell := snapshot(l1, area)
+	l1.update_internals()
+	l1.notify_runtime_tile_data_update()
+	var moved2 := changed(after_setcell, l1)
+	check("U2", "update_internals() + notify_runtime_tile_data_update() change no cell (%d changed) — the stored tiles are already final, there is nothing to refresh" % moved2.size(),
+		moved2.is_empty())
+	l1.queue_free()
+
+	# --- erase_cell behaves the same --------------------------------------
+	var l2 := paint(ts, block(Vector2i(0, 0), Vector2i(4, 4)), false)
+	var before3 := snapshot(l2, area)
+	l2.erase_cell(centre)
+	var moved3 := changed(before3, l2)
+	check("U3", "erase_cell() does not re-fit the survivors either (%d cells changed)" % moved3.size(),
+		moved3.size() == 1 and moved3[0] == centre)
+	l2.queue_free()
+
+	# --- does the terrain API reach outside the array it was given? --------
+	# The cell added is OUTSIDE the block, so the three cells along that edge
+	# genuinely have to change: they went from "nothing to my east" to "terrain
+	# to my east". A cell erased and re-painted inside the block would prove
+	# nothing — its neighbours were already correct for a filled centre.
+	var l3 := paint(ts, block(Vector2i(0, 0), Vector2i(4, 4)), false)
+	var grown := Vector2i(5, 2)
+	var before4 := snapshot(l3, area)
+	var one: Array[Vector2i] = [grown]
+	l3.set_cells_terrain_connect(one, 0, 0, false)
+	var moved4 := changed(before4, l3)
+	var d1 := 0
+	var d2plus := 0
+	for c in moved4:
+		if c == grown:
+			continue
+		var cheb: int = max(abs(c.x - grown.x), abs(c.y - grown.y))
+		if cheb == 1:
+			d1 += 1
+		elif cheb >= 2:
+			d2plus += 1
+	check("U4", "set_cells_terrain_connect() on ONE cell also rewrites cells you did not pass: %d changed besides it, %d of them ring-1 neighbours" % [moved4.size() - 1, d1],
+		moved4.size() > 1)
+	check("U5", "it stops at the 8 surrounding cells — nothing at Chebyshev distance >= 2 from the painted cell moved (%d did)" % d2plus,
+		d2plus == 0)
+	# Which of the ring-1 neighbours moved: the 4 that share an EDGE with the
+	# painted cell, or the 4 that only touch it at a CORNER? This is the one
+	# number that separates "the engine missed some neighbours" from "the engine
+	# only ever connects across edges".
+	var edge_moved := 0
+	var corner_moved := 0
+	for c in moved4:
+		if c == grown:
+			continue
+		var dx: int = abs(c.x - grown.x)
+		var dy: int = abs(c.y - grown.y)
+		if dx + dy == 1:
+			edge_moved += 1
+		elif dx == 1 and dy == 1:
+			corner_moved += 1
+	check("U9", "and of the ring-1 neighbours only EDGE-sharing ones are rewritten: %d edge, %d corner-only" % [edge_moved, corner_moved],
+		edge_moved > 0 and corner_moved == 0)
+	note("one-cell growth at %s: %d cells rewritten besides it, %d of the 8 ring-1 neighbours (%d edge-sharing, %d corner-only), %d further out" % [
+		grown, moved4.size() - 1, d1, edge_moved, corner_moved, d2plus])
+	l3.queue_free()
+
+	# --- #89844: is a DIAGONAL-only neighbour connected? -------------------
+	var bits := valid_bits(ts)
+	if bits & NW == 0:
+		note("U6-U8 skipped: this tileset has no corner bits, so a diagonal connection is not expressible")
+		return
+	var l4 := fresh(ts)
+	var a: Array[Vector2i] = [Vector2i(0, 0)]
+	l4.set_cells_terrain_connect(a, 0, 0, false)
+	var lone := tile_of(l4, Vector2i(0, 0))
+	var lone_mask := mask_of(l4, Vector2i(0, 0))
+	var b: Array[Vector2i] = [Vector2i(1, 1)]           # diagonal only, no shared edge
+	l4.set_cells_terrain_connect(b, 0, 0, false)
+	var m_b := mask_of(l4, Vector2i(1, 1))
+	var m_a := mask_of(l4, Vector2i(0, 0))
+	# Measured, not assumed: the corner bit that would point at the diagonal is
+	# NOT set, on either cell, and neither tile is rewritten. This is issue
+	# #89844 reproduced rather than restated.
+	check("U6", "a diagonal-only neighbour is NOT seen: the new cell's NW corner bit does not point at the old one (mask %d)" % m_b,
+		m_b != -1 and (m_b & NW) == 0)
+	check("U7", "and the cell that was already there is not rewritten to answer it either (SE bit clear, mask %d)" % m_a,
+		m_a != -1 and (m_a & SE) == 0)
+	check("U8", "so painting the diagonal left the earlier tile untouched (%s -> %s)" % [lone, tile_of(l4, Vector2i(0, 0))],
+		tile_of(l4, Vector2i(0, 0)) == lone)
+	note("diagonal pair: lone cell %s (mask %d) stayed %s (mask %d) after its diagonal was painted" % [
+		lone, lone_mask, tile_of(l4, Vector2i(0, 0)), m_a])
+	l4.queue_free()

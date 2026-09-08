@@ -12,8 +12,10 @@ id (`T1`, `T4`, …) and is asserted by
 [`verify_terrain_choice.gd`](verify_terrain_choice.gd), which re-runs the whole
 thing against your Godot build and exits non-zero if any of it stops holding.
 
-Measured against **Godot 4.7.stable.official.5b4e0cb0f**, 24 checks, two
-identical runs. Last re-run **2026-08-18**.
+Measured against **Godot 4.3**, **4.4** and **4.7.stable.official.5b4e0cb0f**,
+33 checks, 33/33 on each. Last re-run **2026-09-08**. The one-line way to run
+the whole thing against your own build is
+[`verify_terrain_choice.sh`](verify_terrain_choice.sh).
 
 There is a browser version of the sweep, with a region you paint and no install:
 [**godot-terrain-wrong-tile**](https://blobsmith.lbwma.com/godot-terrain-wrong-tile/).
@@ -174,6 +176,56 @@ unreachable and you will never be told.
 sides-only set for a corner bit is an engine error, not a zero. Derive the valid
 bits from `get_terrain_set_mode()`, as the script does.)
 
+## "I changed a cell and the neighbours did not update"
+
+This is a different complaint from the one above, and it has three open engine
+issues behind it: [#64674](https://github.com/godotengine/godot/issues/64674)
+("Terrain tiles not updating"),
+[#69737](https://github.com/godotengine/godot/issues/69737) ("auto-tiles not
+updating adjacent tiles consistently") and
+[#89844](https://github.com/godotengine/godot/issues/89844)
+("`set_cells_terrain_connect()` ignores diagonal tiles connections"). The
+reports describe the symptom; what follows is the measurement.
+
+**One rule accounts for all of it: terrain fitting only travels across a shared
+edge, and only one cell out.**
+
+| id | what was done | result |
+|----|---------------|--------|
+| `U1` | `set_cell()` erases the middle of a painted block | **1** cell changed — the one touched |
+| `U2` | then `update_internals()` + `notify_runtime_tile_data_update()` | **0** cells changed |
+| `U3` | `erase_cell()` instead | **1** cell changed |
+| `U4` | `set_cells_terrain_connect()` on **one** cell grown off the edge of a block | **2** changed — it does rewrite a cell you did not pass |
+| `U5` | how far that reaches | nothing at Chebyshev distance ≥ 2 |
+| `U9` | which ring-1 neighbours moved | **1 edge-sharing, 0 corner-only** |
+| `U6` | a cell painted diagonally from an existing one: its corner bit toward that cell | **not set** |
+| `U7` | and the cell that was already there | **not rewritten** |
+| `U8` | so the earlier tile after the diagonal paint | **unchanged** |
+
+Read together:
+
+- **`set_cell()` and `erase_cell()` do not re-fit anything, and no refresh call
+  makes them.** They are not "not updating yet" — they write the exact tile you
+  named and stop, and `update_internals()` has nothing to do afterwards (`U2`).
+  If you want neighbours re-fitted, `set_cells_terrain_connect()` is the call;
+  there is no repaint you are forgetting.
+- **`set_cells_terrain_connect()` does reach outside the array you hand it**
+  (`U4`) — but exactly one cell out (`U5`), and only across a shared edge
+  (`U9`). The corner-only neighbours of the cell you painted are left alone.
+- **That is also the whole of #89844** (`U6`-`U8`): a cell whose only contact
+  with the painted terrain is a corner is not connected to it, in either
+  direction. It is not that the diagonal is missed sometimes — it is never
+  crossed.
+
+So "the neighbours did not update" is usually two cells further out than the
+engine ever promised to look, or a diagonal. The fix in your own code is to pass
+the affected cells to `set_cells_terrain_connect()` yourself rather than
+expecting a repaint to spread: it is the array you pass, plus its edge-adjacent
+ring, and nothing else.
+
+Same numbers on **4.3**, **4.4** and **4.7** — this is not a regression, and not
+something a version bump changes.
+
 ## So: why is my tile wrong?
 
 In the order worth checking:
@@ -187,6 +239,8 @@ In the order worth checking:
    the one page 1 gives — it is real, just third in line.
 4. **The cell is on the border of what you painted**, against empty cells. Not a
    bug; see above.
+5. **You expected a neighbour to re-fit itself and it did not.** Terrain fitting
+   goes one cell out and only across a shared edge; see above.
 
 ## The same sweep without an engine
 
@@ -233,11 +287,27 @@ a fresh clone neither path exists and `T0` fails. The other edges are just as
 loud on purpose: a path that does not load fails `T0` and exits 1, and a set
 that is *not* in corners-and-sides mode prints `SKIP` and exits 1 rather than
 pretending the corner claims were checked. Omit arg 2 and the six claims that
-need a sides-only set (`T10-T15`) print `SKIP` — the remaining **16** still run
-and still gate the exit code.
+need a sides-only set (`T10-T15`) print `SKIP` — the remaining **27** still run
+and still gate the exit code (measured 2026-09-08; this page said 16 before the
+`U` checks were added, and that count was already wrong).
 
-Measured on 2026-08-18 against 4.7.stable: with both sets, 24 PASS / 0 SKIP,
-exit 0.
+Or skip the arguments entirely and let the shell wrapper build a throwaway
+project out of the tilesets this repo already ships in `examples/starter-pack`:
+
+```bash
+docs/verify_terrain_choice.sh /path/to/Godot_v4.7-stable_linux.x86_64
+```
+
+That is the form to use on a fresh clone, since it is the one that does not
+depend on our test project's paths. It runs the import pass first (a cold
+project has no imported texture, and without it the tileset loads as nothing and
+`T0` fails), and it gates on the summary line rather than on Godot's exit code —
+Godot exits 0 even when it failed to compile the script, so a 4.2 binary, which
+has no `TileMapLayer`, is reported as `SKIP`, never as a pass.
+
+Measured on 2026-09-08: 33 PASS / 0 FAIL and exit 0 on **4.3**, **4.4** and
+**4.7**; `SKIP` and exit 0 on 4.2. Re-run with two expectations deliberately
+inverted, it exits 1 naming exactly those two.
 
 It prints `PASS`/`FAIL` per claim and exits non-zero if any stops holding, so
 pointing it at a newer Godot tells you exactly which line of this page changed.
