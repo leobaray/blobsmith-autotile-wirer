@@ -366,6 +366,21 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > [`docs/verify_tile_transforms.sh`](docs/verify_tile_transforms.sh) — headless is
 > enough, because the physics server is real in a headless build.
 
+> **[The tile under the mouse is the wrong one — what `local_to_map` actually takes](docs/why-the-tile-under-the-mouse-is-the-wrong-one.md)**
+> is the click-picks-the-wrong-cell bug in every form it takes, each measured.
+> `local_to_map()` wants the layer's **local** coordinates: a world position
+> passed raw is off by the layer's offset (`(7,3)` instead of `(1,0)`) or drifts
+> with its scale, and subtracting `global_position` breaks under a rotated
+> parent. A `Camera2D` lives in the canvas transform, not in the node, so
+> `event.position` — and `to_local(event.position)` — ignore it;
+> `make_input_local(event)` and `get_local_mouse_position()` are right under a
+> camera, an offset and a scale at once. `Vector2i(pos / 16)` truncates, so
+> `(-1,-1)` lands in cell `(0,0)` while `local_to_map` floors; `map_to_local`
+> returns the centre, not the corner; and on a 64×32 isometric layer local
+> `(0,0)` is cell `(-1,-1)`, with a new TileSet defaulting to `STACKED` layout.
+> 33 checks, three of them controls, 33/33 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_mouse_to_cell.sh`](docs/verify_mouse_to_cell.sh).
+
 ## Stack
 
 | Piece | Detail |
