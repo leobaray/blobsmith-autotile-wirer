@@ -394,6 +394,22 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > 30 checks, two of them controls, 30/30 on **4.3, 4.4 and 4.7** by
 > [`docs/verify_set_cell.sh`](docs/verify_set_cell.sh) (needs `xvfb-run`).
 
+> **[`get_custom_data` returns null (or the wrong value) — what the engine reads](docs/why-get-custom-data-returns-null.md)**
+> is the tile-custom-data bug, measured with a real `CharacterBody2D` landing on
+> a real floor. The body rests `safe_margin` above the floor's top edge, so the
+> cell at its feet is the empty one above and its tile data is `null`; contact
+> point minus normal finds the floor in every version. On **4.5+**
+> `get_coords_for_body_rid()` returns the index of a 16×16 physics chunk, not
+> the cell — `(0,0)` for a body on cell `(2,2)` — unless
+> `physics_quadrant_size = 1`. Unset values read `0`/`false`/`""`, a layer left
+> at type `Nil` reads `null`, a wrong-case name reads `null` and prints an
+> error, writes are not type-checked. And an engine bug: after
+> `add_custom_data_layer(0)` or `move_custom_data_layer()` from code, lookup by
+> name returns another layer's value until the TileSet is reloaded.
+> 34/35/38 checks (the version-specific ones differ), four of them controls,
+> all passing on **4.3, 4.4 and 4.7** by
+> [`docs/verify_tile_custom_data.sh`](docs/verify_tile_custom_data.sh).
+
 ## Stack
 
 | Piece | Detail |
