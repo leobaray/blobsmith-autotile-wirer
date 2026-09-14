@@ -381,6 +381,19 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > 33 checks, three of them controls, 33/33 on **4.3, 4.4 and 4.7** by
 > [`docs/verify_mouse_to_cell.sh`](docs/verify_mouse_to_cell.sh).
 
+> **[`set_cell` ran and nothing appeared — what the engine stores instead](docs/why-set-cell-draws-nothing.md)**
+> is the tile-placed-from-code-is-invisible bug, with "nothing" read back from
+> rendered pixels. `set_cell(cell)` and `set_cell(cell, 0)` are erases — the
+> defaults are `-1` and `(-1,-1)`. Atlas coords that were never created as a
+> tile, a missing source id or a missing alternative are **stored** anyway (the
+> cell is in `get_used_cells()`) and draw nothing, and neither the `set_cell`
+> nor the draw prints an error; only `get_cell_tile_data()` returns `null` and
+> complains. Removing and re-adding an atlas makes its id `1`, not `0`; a 2×2
+> tile exists only at its origin; `create_tile()` on an atlas with no texture
+> creates nothing; and `enabled = false` keeps the cells and draws none.
+> 30 checks, two of them controls, 30/30 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_set_cell.sh`](docs/verify_set_cell.sh) (needs `xvfb-run`).
+
 ## Stack
 
 | Piece | Detail |
