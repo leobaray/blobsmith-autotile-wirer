@@ -410,6 +410,20 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > all passing on **4.3, 4.4 and 4.7** by
 > [`docs/verify_tile_custom_data.sh`](docs/verify_tile_custom_data.sh).
 
+> **[Animated tile not animating (or animating when it should not)](docs/why-my-animated-tile-does-not-animate.md)**
+> is the tile-animation page, with the frame on screen read back from rendered
+> pixels at a fixed 60 fps. Frames default to **1.0 s** each and are read to the
+> right of the tile (`columns = 1` reads them downward); if those atlas cells are
+> already tiles — what "create tiles in non-transparent areas" does — the frame
+> count is refused and the error says "animation **columns** count". Frame cells
+> stop being tiles, so `set_cell` to a frame coordinate draws nothing.
+> `speed = 0` is refused. In mode `DEFAULT` every cell shows the same frame,
+> even one placed later; `RANDOM_START_TIMES` desyncs them.
+> `get_tree().paused` and `process_mode = DISABLED` do **not** stop tile
+> animation; `Engine.time_scale` does, and so does setting the frame count back
+> to 1. 27 checks, two of them controls, 27/27 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_tile_animation.sh`](docs/verify_tile_animation.sh) (needs `xvfb-run`).
+
 ## Stack
 
 | Piece | Detail |
@@ -590,7 +604,9 @@ blobsmith-autotile-wirer/
 │   ├── why-a-godot-3-tileset-does-not-open-empty.md  # what Godot 4 keeps, drops and displaces from a format=2 TileSet
 │   ├── convert_godot3_tileset.js    # Godot 3 -> Godot 4 TileSet, with a report of what could not carry over
 │   ├── tres3-convert-core.js        # those rules, filesystem-free (same bytes run in a browser)
-│   └── verify_godot3_tileset.gd     # 15 claims asked of a real engine (+ .sh runner)
+│   ├── verify_godot3_tileset.gd     # 15 claims asked of a real engine (+ .sh runner)
+│   ├── why-my-animated-tile-does-not-animate.md  # frame layout, 1 s default, shared clock, what pauses it
+│   └── verify_tile_animation.gd     # 27 claims read from rendered pixels at fixed 60 fps (+ .sh runner, needs xvfb)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
