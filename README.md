@@ -424,6 +424,19 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > to 1. 27 checks, two of them controls, 27/27 on **4.3, 4.4 and 4.7** by
 > [`docs/verify_tile_animation.sh`](docs/verify_tile_animation.sh) (needs `xvfb-run`).
 
+> **[My scene tile is not there (or I cannot find its node)](docs/why-my-scene-tile-is-not-there.md)**
+> is the Scenes Collection page. The scene id goes in the **alternative** slot
+> and the first one is **1**; a cell pointing at scene id 0 or 99 is stored and
+> creates nothing, with no error. `get_cell_tile_data` is null on a scene cell.
+> `set_cell` does not create the node — `update_internals()` or a later frame
+> does; the node sits at `map_to_local(cell)`, has no owner, and only the first
+> copy keeps the scene's name. The layer replaces the nodes whenever it rebuilds
+> (`enabled` toggled, a scene tile added to the TileSet), so state on the node is
+> lost; `queue_free()` on the node leaves the cell, and `set_cell` with the same
+> values will not bring it back. The nodes are not saved with the scene.
+> 47 checks, one of them a control, 47/47 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_scene_tiles.sh`](docs/verify_scene_tiles.sh) (headless).
+
 ## Stack
 
 | Piece | Detail |
@@ -606,7 +619,9 @@ blobsmith-autotile-wirer/
 │   ├── tres3-convert-core.js        # those rules, filesystem-free (same bytes run in a browser)
 │   ├── verify_godot3_tileset.gd     # 15 claims asked of a real engine (+ .sh runner)
 │   ├── why-my-animated-tile-does-not-animate.md  # frame layout, 1 s default, shared clock, what pauses it
-│   └── verify_tile_animation.gd     # 27 claims read from rendered pixels at fixed 60 fps (+ .sh runner, needs xvfb)
+│   ├── verify_tile_animation.gd     # 27 claims read from rendered pixels at fixed 60 fps (+ .sh runner, needs xvfb)
+│   ├── why-my-scene-tile-is-not-there.md  # scene id slot, late creation, node names, rebuilds that drop state
+│   └── verify_scene_tiles.gd        # 47 claims asked of a real engine, headless (+ .sh runner)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
