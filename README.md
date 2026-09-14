@@ -437,6 +437,19 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > 47 checks, one of them a control, 47/47 on **4.3, 4.4 and 4.7** by
 > [`docs/verify_scene_tiles.sh`](docs/verify_scene_tiles.sh) (headless).
 
+> **[AStarGrid2D walks through my walls (or finds no path)](docs/why-astargrid2d-walks-through-walls.md)**
+> is the grid-pathfinding page. `update()` throws away every solid and weight set
+> before it — and every `region`, `cell_size` or `offset` change needs another
+> `update()`, which wipes them again. A new grid has region `(0, 0, 0, 0)`, so
+> every query is "out of bounds". The default diagonal mode slips between two
+> walls that touch at a corner. Points are the cell's top-left corner until
+> `offset = cell_size / 2`, and they are layer-local. A solid start cell still
+> gets a path in 4.3/4.4 and returns `[]` in 4.7; `allow_partial_path` to a solid
+> target returns `[]` in 4.3. An isometric TileSet is created `STACKED`, which
+> matches no `AStarGrid2D` cell shape — `DIAMOND_RIGHT`/`DIAMOND_DOWN` do.
+> 45 checks, one of them a control, 45/45 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_astar_grid.sh`](docs/verify_astar_grid.sh) (headless).
+
 ## Stack
 
 | Piece | Detail |
@@ -621,7 +634,9 @@ blobsmith-autotile-wirer/
 │   ├── why-my-animated-tile-does-not-animate.md  # frame layout, 1 s default, shared clock, what pauses it
 │   ├── verify_tile_animation.gd     # 27 claims read from rendered pixels at fixed 60 fps (+ .sh runner, needs xvfb)
 │   ├── why-my-scene-tile-is-not-there.md  # scene id slot, late creation, node names, rebuilds that drop state
-│   └── verify_scene_tiles.gd        # 47 claims asked of a real engine, headless (+ .sh runner)
+│   ├── verify_scene_tiles.gd        # 47 claims asked of a real engine, headless (+ .sh runner)
+│   ├── why-astargrid2d-walks-through-walls.md  # update() wipes solids, corner cutting, corner vs centre, iso layouts
+│   └── verify_astar_grid.gd         # 45 claims asked of a real engine, headless (+ .sh runner)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
