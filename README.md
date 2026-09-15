@@ -47,10 +47,11 @@ sheet paints the wrong tile. Details and per-file checks:
 
 **New: terrain transitions, no seam** — [`examples/transitions/`](examples/transitions/):
 grass over sand, **sand over water (shoreline)**, **stone over grass (paths)**,
-**water over grass (ponds)** and **grass over stone (overgrown floors)**,
-ten wired TileSets (16px, 32px) with **two terrains in one terrain set**, so
+**water over grass (ponds)**, **grass over stone (overgrown floors)**,
+**dirt over grass (dirt roads)** and **grass over dirt (tilled ground)**,
+fourteen wired TileSets (16px, 32px) with **two terrains in one terrain set**, so
 Connect paints one over the other and every edge and corner between them matches.
-Painted headless in Godot 4.3, 4.4 and 4.7 — 80/80 checks on each, with a control
+Painted headless in Godot 4.3, 4.4 and 4.7 — 112/112 checks on each, with a control
 showing the same paint with a one-terrain set leaves 188 mismatched edges per set.
 
 > **Want the four terrains in ONE `TileSet`?** Godot 4 can add a source to a
