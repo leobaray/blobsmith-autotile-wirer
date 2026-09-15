@@ -1,0 +1,24 @@
+[
+  {
+    "base": "grass_on_sand_47blob_16px",
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 96,
+    "tiles": 48,
+    "terrains": [
+      "Grass",
+      "Sand"
+    ]
+  },
+  {
+    "base": "grass_on_sand_47blob_32px",
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 192,
+    "tiles": 48,
+    "terrains": [
+      "Grass",
+      "Sand"
+    ]
+  }
+]
