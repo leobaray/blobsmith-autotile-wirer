@@ -46,10 +46,11 @@ sheet paints the wrong tile. Details and per-file checks:
 [`examples/starter-pack/README.md`](examples/starter-pack/README.md).
 
 **New: terrain transitions, no seam** — [`examples/transitions/`](examples/transitions/):
-grass over sand, **sand over water (shoreline)** and **stone over grass (paths)**,
-six wired TileSets (16px, 32px) with **two terrains in one terrain set**, so
+grass over sand, **sand over water (shoreline)**, **stone over grass (paths)**,
+**water over grass (ponds)** and **grass over stone (overgrown floors)**,
+ten wired TileSets (16px, 32px) with **two terrains in one terrain set**, so
 Connect paints one over the other and every edge and corner between them matches.
-Painted headless in Godot 4.3, 4.4 and 4.7 — 48/48 checks on each, with a control
+Painted headless in Godot 4.3, 4.4 and 4.7 — 80/80 checks on each, with a control
 showing the same paint with a one-terrain set leaves 188 mismatched edges per set.
 
 > **Want the four terrains in ONE `TileSet`?** Godot 4 can add a source to a
@@ -668,6 +669,8 @@ blobsmith-autotile-wirer/
 │   │   ├── grass_on_sand_*.png/.tres  # 48 tiles (47 grass-over-sand + full sand), every bit set
 │   │   ├── sand_on_water_*.png/.tres  # shoreline: 47 sand-over-water + full water
 │   │   ├── stone_on_grass_*.png/.tres # path: 47 stone-over-grass + full grass
+│   │   ├── water_on_grass_*.png/.tres # pond: 47 water-over-grass + full grass
+│   │   ├── grass_on_stone_*.png/.tres # overgrown floor: 47 grass-over-stone + full stone
 │   │   └── verify_transitions.gd  # paints a lake of the top terrain in a real engine (+ .sh runner)
 │   ├── godot-47blob-starter-pack.zip  # the same sixteen in one download
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
