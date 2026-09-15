@@ -456,6 +456,17 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > 45 checks, one of them a control, 45/45 on **4.3, 4.4 and 4.7** by
 > [`docs/verify_astar_grid.sh`](docs/verify_astar_grid.sh) (headless).
 
+> **[My tiles cast no shadow — what a `PointLight2D` needs from a TileSet](docs/why-my-tiles-cast-no-shadow.md)**
+> is the 2D lights page. `shadow_enabled` is off by default, and then nothing
+> casts. A new TileSet has no occlusion layer, and occluder polygons are
+> relative to the tile's center — drawn `0..16` the shadow moves half a tile.
+> The occlusion layer's `light_mask` has to share a bit with the light's
+> `shadow_item_cull_mask`, and since 4.4 the lit floor's `light_mask` has to as
+> well: the same scene that shadows on 4.3 stays lit on 4.4/4.7. 4.4 also added
+> `TileMapLayer.occlusion_enabled` and several polygons per layer. 23 checks on
+> 4.3 and 27 on **4.4 and 4.7**, three of them controls, all passing, read from
+> rendered pixels by [`docs/verify_tile_occlusion.sh`](docs/verify_tile_occlusion.sh) (needs xvfb).
+
 ## Stack
 
 | Piece | Detail |
@@ -642,7 +653,9 @@ blobsmith-autotile-wirer/
 │   ├── why-my-scene-tile-is-not-there.md  # scene id slot, late creation, node names, rebuilds that drop state
 │   ├── verify_scene_tiles.gd        # 47 claims asked of a real engine, headless (+ .sh runner)
 │   ├── why-astargrid2d-walks-through-walls.md  # update() wipes solids, corner cutting, corner vs centre, iso layouts
-│   └── verify_astar_grid.gd         # 45 claims asked of a real engine, headless (+ .sh runner)
+│   ├── verify_astar_grid.gd         # 45 claims asked of a real engine, headless (+ .sh runner)
+│   ├── why-my-tiles-cast-no-shadow.md  # shadow_enabled, occlusion layer, centered polygon, masks (4.4 change)
+│   └── verify_tile_occlusion.gd     # 27 claims read from rendered pixels (+ .sh runner, needs xvfb)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
