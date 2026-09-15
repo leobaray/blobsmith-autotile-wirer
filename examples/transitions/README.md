@@ -1,15 +1,27 @@
-# Free grass-meets-sand TileSet — two terrains in one terrain set, Godot 4
+# Free terrain-transition TileSets — grass/sand, sand/water shoreline, stone/grass path — Godot 4
 
 ![the 48-tile sheet: 47 grass blob tiles drawn over sand, plus one full sand tile](grass_on_sand_47blob_32px.png)
 
 The [starter pack](../starter-pack/) paints one terrain against **empty**. This
-folder is the next question: **grass meeting sand**, with no gap and no seam
-between them. **MIT: use it in commercial games, no credit required.**
+folder is the next question: **one terrain meeting another**, with no gap and no
+seam between them. Three pairs, each in 16px and 32px.
+**MIT: use it in commercial games, no credit required.**
 
-| file | tile | sheet |
-|---|---|---|
-| `grass_on_sand_47blob_16px.png` + `.tres` | 16px | 128×96 |
-| `grass_on_sand_47blob_32px.png` + `.tres` | 32px | 256×192 |
+| file | meets | tile | sheet |
+|---|---|---|---|
+| `grass_on_sand_47blob_16px.png` + `.tres` | grass over sand | 16px | 128×96 |
+| `grass_on_sand_47blob_32px.png` + `.tres` | grass over sand | 32px | 256×192 |
+| `sand_on_water_47blob_16px.png` + `.tres` | sand over water (shoreline, islands) | 16px | 128×96 |
+| `sand_on_water_47blob_32px.png` + `.tres` | sand over water (shoreline, islands) | 32px | 256×192 |
+| `stone_on_grass_47blob_16px.png` + `.tres` | stone over grass (paths, plazas) | 16px | 128×96 |
+| `stone_on_grass_47blob_32px.png` + `.tres` | stone over grass (paths, plazas) | 32px | 256×192 |
+
+![sand over water](sand_on_water_47blob_32px.png) ![stone over grass](stone_on_grass_47blob_32px.png)
+
+Every pair has the same shape: terrain 0 is the first name in the file (the
+blob), terrain 1 is the second (the ground under it). Below, "Grass" and "Sand"
+stand for those two — for the shoreline read Sand and Water, for the path Stone
+and Grass.
 
 ## Use it (~20 seconds)
 
@@ -49,24 +61,26 @@ exactly like this `.tres`.
 
 ## Verified, not asserted
 
-`verify_transitions.sh /path/to/godot` builds a throwaway project, imports both
-PNGs and paints a 14×11 sand field with a grass lake in it (straight edges, a
-one-cell peninsula, a one-cell hole, a lone island, two blobs touching only at a
-corner). On 2026-09-14, **16/16 checks on each of Godot 4.3, 4.4 and 4.7 stable**:
+`verify_transitions.sh /path/to/godot` builds a throwaway project, imports all
+six PNGs and, for each TileSet, paints a 14×11 field of the under terrain with a
+lake of the top one in it (straight edges, a one-cell peninsula, a one-cell
+hole, a lone island, two blobs touching only at a corner). Grass/sand on
+2026-09-14 (16/16); all three pairs on 2026-09-15, **48/48 checks on each of
+Godot 4.3, 4.4 and 4.7 stable**:
 
 | id | claim |
 |---|---|
 | T1 | the `.tres` loads with the PNG next to it (relative path) |
 | T2 | 48 tiles in one atlas |
-| T3 | one terrain set, Match Corners and Sides, `Grass`=0 and `Sand`=1 |
+| T3 | one terrain set, Match Corners and Sides, top terrain = 0 and under terrain = 1, named as in the file |
 | T4 | 48/48 tiles carry a collision polygon |
 | T5 | all 154 cells get a tile — none left empty |
 | T6 | every pair of touching cells agrees on every shared side and corner (read from the engine's `TileData`: 0 disagreements) |
 | T7 | every cell painted Grass is a Grass tile, every cell painted Sand is a Sand tile |
 | T8 | control: the same sheet with its Sand bits erased at runtime (a one-terrain set) is **not** clean — 188 disagreeing sides/corners on the same paint, identical on all three builds |
 
-T6 was also run inverted (`LG_SELFTEST=1`): exit 1 with exactly the two T6
-FAILs, so the check can fail. What is **not** checked: pixels. "Agrees" is the
+T6 was also run inverted (`LG_SELFTEST=1`): exit 1 with exactly the six T6
+FAILs (one per TileSet), so the check can fail. What is **not** checked: pixels. "Agrees" is the
 engine's terrain data; that the art lines up at those edges is what the
 sheet above shows, not an assertion. 4.2 is not covered (no `TileMapLayer`).
 

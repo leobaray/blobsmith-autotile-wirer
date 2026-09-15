@@ -23,9 +23,9 @@ func note(id: String, text: String) -> void:
 
 const W := 14
 const H := 11
-# a lake of grass in a sand field: straight edges, a 1-cell peninsula, a 1-cell
+# a lake of the top terrain in a field of the under terrain: straight edges, a 1-cell peninsula, a 1-cell
 # hole, a lone island, and two blobs touching only at a corner
-const GRASS := [
+const TOP := [
 	"..............",
 	"..####........",
 	"..#####.......",
@@ -59,7 +59,7 @@ const ALL_BITS := [
 	TileSet.CELL_NEIGHBOR_TOP_SIDE, TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER,
 ]
 
-# paints the field and returns [empty cells, disagreeing pairs, grass cells not grass, sand cells not sand]
+# paints the field and returns [empty cells, disagreeing pairs, top cells not top, under cells not under]
 func paint(ts: TileSet) -> Array:
 	var layer := TileMapLayer.new()
 	layer.tile_set = ts
@@ -69,7 +69,7 @@ func paint(ts: TileSet) -> Array:
 	for y in range(H):
 		for x in range(W):
 			all.append(Vector2i(x, y))
-			if GRASS[y][x] == "#":
+			if TOP[y][x] == "#":
 				grass.append(Vector2i(x, y))
 	layer.set_cells_terrain_connect(all, 0, 1, false)
 	layer.set_cells_terrain_connect(grass, 0, 0, false)
@@ -82,7 +82,7 @@ func paint(ts: TileSet) -> Array:
 		if td == null:
 			empty += 1
 			continue
-		var want := 0 if GRASS[c.y][c.x] == "#" else 1
+		var want := 0 if TOP[c.y][c.x] == "#" else 1
 		if td.terrain != want:
 			if want == 0:
 				grass_wrong += 1
@@ -108,6 +108,8 @@ func _initialize() -> void:
 		return
 	for entry in JSON.parse_string(f.get_as_text()):
 		var base: String = entry["base"]
+		var top_name: String = entry["terrains"][0]
+		var under_name: String = entry["terrains"][1]
 		var ts: TileSet = load("res://transitions/%s.tres" % base)
 		if ts == null:
 			check("T1", "%s loads" % base, false)
@@ -116,9 +118,9 @@ func _initialize() -> void:
 		check("T1", "%s loads with its texture next to it (%dx%d)" % [base, src.texture.get_width(), src.texture.get_height()],
 			src.texture != null and src.texture.get_width() == int(entry["sheet_w"]))
 		check("T2", "%s has 48 tiles in one atlas" % base, src.get_tiles_count() == 48)
-		check("T3", "%s has ONE terrain set, Match Corners and Sides, with two terrains Grass=0 and Sand=1" % base,
+		check("T3", "%s has ONE terrain set, Match Corners and Sides, with two terrains %s=0 and %s=1" % [base, top_name, under_name],
 			ts.get_terrain_sets_count() == 1 and ts.get_terrain_set_mode(0) == TileSet.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES
-			and ts.get_terrains_count(0) == 2 and ts.get_terrain_name(0, 0) == "Grass" and ts.get_terrain_name(0, 1) == "Sand")
+			and ts.get_terrains_count(0) == 2 and ts.get_terrain_name(0, 0) == top_name and ts.get_terrain_name(0, 1) == under_name)
 		var polys := 0
 		for i in range(src.get_tiles_count()):
 			if src.get_tile_data(src.get_tile_id(i), 0).get_collision_polygons_count(0) == 1:
@@ -126,12 +128,12 @@ func _initialize() -> void:
 		check("T4", "%s: 48/48 tiles carry a collision polygon (got %d)" % [base, polys], polys == 48)
 
 		var r := paint(ts)
-		check("T5", "%s: sand field + grass lake, %d cells, 0 left empty (got %d)" % [base, W * H, r[0]], r[0] == 0)
+		check("T5", "%s: %s field + %s lake, %d cells, 0 left empty (got %d)" % [base, under_name, top_name, W * H, r[0]], r[0] == 0)
 		check("T6", "%s: every touching pair agrees on every shared side and corner (disagreements: %d)" % [base, r[1]], r[1] == 0)
-		check("T7", "%s: every cell painted Grass is a Grass tile and every cell painted Sand is a Sand tile (wrong: %d grass, %d sand)" % [base, r[2], r[3]],
+		check("T7", "%s: every cell painted %s is a %s tile and every cell painted %s is a %s tile (wrong: %d, %d)" % [base, top_name, top_name, under_name, under_name, r[2], r[3]],
 			r[2] == 0 and r[3] == 0)
 
-		# control: the same sheet with every Sand bit erased is what a
+		# control: the same sheet with every under-terrain bit erased is what a
 		# "terrain against empty" set looks like. Painted over sand, it must show
 		# the seams the two-terrain set exists to remove.
 		var ctl: TileSet = ts.duplicate(true)
@@ -142,8 +144,8 @@ func _initialize() -> void:
 				if td.get_terrain_peering_bit(b) == 1:
 					td.set_terrain_peering_bit(b, -1)
 		var cr := paint(ctl)
-		note("C1", "%s control (Sand bits erased): empty %d, disagreements %d, wrong grass %d, wrong sand %d" % [base, cr[0], cr[1], cr[2], cr[3]])
-		check("T8", "%s: with the Sand bits erased the same paint is NOT clean" % base, cr[0] + cr[1] + cr[2] + cr[3] > 0)
+		note("C1", "%s control (under bits erased): empty %d, disagreements %d, wrong top %d, wrong under %d" % [base, cr[0], cr[1], cr[2], cr[3]])
+		check("T8", "%s: with the %s bits erased the same paint is NOT clean" % [base, under_name], cr[0] + cr[1] + cr[2] + cr[3] > 0)
 
 	print("TRANSITIONS: " + ("ALL PASS" if failures == 0 else "%d FAIL" % failures))
 	quit(1 if failures > 0 else 0)
