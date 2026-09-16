@@ -484,6 +484,15 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > 24 checks, 24/24 on **4.3, 4.4 and 4.7** by
 > [`docs/verify_isometric_layout.sh`](docs/verify_isometric_layout.sh) (headless).
 
+> **[`set_cells_terrain_connect` is slow in procedural generation](docs/why-set-cells-terrain-connect-is-slow.md)**
+> is the generation-speed page. On a 128×128 noise map one call costs ~57–79 µs
+> per cell, linear in the cells passed; one call per cell, or per 16×16 chunk,
+> gives the identical map and costs about 4× and 1.1× that. With a complete
+> 47-tile set, computing the neighbour mask yourself and calling `set_cell` gives
+> the same map, 0 cells different, 38–56× faster. `set_cells_terrain_path` joins
+> only consecutive cells. 16 checks, 16/16 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_terrain_connect_speed.sh`](docs/verify_terrain_connect_speed.sh) (headless; speed asserted as ratios only).
+
 ## Stack
 
 | Piece | Detail |
@@ -674,7 +683,9 @@ blobsmith-autotile-wirer/
 │   ├── why-my-tiles-cast-no-shadow.md  # shadow_enabled, occlusion layer, centered polygon, masks (4.4 change)
 │   ├── verify_tile_occlusion.gd     # 27 claims read from rendered pixels (+ .sh runner, needs xvfb)
 │   ├── why-my-isometric-tilemap-is-not-a-diamond.md  # tile_layout, offset axis, texture_origin, origin, neighbour constants
-│   └── verify_isometric_layout.gd   # 24 claims asked of a real engine, headless (+ .sh runner)
+│   ├── verify_isometric_layout.gd   # 24 claims asked of a real engine, headless (+ .sh runner)
+│   ├── why-set-cells-terrain-connect-is-slow.md  # cost per cell, per-cell/chunk loops, precomputed set_cell, path vs connect
+│   └── verify_terrain_connect_speed.gd  # 16 claims asked of a real engine, headless (+ .sh runner)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
