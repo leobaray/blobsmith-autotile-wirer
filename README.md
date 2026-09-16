@@ -474,6 +474,16 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > 4.3 and 27 on **4.4 and 4.7**, three of them controls, all passing, read from
 > rendered pixels by [`docs/verify_tile_occlusion.sh`](docs/verify_tile_occlusion.sh) (needs xvfb).
 
+> **[My isometric TileMap is not a diamond — shape vs layout](docs/why-my-isometric-tilemap-is-not-a-diamond.md)**
+> is the isometric page. Setting `tile_shape` to Isometric leaves `tile_layout`
+> at `Stacked`, which lays diamonds out in a rectangle; `Diamond Right` is the
+> missing line. Stairs Right lands on the same points as Stacked at 64×32, and
+> Tile Offset Axis moves nothing on an isometric TileSet. Tall art goes in
+> `texture_origin`, not `tile_size`; local `(0, 0)` is cell `(0, -1)`; and
+> `RIGHT_SIDE` returns the cell you passed in — `+x` is `TOP_RIGHT_SIDE`.
+> 24 checks, 24/24 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_isometric_layout.sh`](docs/verify_isometric_layout.sh) (headless).
+
 ## Stack
 
 | Piece | Detail |
@@ -662,7 +672,9 @@ blobsmith-autotile-wirer/
 │   ├── why-astargrid2d-walks-through-walls.md  # update() wipes solids, corner cutting, corner vs centre, iso layouts
 │   ├── verify_astar_grid.gd         # 45 claims asked of a real engine, headless (+ .sh runner)
 │   ├── why-my-tiles-cast-no-shadow.md  # shadow_enabled, occlusion layer, centered polygon, masks (4.4 change)
-│   └── verify_tile_occlusion.gd     # 27 claims read from rendered pixels (+ .sh runner, needs xvfb)
+│   ├── verify_tile_occlusion.gd     # 27 claims read from rendered pixels (+ .sh runner, needs xvfb)
+│   ├── why-my-isometric-tilemap-is-not-a-diamond.md  # tile_layout, offset axis, texture_origin, origin, neighbour constants
+│   └── verify_isometric_layout.gd   # 24 claims asked of a real engine, headless (+ .sh runner)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
