@@ -7,6 +7,10 @@ folder is the next question: **one terrain meeting another**, with no gap and no
 seam between them. Seven pairs, each in 16px and 32px.
 **MIT: use it in commercial games, no credit required.**
 
+**[⬇ All fourteen in one zip (402 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/transitions-pack-v1/godot-47blob-transitions-pack.zip)**
+— the same bytes as the files below, with the licence inside it. Unpacked into
+an empty project and repainted in Godot 4.3 and 4.7 on every suite run.
+
 | file | meets | tile | sheet |
 |---|---|---|---|
 | `grass_on_sand_47blob_16px.png` + `.tres` | grass over sand | 16px | 128×96 |
