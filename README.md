@@ -507,6 +507,20 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > them controls, all passing by
 > [`docs/verify_tile_hit.sh`](docs/verify_tile_hit.sh) (headless).
 
+> **[I erased the tile and it still collides — `erase_cell` and the physics body it leaves behind](docs/why-the-erased-tile-still-collides.md)**
+> is the mining page. Right after `erase_cell()` the cell reads -1, but ray,
+> point, `RayCast2D` and `move_and_collide` all still hit it; without
+> `update_internals()` rays see the change after exactly 1 frame (20/20), and an
+> enabled `RayCast2D` reports it one physics frame late. `update_internals()`
+> removes it on the same line on all three versions. On 4.7 the 8-tile floor is
+> one body that the erase replaces with a new RID, and right after
+> `update_internals()` rays miss the neighbours too — 0 of 8 floor cells hit for
+> 1 frame, so a ground-check ray next to the mined tile reads false once —
+> while `move_and_collide` is unaffected; inside `body_shape_entered` on 4.7 the call
+> prints two "flushing queries" errors and still works. Stored RIDs are dead.
+> 24 checks, 24/24 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_erased_tile.sh`](docs/verify_erased_tile.sh) (headless).
+
 ## Stack
 
 | Piece | Detail |
@@ -701,7 +715,9 @@ blobsmith-autotile-wirer/
 │   ├── why-set-cells-terrain-connect-is-slow.md  # cost per cell, per-cell/chunk loops, precomputed set_cell, path vs connect
 │   ├── verify_terrain_connect_speed.gd  # 16 claims asked of a real engine, headless (+ .sh runner)
 │   ├── why-the-tile-you-hit-is-the-wrong-one.md  # collider is the layer, edge contact point, corners, RID vs 4.7 chunks, seams
-│   └── verify_tile_hit.gd           # 17/20 claims asked of a real engine, headless (+ .sh runner)
+│   ├── verify_tile_hit.gd           # 17/20 claims asked of a real engine, headless (+ .sh runner)
+│   ├── why-the-erased-tile-still-collides.md  # stale body after erase_cell, update_internals, 4.7 chunk rebuild, callbacks, dead RIDs
+│   └── verify_erased_tile.gd        # 24 claims asked of a real engine, headless (+ .sh runner)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
