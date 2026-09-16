@@ -493,6 +493,20 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > only consecutive cells. 16 checks, 16/16 on **4.3, 4.4 and 4.7** by
 > [`docs/verify_terrain_connect_speed.sh`](docs/verify_terrain_connect_speed.sh) (headless; speed asserted as ratios only).
 
+> **[Which tile did the player hit? — why `local_to_map(collision point)` gives the neighbour](docs/why-the-tile-you-hit-is-the-wrong-one.md)**
+> is the tile-hit page. `get_collider()` is the `TileMapLayer`, never a tile. The
+> contact point sits on the tile's edge, and the right and bottom edges belong to
+> the next cell: over 88 `move_and_collide` approaches from 8 directions,
+> `local_to_map(get_position())` names the hit tile 37 times, 0 of 11 from below
+> or from the right, and every miss is an empty cell. Minus the normal gets 72/88
+> (rectangle) and 81/88 (capsule) — the rest are tile corners — and a half-pixel
+> probe for a non-empty cell gets 88/88. `get_coords_for_body_rid()` is the cell
+> on 4.3/4.4 and a 16×16 chunk on 4.7, where two tiles of one chunk share a body,
+> unless `physics_quadrant_size = 1`. Standing on a seam gives one slide
+> collision a frame, not two. 17 checks on **4.3 and 4.4** and 20 on **4.7**, three of
+> them controls, all passing by
+> [`docs/verify_tile_hit.sh`](docs/verify_tile_hit.sh) (headless).
+
 ## Stack
 
 | Piece | Detail |
@@ -685,7 +699,9 @@ blobsmith-autotile-wirer/
 │   ├── why-my-isometric-tilemap-is-not-a-diamond.md  # tile_layout, offset axis, texture_origin, origin, neighbour constants
 │   ├── verify_isometric_layout.gd   # 24 claims asked of a real engine, headless (+ .sh runner)
 │   ├── why-set-cells-terrain-connect-is-slow.md  # cost per cell, per-cell/chunk loops, precomputed set_cell, path vs connect
-│   └── verify_terrain_connect_speed.gd  # 16 claims asked of a real engine, headless (+ .sh runner)
+│   ├── verify_terrain_connect_speed.gd  # 16 claims asked of a real engine, headless (+ .sh runner)
+│   ├── why-the-tile-you-hit-is-the-wrong-one.md  # collider is the layer, edge contact point, corners, RID vs 4.7 chunks, seams
+│   └── verify_tile_hit.gd           # 17/20 claims asked of a real engine, headless (+ .sh runner)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
