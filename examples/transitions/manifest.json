@@ -152,5 +152,49 @@
       "Grass",
       "Dirt"
     ]
+  },
+  {
+    "base": "snow_on_grass_47blob_16px",
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 96,
+    "tiles": 48,
+    "terrains": [
+      "Snow",
+      "Grass"
+    ]
+  },
+  {
+    "base": "snow_on_grass_47blob_32px",
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 192,
+    "tiles": 48,
+    "terrains": [
+      "Snow",
+      "Grass"
+    ]
+  },
+  {
+    "base": "lava_on_stone_47blob_16px",
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 96,
+    "tiles": 48,
+    "terrains": [
+      "Lava",
+      "Stone"
+    ]
+  },
+  {
+    "base": "lava_on_stone_47blob_32px",
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 192,
+    "tiles": 48,
+    "terrains": [
+      "Lava",
+      "Stone"
+    ]
   }
 ]
