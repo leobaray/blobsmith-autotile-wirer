@@ -521,6 +521,21 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > 24 checks, 24/24 on **4.3, 4.4 and 4.7** by
 > [`docs/verify_erased_tile.sh`](docs/verify_erased_tile.sh) (headless).
 
+> **[I can jump up through the one-way tile but not drop down through it](docs/why-you-cannot-drop-through-the-one-way-tile.md)**
+> is the drop-through page. Holding down on a one-way platform does nothing, even
+> at 2000 px/s, and `floor_snap_length` is not the reason: the tile lets a body go
+> only once it is deeper than `one_way_margin` (a 0.9 px nudge comes back, 1.0 px
+> drops; 3.9 and 4.0 at margin 4). Clearing the collision mask bit drops the
+> player after 3 physics frames, 2 snap back, and restoring it inside the
+> platform does not push the player up. Put platforms on their own TileSet
+> physics layer: with one shared layer the same trick on solid ground leaves the
+> player stuck inside it on 4.3/4.4 or sends it through. `add_collision_exception_with(TileMapLayer)`
+> prints an error and does nothing; a server exception by collider RID covers
+> one tile on 4.3/4.4 and a whole 16×16 chunk on 4.7. Flipped or transposed tiles
+> keep blocking from above; a layer node rotated 180° blocks from below.
+> 19 checks, 19/19 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_one_way_drop.sh`](docs/verify_one_way_drop.sh) (headless).
+
 ## Stack
 
 | Piece | Detail |
@@ -716,6 +731,8 @@ blobsmith-autotile-wirer/
 │   ├── verify_terrain_connect_speed.gd  # 16 claims asked of a real engine, headless (+ .sh runner)
 │   ├── why-the-tile-you-hit-is-the-wrong-one.md  # collider is the layer, edge contact point, corners, RID vs 4.7 chunks, seams
 │   ├── verify_tile_hit.gd           # 17/20 claims asked of a real engine, headless (+ .sh runner)
+│   ├── why-you-cannot-drop-through-the-one-way-tile.md  # holding down, one_way_margin depth, mask-bit frames, own physics layer, exceptions, flips vs rotation
+│   ├── verify_one_way_drop.gd       # 19 claims asked of a real engine, headless (+ .sh runner)
 │   ├── why-the-erased-tile-still-collides.md  # stale body after erase_cell, update_internals, 4.7 chunk rebuild, callbacks, dead RIDs
 │   └── verify_erased_tile.gd        # 24 claims asked of a real engine, headless (+ .sh runner)
 ├── examples/

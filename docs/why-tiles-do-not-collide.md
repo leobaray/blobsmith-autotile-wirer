@@ -135,6 +135,7 @@ difference — same polygon, same 48 px step, one flag apart. The knob the engin
 offers for it is `one_way_margin`, whose documented job is exactly this
 ("higher values … work better for colliders that enter the tile from a high
 velocity"); this page measures its default (`C8`) and not its cure.
+Dropping down through one on purpose: [why you cannot drop through the one-way tile](why-you-cannot-drop-through-the-one-way-tile.md).
 
 ## And why none of this is visible
 
