@@ -55,6 +55,18 @@ The real `player.gd` is driven through the real demo scene in Godot 4.3, 4.4 and
 · [browse the files](examples/platformer/) · why platforms get their own layer:
 [`docs/why-you-cannot-drop-through-the-one-way-tile.md`](docs/why-you-cannot-drop-through-the-one-way-tile.md).
 
+**New: animated water, every tile moving** — [`examples/animated-water/`](examples/animated-water/):
+a 47-tile blob **water-over-grass** terrain where all 47 tiles are animated (4 frames, 0.2 s each),
+laid out so Godot accepts the animation — frame cells are not tiles, `animation_columns` set,
+mode `DEFAULT` so ripples line up across tile edges. 16px and 32px TileSets plus a painted pond scene.
+Checked in Godot 4.3, 4.4 and 4.7 — 23/23 on each: Connect still picks the canonical tile for every
+cell, and the frame on screen is read back from rendered pixels (0, 1, 2, 3, 12 rendered frames each),
+with a one-frame control that fails both.
+**[⬇ Download the animated water pack (224 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/animated-water-pack-v1/godot-animated-water-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/animated-water-pack-v1)
+· [browse the files](examples/animated-water/) · why animated tiles freeze:
+[`docs/why-my-animated-tile-does-not-animate.md`](docs/why-my-animated-tile-does-not-animate.md).
+
 **New: terrain transitions, no seam** — [`examples/transitions/`](examples/transitions/):
 grass over sand, **sand over water (shoreline)**, **stone over grass (paths)**,
 **water over grass (ponds)**, **grass over stone (overgrown floors)**,
@@ -783,9 +795,15 @@ blobsmith-autotile-wirer/
 │   │   ├── platformer_demo.tscn  # painted level, player, camera — F6 to play
 │   │   ├── player.gd           # walk, jump, drop through platforms (clears mask bit 2 for 6 frames)
 │   │   └── verify_platformer.gd  # drives the real player through the real scene (+ .sh runner)
+│   ├── animated-water/         # 47-blob water over grass, every water tile 4 frames of 0.2 s
+│   │   ├── animated_water_*px.png/.tres  # 47 animated Water tiles (frames to the right) + 1 Grass tile
+│   │   ├── animated_water_demo.tscn  # painted pond + camera — F6 to watch
+│   │   ├── animated_water_preview.gif/.png  # the pond animated / frame 0
+│   │   └── verify_animated_water.gd  # paints, audits the animation, reads frames back from pixels (+ .sh runner)
 │   ├── godot-47blob-starter-pack.zip  # the same sixteen in one download
 │   ├── godot-47blob-transitions-pack.zip  # the same eighteen in one download, LICENSE inside
 │   ├── godot-platformer-starter-pack.zip  # the platformer pack in one download, LICENSE inside
+│   ├── godot-animated-water-pack.zip  # the animated water pack in one download, LICENSE inside
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
 │   └── blobsmith-demo.gif      # the companion Blobsmith tool painting a sheet
 ├── test_verify_addon.gd        # headless SceneTree verification script
