@@ -45,6 +45,16 @@ learn how Godot terrains behave, and as a known-correct reference when your own
 sheet paints the wrong tile. Details and per-file checks:
 [`examples/starter-pack/README.md`](examples/starter-pack/README.md).
 
+**New: side-view platformer that runs on F5** — [`examples/platformer/`](examples/platformer/):
+47-tile blob ground that connects itself, three one-way platform tiles on their **own
+physics layer**, and a `player.gd` that walks, jumps up through platforms and drops down
+through them (hold down + jump). 16px and 32px TileSets plus a painted demo level.
+The real `player.gd` is driven through the real demo scene in Godot 4.3, 4.4 and 4.7 —
+22/22 checks on each, with controls (one-way switched off: the jump hits the plank from below).
+**[⬇ Download the platformer pack (65 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/platformer-pack-v1/godot-platformer-starter-pack.zip)**
+· [browse the files](examples/platformer/) · why platforms get their own layer:
+[`docs/why-you-cannot-drop-through-the-one-way-tile.md`](docs/why-you-cannot-drop-through-the-one-way-tile.md).
+
 **New: terrain transitions, no seam** — [`examples/transitions/`](examples/transitions/):
 grass over sand, **sand over water (shoreline)**, **stone over grass (paths)**,
 **water over grass (ponds)**, **grass over stone (overgrown floors)**,
@@ -768,8 +778,14 @@ blobsmith-autotile-wirer/
 │   │   ├── grass_on_dirt_*.png/.tres  # tilled ground: 47 grass-over-dirt + full dirt
 │   │   ├── manifest.json       # base, size, tiles and the two terrain names per TileSet
 │   │   └── verify_transitions.gd  # paints a lake of the top terrain in a real engine (+ .sh runner)
+│   ├── platformer/             # side-view: blob ground + one-way platforms on physics layer 2
+│   │   ├── platformer_*px.png/.tres  # 47 Ground terrain tiles + 3 one-way platform tiles
+│   │   ├── platformer_demo.tscn  # painted level, player, camera — F6 to play
+│   │   ├── player.gd           # walk, jump, drop through platforms (clears mask bit 2 for 6 frames)
+│   │   └── verify_platformer.gd  # drives the real player through the real scene (+ .sh runner)
 │   ├── godot-47blob-starter-pack.zip  # the same sixteen in one download
 │   ├── godot-47blob-transitions-pack.zip  # the same eighteen in one download, LICENSE inside
+│   ├── godot-platformer-starter-pack.zip  # the platformer pack in one download, LICENSE inside
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
 │   └── blobsmith-demo.gif      # the companion Blobsmith tool painting a sheet
 ├── test_verify_addon.gd        # headless SceneTree verification script

@@ -1,0 +1,97 @@
+{
+  "tilesets": [
+    {
+      "base": "platformer_16px",
+      "tile_size": 16,
+      "sheet_w": 128,
+      "sheet_h": 112,
+      "ground_tiles": 47,
+      "platform_tiles": 3
+    },
+    {
+      "base": "platformer_32px",
+      "tile_size": 32,
+      "sheet_w": 256,
+      "sheet_h": 224,
+      "ground_tiles": 47,
+      "platform_tiles": 3
+    }
+  ],
+  "atlas": {
+    "columns": 8,
+    "rows": 7,
+    "ground": "rows 0-5: the 47 blob tiles in ascending canonical-mask order, (7,5) empty",
+    "platforms": [
+      {
+        "atlas": [
+          0,
+          6
+        ],
+        "kind": "left"
+      },
+      {
+        "atlas": [
+          1,
+          6
+        ],
+        "kind": "middle"
+      },
+      {
+        "atlas": [
+          2,
+          6
+        ],
+        "kind": "right"
+      }
+    ]
+  },
+  "physics_layers": [
+    {
+      "layer": 0,
+      "collision_layer": 1,
+      "tiles": "ground",
+      "one_way": false
+    },
+    {
+      "layer": 1,
+      "collision_layer": 2,
+      "tiles": "platforms",
+      "one_way": true
+    }
+  ],
+  "terrain": {
+    "set": 0,
+    "mode": "Match Corners and Sides",
+    "terrain": 0,
+    "name": "Ground"
+  },
+  "demo": {
+    "scene": "platformer_demo.tscn",
+    "tileset": "platformer_16px.tres",
+    "cells_w": 40,
+    "cells_h": 15,
+    "ground_cells": 168,
+    "platform_cells": 12,
+    "spawn_cell": [
+      2,
+      9
+    ],
+    "platforms": [
+      {
+        "y": 7,
+        "x0": 10,
+        "x1": 13
+      },
+      {
+        "y": 7,
+        "x0": 28,
+        "x1": 31
+      },
+      {
+        "y": 9,
+        "x0": 5,
+        "x1": 8
+      }
+    ]
+  }
+}
