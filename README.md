@@ -536,6 +536,19 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > 19 checks, 19/19 on **4.3, 4.4 and 4.7** by
 > [`docs/verify_one_way_drop.sh`](docs/verify_one_way_drop.sh) (headless).
 
+> **[My box gets stuck between two tiles — `RigidBody2D` catching on `TileMapLayer` seams](docs/why-bodies-catch-on-tile-seams.md)**
+> is the crate-and-ball page. On 4.3/4.4 a 62-tile floor is 62 physics bodies,
+> and a rotation-locked box pushed at 120 px/s stops for good 0.2 px past a seam
+> (25.2 / 121.2 / 345.2) where one `StaticBody2D` lets it reach 421.9 / 653.9; a
+> ball is kicked upward at the seams. On 4.7 the same floor is 5 bodies (16×16
+> chunks): the box matches the control to the tenth of a pixel, but the ball is
+> still kicked at the chunk borders (x = 256, 512). `physics_quadrant_size = 64`
+> removes those too; `= 1` brings the 4.3 snag back. Friction 0 only helps. A
+> `CharacterBody2D` stalled on 0 frames — floor, capsule, flush ceiling, floating
+> along a wall. 8 checks on **4.3 and 4.4** and 13 on **4.7**, two of them
+> controls, all passing by
+> [`docs/verify_seam_snag.sh`](docs/verify_seam_snag.sh) (headless).
+
 ## Stack
 
 | Piece | Detail |
@@ -734,7 +747,9 @@ blobsmith-autotile-wirer/
 │   ├── why-you-cannot-drop-through-the-one-way-tile.md  # holding down, one_way_margin depth, mask-bit frames, own physics layer, exceptions, flips vs rotation
 │   ├── verify_one_way_drop.gd       # 19 claims asked of a real engine, headless (+ .sh runner)
 │   ├── why-the-erased-tile-still-collides.md  # stale body after erase_cell, update_internals, 4.7 chunk rebuild, callbacks, dead RIDs
-│   └── verify_erased_tile.gd        # 24 claims asked of a real engine, headless (+ .sh runner)
+│   ├── verify_erased_tile.gd        # 24 claims asked of a real engine, headless (+ .sh runner)
+│   ├── why-bodies-catch-on-tile-seams.md  # RigidBody2D stuck/bouncing on seams, one body per cell vs 4.5+ chunks, physics_quadrant_size, CharacterBody2D
+│   └── verify_seam_snag.gd          # 8/13 claims asked of a real engine, headless (+ .sh runner)
 ├── examples/
 │   ├── starter-pack/           # 16 free wired TileSets (grass/stone/sand/water × 16/32px × 2 layouts)
 │   │   ├── *_47blob_*.png      # the 8×6 sheets — Match Corners and Sides
