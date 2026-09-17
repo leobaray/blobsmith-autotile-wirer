@@ -48,13 +48,14 @@ sheet paints the wrong tile. Details and per-file checks:
 **New: terrain transitions, no seam** — [`examples/transitions/`](examples/transitions/):
 grass over sand, **sand over water (shoreline)**, **stone over grass (paths)**,
 **water over grass (ponds)**, **grass over stone (overgrown floors)**,
-**dirt over grass (dirt roads)** and **grass over dirt (tilled ground)**,
-fourteen wired TileSets (16px, 32px) with **two terrains in one terrain set**, so
+**dirt over grass (dirt roads)**, **grass over dirt (tilled ground)**,
+**snow over grass (winter maps)** and **lava over stone (volcanoes, dungeons)**,
+eighteen wired TileSets (16px, 32px) with **two terrains in one terrain set**, so
 Connect paints one over the other and every edge and corner between them matches.
-Painted headless in Godot 4.3, 4.4 and 4.7 — 112/112 checks on each, with a control
+Painted headless in Godot 4.3, 4.4 and 4.7 — 144/144 checks on each, with a control
 showing the same paint with a one-terrain set leaves 188 mismatched edges per set.
-**[⬇ Download the transitions pack (14 wired TileSets, 402 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/transitions-pack-v1/godot-47blob-transitions-pack.zip)**
-· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/transitions-pack-v1) · [browse the files](examples/transitions/).
+**[⬇ Download the transitions pack (18 wired TileSets, 516 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/transitions-pack-v2/godot-47blob-transitions-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/transitions-pack-v2) · [browse the files](examples/transitions/).
 The zip is unpacked into an empty project and repainted in 4.3 and 4.7 on every
 suite run, so the download is checked, not just the folder.
 
@@ -768,7 +769,7 @@ blobsmith-autotile-wirer/
 │   │   ├── manifest.json       # base, size, tiles and the two terrain names per TileSet
 │   │   └── verify_transitions.gd  # paints a lake of the top terrain in a real engine (+ .sh runner)
 │   ├── godot-47blob-starter-pack.zip  # the same sixteen in one download
-│   ├── godot-47blob-transitions-pack.zip  # the same fourteen in one download, LICENSE inside
+│   ├── godot-47blob-transitions-pack.zip  # the same eighteen in one download, LICENSE inside
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
 │   └── blobsmith-demo.gif      # the companion Blobsmith tool painting a sheet
 ├── test_verify_addon.gd        # headless SceneTree verification script
