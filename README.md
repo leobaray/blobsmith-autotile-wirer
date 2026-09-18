@@ -572,6 +572,24 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > controls, all passing by
 > [`docs/verify_seam_snag.sh`](docs/verify_seam_snag.sh) (headless).
 
+> **[I changed the tile size and half the map went invisible](docs/why-changing-the-tile-size-emptied-my-tilemap.md)**
+> is the two-fields page. `TileSet.tile_size` and
+> `TileSetAtlasSource.texture_region_size` are both called tile size and only the
+> second one re-cuts the sheet under tiles that already exist. Doubling it on a
+> 4x2 sheet of 16px cells deletes no tile and prints nothing: the atlas grid drops
+> to 2x1, six of the eight tiles keep regions that fall outside the texture, and
+> `has_tile` still answers true for them. On screen those cells draw fully
+> transparent, and the tiles that stayed inside draw the centre of four sheet
+> cells instead of their own art. The map data is untouched — same source id,
+> same atlas coords, still in `get_used_cells()` — so setting the number back
+> restores everything exactly. Changing `TileSet.tile_size` instead breaks
+> nothing and just centres 16px of art in a 32px cell. If the bigger region is
+> what you want, the tiles that no longer fit have to be removed, and doing it in
+> a loop over `get_tile_id(i)` silently removes only 4 of the 6. 19 checks,
+> 19/19 on **4.3, 4.4 and 4.7** by
+> [`docs/verify_tile_size_change.sh`](docs/verify_tile_size_change.sh) (needs `xvfb-run`:
+> it reads back rendered pixels).
+
 ## Stack
 
 | Piece | Detail |
@@ -767,6 +785,8 @@ blobsmith-autotile-wirer/
 │   ├── verify_terrain_connect_speed.gd  # 16 claims asked of a real engine, headless (+ .sh runner)
 │   ├── why-the-tile-you-hit-is-the-wrong-one.md  # collider is the layer, edge contact point, corners, RID vs 4.7 chunks, seams
 │   ├── verify_tile_hit.gd           # 17/20 claims asked of a real engine, headless (+ .sh runner)
+│   ├── why-changing-the-tile-size-emptied-my-tilemap.md  # tile_size vs texture_region_size, tiles outside the texture, what the map keeps, how to get back
+│   ├── verify_tile_size_change.gd   # 19 claims asked of a real engine, rendered pixels (+ .sh runner, needs xvfb)
 │   ├── why-you-cannot-drop-through-the-one-way-tile.md  # holding down, one_way_margin depth, mask-bit frames, own physics layer, exceptions, flips vs rotation
 │   ├── verify_one_way_drop.gd       # 19 claims asked of a real engine, headless (+ .sh runner)
 │   ├── why-the-erased-tile-still-collides.md  # stale body after erase_cell, update_internals, 4.7 chunk rebuild, callbacks, dead RIDs
