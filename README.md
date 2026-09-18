@@ -55,6 +55,17 @@ The real `player.gd` is driven through the real demo scene in Godot 4.3, 4.4 and
 · [browse the files](examples/platformer/) · why platforms get their own layer:
 [`docs/why-you-cannot-drop-through-the-one-way-tile.md`](docs/why-you-cannot-drop-through-the-one-way-tile.md).
 
+**New: isometric, already a diamond** — [`examples/isometric/`](examples/isometric/):
+eight **isometric** 47-tile blob TileSets — grass, stone, sand, water, 16px (32×16 cell) and 32px (64×32 cell) —
+with `tile_shape` Isometric **and** `tile_layout` Diamond Right set, terrain peering bits renamed to the
+isometric sides and corners, and a diamond collision polygon instead of the bounding box.
+Checked in Godot 4.3, 4.4 and 4.7 — 128/128 on each, including painting the same cells on the square
+starter pack and demanding the same tile (the check that catches a peering rename rotated by one step).
+**[⬇ Download the isometric pack (189 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/isometric-pack-v1/godot-isometric-47blob-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/isometric-pack-v1)
+· [browse the files](examples/isometric/) · why a hand-made isometric TileSet paints a rectangle:
+[`docs/why-my-isometric-tilemap-is-not-a-diamond.md`](docs/why-my-isometric-tilemap-is-not-a-diamond.md).
+
 **New: animated water, every tile moving** — [`examples/animated-water/`](examples/animated-water/):
 a 47-tile blob **water-over-grass** terrain where all 47 tiles are animated (4 frames, 0.2 s each),
 laid out so Godot accepts the animation — frame cells are not tiles, `animation_columns` set,
@@ -820,10 +831,16 @@ blobsmith-autotile-wirer/
 │   │   ├── animated_water_demo.tscn  # painted pond + camera — F6 to watch
 │   │   ├── animated_water_preview.gif/.png  # the pond animated / frame 0
 │   │   └── verify_animated_water.gd  # paints, audits the animation, reads frames back from pixels (+ .sh runner)
+│   ├── isometric/              # 47-blob isometric (Diamond Right), 2:1 cells, diamond collision
+│   │   ├── {grass,stone,sand,water}_iso47_*px.png/.tres  # 47 tiles each, 16px (32×16) and 32px (64×32)
+│   │   ├── isometric_preview.png  # an island Godot painted with the 32px grass set
+│   │   ├── manifest.json       # base, size, cell and sheet dimensions per TileSet
+│   │   └── verify_isometric_pack.gd  # paints each set, compares against the square pack (+ .sh runner)
 │   ├── godot-47blob-starter-pack.zip  # the same sixteen in one download
 │   ├── godot-47blob-transitions-pack.zip  # the same eighteen in one download, LICENSE inside
 │   ├── godot-platformer-starter-pack.zip  # the platformer pack in one download, LICENSE inside
 │   ├── godot-animated-water-pack.zip  # the animated water pack in one download, LICENSE inside
+│   ├── godot-isometric-47blob-pack.zip  # the isometric pack in one download, LICENSE inside
 │   ├── grass_47blob_16px.png   # 128×96 sample sheet — 16px tiles, 47-blob layout
 │   └── blobsmith-demo.gif      # the companion Blobsmith tool painting a sheet
 ├── test_verify_addon.gd        # headless SceneTree verification script
