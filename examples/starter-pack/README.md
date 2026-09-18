@@ -5,6 +5,9 @@ required.** Every `.tres` here is already wired — terrain set configured, terr
 peering bits set on every tile, collision shape on every tile. You do not run
 anything to use these; you drop two files in and paint.
 
+![All eight 32px TileSets painted by Godot 4.3 with set_cells_terrain_connect — top row 47-blob (grass, stone, sand, water), bottom row 16-tile Match Sides, same shape in every panel](https://raw.githubusercontent.com/leobaray/blobsmith-autotile-wirer/master/examples/starter-pack/starter_preview.png)
+*Top row: the four 47-blob sets. Bottom row: the four 16-tile sets. Every tile was picked by Godot's own terrain painter, not arranged by hand.*
+
 Both of Godot 4's terrain layouts are here, because the mode you pick in the
 inspector decides how many tiles the sheet needs:
 

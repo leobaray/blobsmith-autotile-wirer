@@ -22,6 +22,8 @@ already-wired `.tres`. You do not need this plugin, or any plugin, to use them:
 drop both files of a pair into your project, add a `TileMapLayer`, set its
 `TileSet`, and paint in the Terrains tab.
 
+![The eight 32px TileSets of the starter pack, painted by Godot's terrain painter — 47-blob on top, 16-tile Match Sides below](examples/starter-pack/starter_preview.png)
+
 | | Match Corners and Sides (47 tiles, 8×6) | Match Sides (16 tiles, 8×2) |
 |---|---|---|
 | Grass | `grass_47blob_16px` · `grass_47blob_32px` | `grass_16sides_16px` · `grass_16sides_32px` |
@@ -810,7 +812,8 @@ blobsmith-autotile-wirer/
 │   │   ├── *_16sides_*.png     # the 8×2 sheets — Match Sides
 │   │   ├── *.tres              # the already-wired TileSets — no plugin needed to use these
 │   │   ├── manifest.json       # base, size, layout, tile count and mode the engine gate iterates over
-│   │   └── README.md           # import steps, what is checked, honest note on the art
+│   │   ├── README.md           # import steps, what is checked, honest note on the art
+│   │   └── starter_preview.png  # all eight 32px sets, painted by Godot with set_cells_terrain_connect
 │   ├── transitions/            # 2 terrains in one terrain set, 16/32px
 │   │   ├── grass_on_sand_*.png/.tres  # 48 tiles (47 grass-over-sand + full sand), every bit set
 │   │   ├── sand_on_water_*.png/.tres  # shoreline: 47 sand-over-water + full water
