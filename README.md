@@ -68,6 +68,19 @@ starter pack and demanding the same tile (the check that catches a peering renam
 · [browse the files](examples/isometric/) · why a hand-made isometric TileSet paints a rectangle:
 [`docs/why-my-isometric-tilemap-is-not-a-diamond.md`](docs/why-my-isometric-tilemap-is-not-a-diamond.md).
 
+**New: hexagon terrains, pointy-top and flat-top** — [`examples/hex/`](examples/hex/):
+sixteen **hexagon** TileSets — grass, stone, sand, water, pointy-top and flat-top, 16px and 32px — each a
+Match Sides terrain with a tile for **all 64** side combinations, the right `tile_offset_axis` set, and a
+hexagon collision polygon. Hex peering-bit names change with the offset axis (`bottom_right_side` is a
+different neighbour pointy-top and flat-top), so each file is wired for its own axis. Checked in Godot 4.3,
+4.4 and 4.7 — 256/256 on each, including every side of every cell of a painted island against
+`get_neighbor_cell`.
+**[⬇ Download the hex pack (399 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/hex-pack-v1/godot-hex-terrain-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/hex-pack-v1)
+· [browse the files](examples/hex/)
+
+![a pointy-top grass island and a flat-top water island, painted by Godot](examples/hex/hex_preview.png)
+
 **New: animated water, every tile moving** — [`examples/animated-water/`](examples/animated-water/):
 a 47-tile blob **water-over-grass** terrain where all 47 tiles are animated (4 frames, 0.2 s each),
 laid out so Godot accepts the animation — frame cells are not tiles, `animation_columns` set,

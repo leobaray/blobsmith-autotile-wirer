@@ -1,0 +1,306 @@
+[
+  {
+    "base": "grass_hex_pointy_16px",
+    "terrain": "Grass",
+    "orientation": "pointy",
+    "tile_offset_axis": 0,
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_right_side",
+      "bottom_left_side",
+      "left_side",
+      "top_left_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "grass_hex_pointy_32px",
+    "terrain": "Grass",
+    "orientation": "pointy",
+    "tile_offset_axis": 0,
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 256,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_right_side",
+      "bottom_left_side",
+      "left_side",
+      "top_left_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "grass_hex_flat_16px",
+    "terrain": "Grass",
+    "orientation": "flat",
+    "tile_offset_axis": 1,
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "bottom_right_side",
+      "bottom_side",
+      "bottom_left_side",
+      "top_left_side",
+      "top_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "grass_hex_flat_32px",
+    "terrain": "Grass",
+    "orientation": "flat",
+    "tile_offset_axis": 1,
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 256,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "bottom_right_side",
+      "bottom_side",
+      "bottom_left_side",
+      "top_left_side",
+      "top_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "stone_hex_pointy_16px",
+    "terrain": "Stone",
+    "orientation": "pointy",
+    "tile_offset_axis": 0,
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_right_side",
+      "bottom_left_side",
+      "left_side",
+      "top_left_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "stone_hex_pointy_32px",
+    "terrain": "Stone",
+    "orientation": "pointy",
+    "tile_offset_axis": 0,
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 256,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_right_side",
+      "bottom_left_side",
+      "left_side",
+      "top_left_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "stone_hex_flat_16px",
+    "terrain": "Stone",
+    "orientation": "flat",
+    "tile_offset_axis": 1,
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "bottom_right_side",
+      "bottom_side",
+      "bottom_left_side",
+      "top_left_side",
+      "top_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "stone_hex_flat_32px",
+    "terrain": "Stone",
+    "orientation": "flat",
+    "tile_offset_axis": 1,
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 256,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "bottom_right_side",
+      "bottom_side",
+      "bottom_left_side",
+      "top_left_side",
+      "top_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "sand_hex_pointy_16px",
+    "terrain": "Sand",
+    "orientation": "pointy",
+    "tile_offset_axis": 0,
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_right_side",
+      "bottom_left_side",
+      "left_side",
+      "top_left_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "sand_hex_pointy_32px",
+    "terrain": "Sand",
+    "orientation": "pointy",
+    "tile_offset_axis": 0,
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 256,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_right_side",
+      "bottom_left_side",
+      "left_side",
+      "top_left_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "sand_hex_flat_16px",
+    "terrain": "Sand",
+    "orientation": "flat",
+    "tile_offset_axis": 1,
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "bottom_right_side",
+      "bottom_side",
+      "bottom_left_side",
+      "top_left_side",
+      "top_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "sand_hex_flat_32px",
+    "terrain": "Sand",
+    "orientation": "flat",
+    "tile_offset_axis": 1,
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 256,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "bottom_right_side",
+      "bottom_side",
+      "bottom_left_side",
+      "top_left_side",
+      "top_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "water_hex_pointy_16px",
+    "terrain": "Water",
+    "orientation": "pointy",
+    "tile_offset_axis": 0,
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_right_side",
+      "bottom_left_side",
+      "left_side",
+      "top_left_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "water_hex_pointy_32px",
+    "terrain": "Water",
+    "orientation": "pointy",
+    "tile_offset_axis": 0,
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 256,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_right_side",
+      "bottom_left_side",
+      "left_side",
+      "top_left_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "water_hex_flat_16px",
+    "terrain": "Water",
+    "orientation": "flat",
+    "tile_offset_axis": 1,
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "bottom_right_side",
+      "bottom_side",
+      "bottom_left_side",
+      "top_left_side",
+      "top_side",
+      "top_right_side"
+    ]
+  },
+  {
+    "base": "water_hex_flat_32px",
+    "terrain": "Water",
+    "orientation": "flat",
+    "tile_offset_axis": 1,
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 256,
+    "tiles": 64,
+    "mode": 2,
+    "sides": [
+      "bottom_right_side",
+      "bottom_side",
+      "bottom_left_side",
+      "top_left_side",
+      "top_side",
+      "top_right_side"
+    ]
+  }
+]
