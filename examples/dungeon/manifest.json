@@ -1,0 +1,110 @@
+[
+  {
+    "base": "stone_dungeon_16px",
+    "style": "stone",
+    "terrain": "Stone Wall",
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 96,
+    "wall_tiles": 47,
+    "mode": 0,
+    "floor_atlas": [
+      7,
+      5
+    ],
+    "face_rows": [
+      8,
+      16
+    ],
+    "face_palette": [
+      "#8b8176",
+      "#7f756b",
+      "#968b7f",
+      "#a89c8f",
+      "#4f4842",
+      "#2b2622",
+      "#3a342f"
+    ]
+  },
+  {
+    "base": "stone_dungeon_32px",
+    "style": "stone",
+    "terrain": "Stone Wall",
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 192,
+    "wall_tiles": 47,
+    "mode": 0,
+    "floor_atlas": [
+      7,
+      5
+    ],
+    "face_rows": [
+      16,
+      32
+    ],
+    "face_palette": [
+      "#8b8176",
+      "#7f756b",
+      "#968b7f",
+      "#a89c8f",
+      "#4f4842",
+      "#2b2622",
+      "#3a342f"
+    ]
+  },
+  {
+    "base": "cave_dungeon_16px",
+    "style": "cave",
+    "terrain": "Cave Wall",
+    "tile_size": 16,
+    "sheet_w": 128,
+    "sheet_h": 96,
+    "wall_tiles": 47,
+    "mode": 0,
+    "floor_atlas": [
+      7,
+      5
+    ],
+    "face_rows": [
+      8,
+      16
+    ],
+    "face_palette": [
+      "#7b6553",
+      "#6c5847",
+      "#87705d",
+      "#9b836d",
+      "#45362b",
+      "#261d17",
+      "#3a2d24"
+    ]
+  },
+  {
+    "base": "cave_dungeon_32px",
+    "style": "cave",
+    "terrain": "Cave Wall",
+    "tile_size": 32,
+    "sheet_w": 256,
+    "sheet_h": 192,
+    "wall_tiles": 47,
+    "mode": 0,
+    "floor_atlas": [
+      7,
+      5
+    ],
+    "face_rows": [
+      16,
+      32
+    ],
+    "face_palette": [
+      "#7b6553",
+      "#6c5847",
+      "#87705d",
+      "#9b836d",
+      "#45362b",
+      "#261d17",
+      "#3a2d24"
+    ]
+  }
+]

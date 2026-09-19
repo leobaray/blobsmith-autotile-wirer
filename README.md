@@ -81,6 +81,19 @@ different neighbour pointy-top and flat-top), so each file is wired for its own 
 
 ![a pointy-top grass island and a flat-top water island, painted by Godot](examples/hex/hex_preview.png)
 
+**New: top-down dungeon walls that draw their own faces** — [`examples/dungeon/`](examples/dungeon/):
+four **3/4-view dungeon** TileSets — stone brick walls on flagstone and rough rock walls on dirt, 16px and 32px —
+where the walls are a 47-tile blob terrain and every wall tile with an open south side draws its **front face**.
+Lay the floor, paint walls over it with Connect, and the faces land on exactly the walls with floor below them;
+walls carry a full-cell collision square, the floor none. Checked in Godot 4.3, 4.4 and 4.7 — 64/64 on each,
+including 364 painted wall cells whose bits must match their neighbours and a face check read from the
+pixels of the tile the engine picked.
+**[⬇ Download the dungeon pack (170 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/dungeon-pack-v1/godot-dungeon-tileset-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/dungeon-pack-v1)
+· [browse the files](examples/dungeon/)
+
+![the same dungeon room in the stone and the cave style, painted by Godot](examples/dungeon/dungeon_preview.png)
+
 **New: animated water, every tile moving** — [`examples/animated-water/`](examples/animated-water/):
 a 47-tile blob **water-over-grass** terrain where all 47 tiles are animated (4 frames, 0.2 s each),
 laid out so Godot accepts the animation — frame cells are not tiles, `animation_columns` set,
