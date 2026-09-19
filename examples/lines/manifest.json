@@ -1,0 +1,146 @@
+[
+  {
+    "base": "road_lines_16px",
+    "terrain": "Road",
+    "tile_size": 16,
+    "sheet_w": 64,
+    "sheet_h": 64,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": false,
+    "post_half": 4,
+    "arm_half": 4
+  },
+  {
+    "base": "road_lines_32px",
+    "terrain": "Road",
+    "tile_size": 32,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": false,
+    "post_half": 8,
+    "arm_half": 8
+  },
+  {
+    "base": "fence_lines_16px",
+    "terrain": "Fence",
+    "tile_size": 16,
+    "sheet_w": 64,
+    "sheet_h": 64,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "post_half": 3,
+    "arm_half": 1
+  },
+  {
+    "base": "fence_lines_32px",
+    "terrain": "Fence",
+    "tile_size": 32,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "post_half": 6,
+    "arm_half": 2
+  },
+  {
+    "base": "pipe_lines_16px",
+    "terrain": "Pipe",
+    "tile_size": 16,
+    "sheet_w": 64,
+    "sheet_h": 64,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "post_half": 4,
+    "arm_half": 3
+  },
+  {
+    "base": "pipe_lines_32px",
+    "terrain": "Pipe",
+    "tile_size": 32,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "post_half": 8,
+    "arm_half": 6
+  },
+  {
+    "base": "stream_lines_16px",
+    "terrain": "Stream",
+    "tile_size": 16,
+    "sheet_w": 64,
+    "sheet_h": 64,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": false,
+    "post_half": 3,
+    "arm_half": 3
+  },
+  {
+    "base": "stream_lines_32px",
+    "terrain": "Stream",
+    "tile_size": 32,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": false,
+    "post_half": 6,
+    "arm_half": 6
+  }
+]

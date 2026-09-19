@@ -68,6 +68,18 @@ starter pack and demanding the same tile (the check that catches a peering renam
 · [browse the files](examples/isometric/) · why a hand-made isometric TileSet paints a rectangle:
 [`docs/why-my-isometric-tilemap-is-not-a-diamond.md`](docs/why-my-isometric-tilemap-is-not-a-diamond.md).
 
+**New: roads, fences, pipes and streams — line tiles that connect** — [`examples/lines/`](examples/lines/):
+eight **line-connector** TileSets — road, fence, pipe, stream, 16px and 32px — each a Match Sides terrain with
+a tile for **all 16** side combinations (post, dead end, straight, corner, T, cross), transparent outside the
+line so it sits on its own layer over your ground; fences and pipes collide as post + one bar per connected
+side. The trap it documents: **Connect joins two parallel fences into a ladder**, even painted one call per
+fence — **Path** keeps them apart. Checked in Godot 4.3, 4.4 and 4.7 — 120/120 on each.
+**[⬇ Download the roads/fences/pipes pack (74 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/lines-pack-v1/godot-roads-fences-pipes-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/lines-pack-v1)
+· [browse the files](examples/lines/)
+
+![a road network, a fenced pen, a stream and a pipe run; and two parallel fences painted with Connect (a ladder) and with Path](examples/lines/lines_preview.png)
+
 **New: hexagon terrains, pointy-top and flat-top** — [`examples/hex/`](examples/hex/):
 sixteen **hexagon** TileSets — grass, stone, sand, water, pointy-top and flat-top, 16px and 32px — each a
 Match Sides terrain with a tile for **all 64** side combinations, the right `tile_offset_axis` set, and a
