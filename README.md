@@ -106,6 +106,34 @@ pixels of the tile the engine picked.
 
 ![the same dungeon room in the stone and the cave style, painted by Godot](examples/dungeon/dungeon_preview.png)
 
+**New: Match Corners — the third terrain mode, 16 tiles instead of 47** — [`examples/corners/`](examples/corners/):
+eight **Match Corners** TileSets — grass over soil, sand over water, snow over rock, lava over basalt, 16px
+and 32px — where the terrain bits are the four **corners** of the cell, so a complete set is 2⁴ = **16 tiles**
+and not 47. The tiles are opaque, so one `TileMapLayer` is enough: the lower terrain is painted by the same
+set. Checked in Godot 4.3, 4.4 and 4.7 — 136/136 on each.
+**[⬇ Download the corner-terrain pack (89 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/corners-pack-v1/godot-corner-terrain-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/corners-pack-v1)
+· [browse the files](examples/corners/) · why terrain does not connect across two layers:
+[`docs/why-terrain-does-not-connect-across-two-tilemaplayers.md`](docs/why-terrain-does-not-connect-across-two-tilemaplayers.md).
+
+![the four corner terrains painted by Godot](examples/corners/corners_preview.png)
+
+**New: solid collision the physics server confirms — plus a checker for YOUR TileSet** — [`examples/collision/`](examples/collision/):
+eight **solid** Match Sides TileSets — rock, brick, ice, wood, 16px and 32px — every one of the 16 tiles
+carrying a physics layer, a non-zero `collision_layer` and a full-cell polygon. The gate does not count
+polygons in the `.tres`: it paints the tiles into a live `TileMapLayer` and asks
+`PhysicsDirectSpaceState2D` — a dropped ray stops at the cell's top edge, the seam between two cells is
+solid, a one-cell hole really is empty, erasing a cell drops its collider, and `collision_enabled = false`
+removes every collider while the TileSet stays perfectly wired. Checked in Godot 4.3, 4.4 and 4.7 —
+112/112 on each. The pack also ships **`check_tileset_collision.gd`**, which runs headless over *your* TileSet
+and names the four faults that look wired and collide with nothing: no physics layer, `collision_layer = 0`,
+a tile with no polygon, a polygon with fewer than 3 points.
+**[⬇ Download the solid-collision pack (93 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/collision-pack-v1/godot-solid-collision-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/collision-pack-v1)
+· [browse the files](examples/collision/)
+
+![a rock platform run, a brick wall with a hole and an ice floor with a pit, each outlined where the physics server says its collision ends](examples/collision/collision_preview.png)
+
 **New: animated water, every tile moving** — [`examples/animated-water/`](examples/animated-water/):
 a 47-tile blob **water-over-grass** terrain where all 47 tiles are animated (4 frames, 0.2 s each),
 laid out so Godot accepts the animation — frame cells are not tiles, `animation_columns` set,

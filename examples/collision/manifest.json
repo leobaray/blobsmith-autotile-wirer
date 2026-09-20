@@ -1,0 +1,306 @@
+[
+  {
+    "base": "rock_solid_16px",
+    "terrain": "Rock",
+    "tile_size": 16,
+    "sheet_w": 64,
+    "sheet_h": 64,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "collision_layer": 1,
+    "band_px": 2,
+    "polygon": [
+      [
+        -8,
+        -8
+      ],
+      [
+        8,
+        -8
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        -8,
+        8
+      ]
+    ],
+    "fill": "#6b6b73",
+    "border": "#34343a"
+  },
+  {
+    "base": "rock_solid_32px",
+    "terrain": "Rock",
+    "tile_size": 32,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "collision_layer": 1,
+    "band_px": 4,
+    "polygon": [
+      [
+        -16,
+        -16
+      ],
+      [
+        16,
+        -16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        -16,
+        16
+      ]
+    ],
+    "fill": "#6b6b73",
+    "border": "#34343a"
+  },
+  {
+    "base": "brick_solid_16px",
+    "terrain": "Brick",
+    "tile_size": 16,
+    "sheet_w": 64,
+    "sheet_h": 64,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "collision_layer": 1,
+    "band_px": 2,
+    "polygon": [
+      [
+        -8,
+        -8
+      ],
+      [
+        8,
+        -8
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        -8,
+        8
+      ]
+    ],
+    "fill": "#a8503c",
+    "border": "#55231a"
+  },
+  {
+    "base": "brick_solid_32px",
+    "terrain": "Brick",
+    "tile_size": 32,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "collision_layer": 1,
+    "band_px": 4,
+    "polygon": [
+      [
+        -16,
+        -16
+      ],
+      [
+        16,
+        -16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        -16,
+        16
+      ]
+    ],
+    "fill": "#a8503c",
+    "border": "#55231a"
+  },
+  {
+    "base": "ice_solid_16px",
+    "terrain": "Ice",
+    "tile_size": 16,
+    "sheet_w": 64,
+    "sheet_h": 64,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "collision_layer": 1,
+    "band_px": 2,
+    "polygon": [
+      [
+        -8,
+        -8
+      ],
+      [
+        8,
+        -8
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        -8,
+        8
+      ]
+    ],
+    "fill": "#8fc4d9",
+    "border": "#3f6c7f"
+  },
+  {
+    "base": "ice_solid_32px",
+    "terrain": "Ice",
+    "tile_size": 32,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "collision_layer": 1,
+    "band_px": 4,
+    "polygon": [
+      [
+        -16,
+        -16
+      ],
+      [
+        16,
+        -16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        -16,
+        16
+      ]
+    ],
+    "fill": "#8fc4d9",
+    "border": "#3f6c7f"
+  },
+  {
+    "base": "wood_solid_16px",
+    "terrain": "Wood",
+    "tile_size": 16,
+    "sheet_w": 64,
+    "sheet_h": 64,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "collision_layer": 1,
+    "band_px": 2,
+    "polygon": [
+      [
+        -8,
+        -8
+      ],
+      [
+        8,
+        -8
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        -8,
+        8
+      ]
+    ],
+    "fill": "#8a5f33",
+    "border": "#3f2a15"
+  },
+  {
+    "base": "wood_solid_32px",
+    "terrain": "Wood",
+    "tile_size": 32,
+    "sheet_w": 128,
+    "sheet_h": 128,
+    "tiles": 16,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "collision": true,
+    "collision_layer": 1,
+    "band_px": 4,
+    "polygon": [
+      [
+        -16,
+        -16
+      ],
+      [
+        16,
+        -16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        -16,
+        16
+      ]
+    ],
+    "fill": "#8a5f33",
+    "border": "#3f2a15"
+  }
+]
