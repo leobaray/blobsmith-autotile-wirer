@@ -331,6 +331,24 @@ A **corner** bit only counts when both of its adjacent side bits are present —
 > **<https://blobsmith.lbwma.com/godot-terrain-wrong-tile/>**, where you paint a
 > region in the page and it names the cells with no exact tile.
 
+> **[The autotile has a seam exactly where your two TileMapLayers meet](docs/why-terrain-does-not-connect-across-two-tilemaplayers.md)**
+> is the companion case: the tileset is fine and the paint is fine, but the map
+> is split across two layers. `set_cells_terrain_connect()` reads **one layer —
+> the one you called it on** — so each half autotiles as though the other were
+> empty space. A 2×2 block is four different corner tiles on one layer and two
+> **identical** isolated strips when split down the middle; painting the second
+> layer does not change one cell of the first, and reversing the order changes
+> nothing. The fix is one *layer*, not one *call*: two separate
+> `set_cells_terrain_connect()` calls on the same layer reach the single-call
+> result byte for byte, so chunk-by-chunk and player-driven painting connect
+> correctly as long as the calls land on the same node. When the split is not
+> negotiable (z_index, collision, a foreground over the player), paint once and
+> copy the finished cells across with `set_cell()`, which re-runs no terrain
+> logic and keeps the connected tiles. 9 claims, identical on 4.3, 4.4 and 4.7;
+> [`docs/verify_cross_layer_terrain.sh`](docs/verify_cross_layer_terrain.sh)
+> runs them in a throwaway project built from `examples/starter-pack`, so a
+> fresh clone needs no arguments.
+
 > **[Thin lines between tiles — what actually causes them](docs/why-tiles-have-seams.md)**
 > separates the four causes that every answer piles into one paragraph. The most
 > repeated fix, *Rendering → Quality → 2D → Enable Pixel Snap*, is a **Godot 3
@@ -790,6 +808,7 @@ blobsmith-autotile-wirer/
 │   ├── dump_tile_map_fixtures.gd    # regenerates that file from your own Godot build
 │   ├── check_js_buffers.gd          # hands buffers built elsewhere to a real TileMapLayer
 │   ├── why-terrain-paints-the-wrong-tile.md  # what the engine picks when your set falls short
+│   ├── why-terrain-does-not-connect-across-two-tilemaplayers.md  # connect reads one layer; the seam is the split
 │   ├── verify_terrain_choice.gd     # 33 claims asked of a real engine
 │   ├── verify_terrain_choice.sh     # runs them on your binary, no test project needed
 │   ├── terrain-choice-core.js       # the choice logic the CLI and the web page share
