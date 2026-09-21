@@ -197,6 +197,32 @@ code asks for that no TileSet declares.
 
 ![the same 16 x 10 map painted four times by Godot — meadow, volcano, swamp, snow — with the path an AStarGrid2D fed the tiles' custom data returned (round the hazard, over the bridge) and the one it returns fed walkable only (through the hazard and the ford)](examples/tiledata/tiledata_preview.png)
 
+**New: walls that cast 2D shadows the moment they are painted — plus a checker for YOUR TileSet and scene** — [`examples/occluder/`](examples/occluder/):
+eight **top-down floor + wall** TileSets — dungeon, crypt, forest, scifi, 16px and 32px — one Match Sides
+terrain set with a Floor and a Wall terrain, 17 tiles: 16 floor tiles with no occluder, and one wall tile
+carrying a full-cell occluder on an occlusion layer whose `light_mask` is 1 (what a `PointLight2D`'s
+`shadow_item_cull_mask` ships with), authored centred `(-8,-8)..(8,8)`, plus full-cell collision. One file
+works on 4.3, 4.4 and 4.7: the occluder is stored under the key 4.3 writes, which 4.4 and 4.7 still read —
+the key 4.4+ writes (`occlusion_layer_0/polygon_0/polygon`) loads on 4.3 as **no occluder and no error**, and
+re-saving the TileSet from 4.4+ (`ResourceSaver.save`) switches to it. Headless, the gate reads every tile back through the
+running version's API (`get_occluder` on 4.3, `get_occluder_polygons_count`/`get_occluder_polygon` on 4.4+)
+and finds the occluder on 44 of 44 wall cells and 0 of 73 floor cells of a painted room. The shadow itself
+cannot be seen headless (the dummy renderer draws nothing), so the gate also renders the room on a real
+OpenGL context and compares every floor pixel with line of sight from the light: 17,989 of 17,989 agree at
+16px, 73,355 of 73,355 at 32px. It measures the traps too: `shadow_enabled` off (the default), an occlusion
+`light_mask` that shares no bit with `shadow_item_cull_mask`, no occlusion layer — 0 dark pixels each — and
+the 4.4 receiver rule (the floor's own `light_mask` is filtered too: 3,384 dark pixels on 4.3, 0 on 4.4 and
+4.7). Checked in Godot 4.3, 4.4 and 4.7 — 181/181 on each (136 headless + 45 rendered). The pack also ships
+**`check_tileset_occluders.gd`**, which runs headless over *your* TileSet or scene and names the faults that
+leave a light shining through walls: no occlusion layer, a `light_mask` of 0, a wall with no occluder, a
+polygon authored from `(0,0)`, the 4.4+ key in a project that must open in 4.3, a light with shadows off or
+no texture, a mask mismatch, `occlusion_enabled` off, the 4.4+ receiver mask.
+**[⬇ Download the light-occluder pack (301 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/occluder-pack-v1/godot-light-occluder-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/occluder-pack-v1)
+· [browse the files](examples/occluder/)
+
+![the same room with a pillar rendered four times by Godot — dungeon, crypt, forest, scifi — each lit by one PointLight2D, with the hard shadow the wall tiles cast fanning out behind the pillar](examples/occluder/occluder_preview.png)
+
 **New: animated water, every tile moving** — [`examples/animated-water/`](examples/animated-water/):
 a 47-tile blob **water-over-grass** terrain where all 47 tiles are animated (4 frames, 0.2 s each),
 laid out so Godot accepts the animation — frame cells are not tiles, `animation_columns` set,

@@ -1,0 +1,618 @@
+[
+  {
+    "base": "dungeon_occ_16px",
+    "theme": "dungeon",
+    "tile_size": 16,
+    "sheet_w": 80,
+    "sheet_h": 64,
+    "tiles": 17,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "terrains": [
+      "Floor",
+      "Wall"
+    ],
+    "floor_terrain": 0,
+    "wall_terrain": 1,
+    "floor_tiles": 16,
+    "wall_tiles": 1,
+    "wall_atlas": [
+      4,
+      0
+    ],
+    "wall_rim": "#5e5a68",
+    "floor_shade": "#57504a",
+    "occlusion_layer": 0,
+    "occluder_light_mask": 1,
+    "occluder_key": "occlusion_layer_0/polygon",
+    "collision_layer": 1,
+    "light_color": "#ffb45a",
+    "band_px": 2,
+    "polygon": [
+      [
+        -8,
+        -8
+      ],
+      [
+        8,
+        -8
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        -8,
+        8
+      ]
+    ],
+    "room": {
+      "w": 13,
+      "h": 9,
+      "pillar_x": [
+        7,
+        8
+      ],
+      "pillar_y": [
+        4,
+        5
+      ],
+      "light": [
+        3,
+        4
+      ],
+      "behind": [
+        10,
+        4
+      ],
+      "control": [
+        10,
+        1
+      ]
+    }
+  },
+  {
+    "base": "dungeon_occ_32px",
+    "theme": "dungeon",
+    "tile_size": 32,
+    "sheet_w": 160,
+    "sheet_h": 128,
+    "tiles": 17,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "terrains": [
+      "Floor",
+      "Wall"
+    ],
+    "floor_terrain": 0,
+    "wall_terrain": 1,
+    "floor_tiles": 16,
+    "wall_tiles": 1,
+    "wall_atlas": [
+      4,
+      0
+    ],
+    "wall_rim": "#5e5a68",
+    "floor_shade": "#57504a",
+    "occlusion_layer": 0,
+    "occluder_light_mask": 1,
+    "occluder_key": "occlusion_layer_0/polygon",
+    "collision_layer": 1,
+    "light_color": "#ffb45a",
+    "band_px": 4,
+    "polygon": [
+      [
+        -16,
+        -16
+      ],
+      [
+        16,
+        -16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        -16,
+        16
+      ]
+    ],
+    "room": {
+      "w": 13,
+      "h": 9,
+      "pillar_x": [
+        7,
+        8
+      ],
+      "pillar_y": [
+        4,
+        5
+      ],
+      "light": [
+        3,
+        4
+      ],
+      "behind": [
+        10,
+        4
+      ],
+      "control": [
+        10,
+        1
+      ]
+    }
+  },
+  {
+    "base": "crypt_occ_16px",
+    "theme": "crypt",
+    "tile_size": 16,
+    "sheet_w": 80,
+    "sheet_h": 64,
+    "tiles": 17,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "terrains": [
+      "Floor",
+      "Wall"
+    ],
+    "floor_terrain": 0,
+    "wall_terrain": 1,
+    "floor_tiles": 16,
+    "wall_tiles": 1,
+    "wall_atlas": [
+      4,
+      0
+    ],
+    "wall_rim": "#6a5a76",
+    "floor_shade": "#6f6a5c",
+    "occlusion_layer": 0,
+    "occluder_light_mask": 1,
+    "occluder_key": "occlusion_layer_0/polygon",
+    "collision_layer": 1,
+    "light_color": "#b8ffd8",
+    "band_px": 2,
+    "polygon": [
+      [
+        -8,
+        -8
+      ],
+      [
+        8,
+        -8
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        -8,
+        8
+      ]
+    ],
+    "room": {
+      "w": 13,
+      "h": 9,
+      "pillar_x": [
+        7,
+        8
+      ],
+      "pillar_y": [
+        4,
+        5
+      ],
+      "light": [
+        3,
+        4
+      ],
+      "behind": [
+        10,
+        4
+      ],
+      "control": [
+        10,
+        1
+      ]
+    }
+  },
+  {
+    "base": "crypt_occ_32px",
+    "theme": "crypt",
+    "tile_size": 32,
+    "sheet_w": 160,
+    "sheet_h": 128,
+    "tiles": 17,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "terrains": [
+      "Floor",
+      "Wall"
+    ],
+    "floor_terrain": 0,
+    "wall_terrain": 1,
+    "floor_tiles": 16,
+    "wall_tiles": 1,
+    "wall_atlas": [
+      4,
+      0
+    ],
+    "wall_rim": "#6a5a76",
+    "floor_shade": "#6f6a5c",
+    "occlusion_layer": 0,
+    "occluder_light_mask": 1,
+    "occluder_key": "occlusion_layer_0/polygon",
+    "collision_layer": 1,
+    "light_color": "#b8ffd8",
+    "band_px": 4,
+    "polygon": [
+      [
+        -16,
+        -16
+      ],
+      [
+        16,
+        -16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        -16,
+        16
+      ]
+    ],
+    "room": {
+      "w": 13,
+      "h": 9,
+      "pillar_x": [
+        7,
+        8
+      ],
+      "pillar_y": [
+        4,
+        5
+      ],
+      "light": [
+        3,
+        4
+      ],
+      "behind": [
+        10,
+        4
+      ],
+      "control": [
+        10,
+        1
+      ]
+    }
+  },
+  {
+    "base": "forest_occ_16px",
+    "theme": "forest",
+    "tile_size": 16,
+    "sheet_w": 80,
+    "sheet_h": 64,
+    "tiles": 17,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "terrains": [
+      "Floor",
+      "Wall"
+    ],
+    "floor_terrain": 0,
+    "wall_terrain": 1,
+    "floor_tiles": 16,
+    "wall_tiles": 1,
+    "wall_atlas": [
+      4,
+      0
+    ],
+    "wall_rim": "#54462f",
+    "floor_shade": "#2e4624",
+    "occlusion_layer": 0,
+    "occluder_light_mask": 1,
+    "occluder_key": "occlusion_layer_0/polygon",
+    "collision_layer": 1,
+    "light_color": "#c8dcff",
+    "band_px": 2,
+    "polygon": [
+      [
+        -8,
+        -8
+      ],
+      [
+        8,
+        -8
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        -8,
+        8
+      ]
+    ],
+    "room": {
+      "w": 13,
+      "h": 9,
+      "pillar_x": [
+        7,
+        8
+      ],
+      "pillar_y": [
+        4,
+        5
+      ],
+      "light": [
+        3,
+        4
+      ],
+      "behind": [
+        10,
+        4
+      ],
+      "control": [
+        10,
+        1
+      ]
+    }
+  },
+  {
+    "base": "forest_occ_32px",
+    "theme": "forest",
+    "tile_size": 32,
+    "sheet_w": 160,
+    "sheet_h": 128,
+    "tiles": 17,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "terrains": [
+      "Floor",
+      "Wall"
+    ],
+    "floor_terrain": 0,
+    "wall_terrain": 1,
+    "floor_tiles": 16,
+    "wall_tiles": 1,
+    "wall_atlas": [
+      4,
+      0
+    ],
+    "wall_rim": "#54462f",
+    "floor_shade": "#2e4624",
+    "occlusion_layer": 0,
+    "occluder_light_mask": 1,
+    "occluder_key": "occlusion_layer_0/polygon",
+    "collision_layer": 1,
+    "light_color": "#c8dcff",
+    "band_px": 4,
+    "polygon": [
+      [
+        -16,
+        -16
+      ],
+      [
+        16,
+        -16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        -16,
+        16
+      ]
+    ],
+    "room": {
+      "w": 13,
+      "h": 9,
+      "pillar_x": [
+        7,
+        8
+      ],
+      "pillar_y": [
+        4,
+        5
+      ],
+      "light": [
+        3,
+        4
+      ],
+      "behind": [
+        10,
+        4
+      ],
+      "control": [
+        10,
+        1
+      ]
+    }
+  },
+  {
+    "base": "scifi_occ_16px",
+    "theme": "scifi",
+    "tile_size": 16,
+    "sheet_w": 80,
+    "sheet_h": 64,
+    "tiles": 17,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "terrains": [
+      "Floor",
+      "Wall"
+    ],
+    "floor_terrain": 0,
+    "wall_terrain": 1,
+    "floor_tiles": 16,
+    "wall_tiles": 1,
+    "wall_atlas": [
+      4,
+      0
+    ],
+    "wall_rim": "#3f86a0",
+    "floor_shade": "#363d46",
+    "occlusion_layer": 0,
+    "occluder_light_mask": 1,
+    "occluder_key": "occlusion_layer_0/polygon",
+    "collision_layer": 1,
+    "light_color": "#7fe8ff",
+    "band_px": 2,
+    "polygon": [
+      [
+        -8,
+        -8
+      ],
+      [
+        8,
+        -8
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        -8,
+        8
+      ]
+    ],
+    "room": {
+      "w": 13,
+      "h": 9,
+      "pillar_x": [
+        7,
+        8
+      ],
+      "pillar_y": [
+        4,
+        5
+      ],
+      "light": [
+        3,
+        4
+      ],
+      "behind": [
+        10,
+        4
+      ],
+      "control": [
+        10,
+        1
+      ]
+    }
+  },
+  {
+    "base": "scifi_occ_32px",
+    "theme": "scifi",
+    "tile_size": 32,
+    "sheet_w": 160,
+    "sheet_h": 128,
+    "tiles": 17,
+    "mode": 2,
+    "sides": [
+      "right_side",
+      "bottom_side",
+      "left_side",
+      "top_side"
+    ],
+    "terrains": [
+      "Floor",
+      "Wall"
+    ],
+    "floor_terrain": 0,
+    "wall_terrain": 1,
+    "floor_tiles": 16,
+    "wall_tiles": 1,
+    "wall_atlas": [
+      4,
+      0
+    ],
+    "wall_rim": "#3f86a0",
+    "floor_shade": "#363d46",
+    "occlusion_layer": 0,
+    "occluder_light_mask": 1,
+    "occluder_key": "occlusion_layer_0/polygon",
+    "collision_layer": 1,
+    "light_color": "#7fe8ff",
+    "band_px": 4,
+    "polygon": [
+      [
+        -16,
+        -16
+      ],
+      [
+        16,
+        -16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        -16,
+        16
+      ]
+    ],
+    "room": {
+      "w": 13,
+      "h": 9,
+      "pillar_x": [
+        7,
+        8
+      ],
+      "pillar_y": [
+        4,
+        5
+      ],
+      "light": [
+        3,
+        4
+      ],
+      "behind": [
+        10,
+        4
+      ],
+      "control": [
+        10,
+        1
+      ]
+    }
+  }
+]
