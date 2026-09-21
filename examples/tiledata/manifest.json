@@ -1,0 +1,1714 @@
+[
+  {
+    "base": "meadow_data_16px",
+    "theme": "meadow",
+    "tile_size": 16,
+    "sheet_w": 48,
+    "sheet_h": 32,
+    "tiles": 6,
+    "mode": 2,
+    "roles": [
+      "path",
+      "ground",
+      "rough",
+      "slow",
+      "hazard",
+      "blocked"
+    ],
+    "layers": [
+      {
+        "name": "ground",
+        "type": "String",
+        "variant_type": 4
+      },
+      {
+        "name": "move_cost",
+        "type": "float",
+        "variant_type": 3
+      },
+      {
+        "name": "walkable",
+        "type": "bool",
+        "variant_type": 1
+      },
+      {
+        "name": "damage",
+        "type": "int",
+        "variant_type": 2
+      },
+      {
+        "name": "footstep",
+        "type": "String",
+        "variant_type": 4
+      }
+    ],
+    "kinds": [
+      {
+        "role": "path",
+        "terrain": 0,
+        "terrain_name": "Road",
+        "atlas": [
+          0,
+          0
+        ],
+        "ground": "road",
+        "move_cost": 1,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "gravel"
+      },
+      {
+        "role": "ground",
+        "terrain": 1,
+        "terrain_name": "Grass",
+        "atlas": [
+          1,
+          0
+        ],
+        "ground": "grass",
+        "move_cost": 1.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "grass"
+      },
+      {
+        "role": "rough",
+        "terrain": 2,
+        "terrain_name": "Sand",
+        "atlas": [
+          2,
+          0
+        ],
+        "ground": "sand",
+        "move_cost": 2,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "sand"
+      },
+      {
+        "role": "slow",
+        "terrain": 3,
+        "terrain_name": "Shallow Water",
+        "atlas": [
+          0,
+          1
+        ],
+        "ground": "shallow_water",
+        "move_cost": 4,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "splash"
+      },
+      {
+        "role": "hazard",
+        "terrain": 4,
+        "terrain_name": "Thorns",
+        "atlas": [
+          1,
+          1
+        ],
+        "ground": "thorns",
+        "move_cost": 3,
+        "walkable": true,
+        "damage": 2,
+        "footstep": "leaves"
+      },
+      {
+        "role": "blocked",
+        "terrain": 5,
+        "terrain_name": "Deep Water",
+        "atlas": [
+          2,
+          1
+        ],
+        "ground": "deep_water",
+        "move_cost": 10,
+        "walkable": false,
+        "damage": 0,
+        "footstep": "swim"
+      }
+    ],
+    "map": {
+      "w": 16,
+      "h": 10,
+      "fill": 1,
+      "rects": [
+        {
+          "role": 2,
+          "x0": 10,
+          "y0": 1,
+          "x1": 12,
+          "y1": 3
+        },
+        {
+          "role": 4,
+          "x0": 4,
+          "y0": 3,
+          "x1": 6,
+          "y1": 6
+        },
+        {
+          "role": 5,
+          "x0": 8,
+          "y0": 0,
+          "x1": 9,
+          "y1": 9
+        },
+        {
+          "role": 3,
+          "x0": 8,
+          "y0": 3,
+          "x1": 9,
+          "y1": 3
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 8,
+          "x1": 13,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 5,
+          "x1": 2,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 13,
+          "y0": 5,
+          "x1": 13,
+          "y1": 8
+        }
+      ],
+      "start": [
+        1,
+        5
+      ],
+      "goal": [
+        14,
+        5
+      ],
+      "bridge": [
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "ford": [
+        [
+          8,
+          3
+        ],
+        [
+          9,
+          3
+        ]
+      ]
+    }
+  },
+  {
+    "base": "meadow_data_32px",
+    "theme": "meadow",
+    "tile_size": 32,
+    "sheet_w": 96,
+    "sheet_h": 64,
+    "tiles": 6,
+    "mode": 2,
+    "roles": [
+      "path",
+      "ground",
+      "rough",
+      "slow",
+      "hazard",
+      "blocked"
+    ],
+    "layers": [
+      {
+        "name": "ground",
+        "type": "String",
+        "variant_type": 4
+      },
+      {
+        "name": "move_cost",
+        "type": "float",
+        "variant_type": 3
+      },
+      {
+        "name": "walkable",
+        "type": "bool",
+        "variant_type": 1
+      },
+      {
+        "name": "damage",
+        "type": "int",
+        "variant_type": 2
+      },
+      {
+        "name": "footstep",
+        "type": "String",
+        "variant_type": 4
+      }
+    ],
+    "kinds": [
+      {
+        "role": "path",
+        "terrain": 0,
+        "terrain_name": "Road",
+        "atlas": [
+          0,
+          0
+        ],
+        "ground": "road",
+        "move_cost": 1,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "gravel"
+      },
+      {
+        "role": "ground",
+        "terrain": 1,
+        "terrain_name": "Grass",
+        "atlas": [
+          1,
+          0
+        ],
+        "ground": "grass",
+        "move_cost": 1.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "grass"
+      },
+      {
+        "role": "rough",
+        "terrain": 2,
+        "terrain_name": "Sand",
+        "atlas": [
+          2,
+          0
+        ],
+        "ground": "sand",
+        "move_cost": 2,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "sand"
+      },
+      {
+        "role": "slow",
+        "terrain": 3,
+        "terrain_name": "Shallow Water",
+        "atlas": [
+          0,
+          1
+        ],
+        "ground": "shallow_water",
+        "move_cost": 4,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "splash"
+      },
+      {
+        "role": "hazard",
+        "terrain": 4,
+        "terrain_name": "Thorns",
+        "atlas": [
+          1,
+          1
+        ],
+        "ground": "thorns",
+        "move_cost": 3,
+        "walkable": true,
+        "damage": 2,
+        "footstep": "leaves"
+      },
+      {
+        "role": "blocked",
+        "terrain": 5,
+        "terrain_name": "Deep Water",
+        "atlas": [
+          2,
+          1
+        ],
+        "ground": "deep_water",
+        "move_cost": 10,
+        "walkable": false,
+        "damage": 0,
+        "footstep": "swim"
+      }
+    ],
+    "map": {
+      "w": 16,
+      "h": 10,
+      "fill": 1,
+      "rects": [
+        {
+          "role": 2,
+          "x0": 10,
+          "y0": 1,
+          "x1": 12,
+          "y1": 3
+        },
+        {
+          "role": 4,
+          "x0": 4,
+          "y0": 3,
+          "x1": 6,
+          "y1": 6
+        },
+        {
+          "role": 5,
+          "x0": 8,
+          "y0": 0,
+          "x1": 9,
+          "y1": 9
+        },
+        {
+          "role": 3,
+          "x0": 8,
+          "y0": 3,
+          "x1": 9,
+          "y1": 3
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 8,
+          "x1": 13,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 5,
+          "x1": 2,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 13,
+          "y0": 5,
+          "x1": 13,
+          "y1": 8
+        }
+      ],
+      "start": [
+        1,
+        5
+      ],
+      "goal": [
+        14,
+        5
+      ],
+      "bridge": [
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "ford": [
+        [
+          8,
+          3
+        ],
+        [
+          9,
+          3
+        ]
+      ]
+    }
+  },
+  {
+    "base": "volcano_data_16px",
+    "theme": "volcano",
+    "tile_size": 16,
+    "sheet_w": 48,
+    "sheet_h": 32,
+    "tiles": 6,
+    "mode": 2,
+    "roles": [
+      "path",
+      "ground",
+      "rough",
+      "slow",
+      "hazard",
+      "blocked"
+    ],
+    "layers": [
+      {
+        "name": "ground",
+        "type": "String",
+        "variant_type": 4
+      },
+      {
+        "name": "move_cost",
+        "type": "float",
+        "variant_type": 3
+      },
+      {
+        "name": "walkable",
+        "type": "bool",
+        "variant_type": 1
+      },
+      {
+        "name": "damage",
+        "type": "int",
+        "variant_type": 2
+      },
+      {
+        "name": "footstep",
+        "type": "String",
+        "variant_type": 4
+      }
+    ],
+    "kinds": [
+      {
+        "role": "path",
+        "terrain": 0,
+        "terrain_name": "Basalt Road",
+        "atlas": [
+          0,
+          0
+        ],
+        "ground": "basalt_road",
+        "move_cost": 1,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "stone"
+      },
+      {
+        "role": "ground",
+        "terrain": 1,
+        "terrain_name": "Ash",
+        "atlas": [
+          1,
+          0
+        ],
+        "ground": "ash",
+        "move_cost": 1.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "ash"
+      },
+      {
+        "role": "rough",
+        "terrain": 2,
+        "terrain_name": "Cinder",
+        "atlas": [
+          2,
+          0
+        ],
+        "ground": "cinder",
+        "move_cost": 2.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "gravel"
+      },
+      {
+        "role": "slow",
+        "terrain": 3,
+        "terrain_name": "Hot Spring",
+        "atlas": [
+          0,
+          1
+        ],
+        "ground": "hot_spring",
+        "move_cost": 4,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "splash"
+      },
+      {
+        "role": "hazard",
+        "terrain": 4,
+        "terrain_name": "Lava",
+        "atlas": [
+          1,
+          1
+        ],
+        "ground": "lava",
+        "move_cost": 8,
+        "walkable": true,
+        "damage": 10,
+        "footstep": "sizzle"
+      },
+      {
+        "role": "blocked",
+        "terrain": 5,
+        "terrain_name": "Chasm",
+        "atlas": [
+          2,
+          1
+        ],
+        "ground": "chasm",
+        "move_cost": 10,
+        "walkable": false,
+        "damage": 0,
+        "footstep": "none"
+      }
+    ],
+    "map": {
+      "w": 16,
+      "h": 10,
+      "fill": 1,
+      "rects": [
+        {
+          "role": 2,
+          "x0": 10,
+          "y0": 1,
+          "x1": 12,
+          "y1": 3
+        },
+        {
+          "role": 4,
+          "x0": 4,
+          "y0": 3,
+          "x1": 6,
+          "y1": 6
+        },
+        {
+          "role": 5,
+          "x0": 8,
+          "y0": 0,
+          "x1": 9,
+          "y1": 9
+        },
+        {
+          "role": 3,
+          "x0": 8,
+          "y0": 3,
+          "x1": 9,
+          "y1": 3
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 8,
+          "x1": 13,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 5,
+          "x1": 2,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 13,
+          "y0": 5,
+          "x1": 13,
+          "y1": 8
+        }
+      ],
+      "start": [
+        1,
+        5
+      ],
+      "goal": [
+        14,
+        5
+      ],
+      "bridge": [
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "ford": [
+        [
+          8,
+          3
+        ],
+        [
+          9,
+          3
+        ]
+      ]
+    }
+  },
+  {
+    "base": "volcano_data_32px",
+    "theme": "volcano",
+    "tile_size": 32,
+    "sheet_w": 96,
+    "sheet_h": 64,
+    "tiles": 6,
+    "mode": 2,
+    "roles": [
+      "path",
+      "ground",
+      "rough",
+      "slow",
+      "hazard",
+      "blocked"
+    ],
+    "layers": [
+      {
+        "name": "ground",
+        "type": "String",
+        "variant_type": 4
+      },
+      {
+        "name": "move_cost",
+        "type": "float",
+        "variant_type": 3
+      },
+      {
+        "name": "walkable",
+        "type": "bool",
+        "variant_type": 1
+      },
+      {
+        "name": "damage",
+        "type": "int",
+        "variant_type": 2
+      },
+      {
+        "name": "footstep",
+        "type": "String",
+        "variant_type": 4
+      }
+    ],
+    "kinds": [
+      {
+        "role": "path",
+        "terrain": 0,
+        "terrain_name": "Basalt Road",
+        "atlas": [
+          0,
+          0
+        ],
+        "ground": "basalt_road",
+        "move_cost": 1,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "stone"
+      },
+      {
+        "role": "ground",
+        "terrain": 1,
+        "terrain_name": "Ash",
+        "atlas": [
+          1,
+          0
+        ],
+        "ground": "ash",
+        "move_cost": 1.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "ash"
+      },
+      {
+        "role": "rough",
+        "terrain": 2,
+        "terrain_name": "Cinder",
+        "atlas": [
+          2,
+          0
+        ],
+        "ground": "cinder",
+        "move_cost": 2.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "gravel"
+      },
+      {
+        "role": "slow",
+        "terrain": 3,
+        "terrain_name": "Hot Spring",
+        "atlas": [
+          0,
+          1
+        ],
+        "ground": "hot_spring",
+        "move_cost": 4,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "splash"
+      },
+      {
+        "role": "hazard",
+        "terrain": 4,
+        "terrain_name": "Lava",
+        "atlas": [
+          1,
+          1
+        ],
+        "ground": "lava",
+        "move_cost": 8,
+        "walkable": true,
+        "damage": 10,
+        "footstep": "sizzle"
+      },
+      {
+        "role": "blocked",
+        "terrain": 5,
+        "terrain_name": "Chasm",
+        "atlas": [
+          2,
+          1
+        ],
+        "ground": "chasm",
+        "move_cost": 10,
+        "walkable": false,
+        "damage": 0,
+        "footstep": "none"
+      }
+    ],
+    "map": {
+      "w": 16,
+      "h": 10,
+      "fill": 1,
+      "rects": [
+        {
+          "role": 2,
+          "x0": 10,
+          "y0": 1,
+          "x1": 12,
+          "y1": 3
+        },
+        {
+          "role": 4,
+          "x0": 4,
+          "y0": 3,
+          "x1": 6,
+          "y1": 6
+        },
+        {
+          "role": 5,
+          "x0": 8,
+          "y0": 0,
+          "x1": 9,
+          "y1": 9
+        },
+        {
+          "role": 3,
+          "x0": 8,
+          "y0": 3,
+          "x1": 9,
+          "y1": 3
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 8,
+          "x1": 13,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 5,
+          "x1": 2,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 13,
+          "y0": 5,
+          "x1": 13,
+          "y1": 8
+        }
+      ],
+      "start": [
+        1,
+        5
+      ],
+      "goal": [
+        14,
+        5
+      ],
+      "bridge": [
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "ford": [
+        [
+          8,
+          3
+        ],
+        [
+          9,
+          3
+        ]
+      ]
+    }
+  },
+  {
+    "base": "swamp_data_16px",
+    "theme": "swamp",
+    "tile_size": 16,
+    "sheet_w": 48,
+    "sheet_h": 32,
+    "tiles": 6,
+    "mode": 2,
+    "roles": [
+      "path",
+      "ground",
+      "rough",
+      "slow",
+      "hazard",
+      "blocked"
+    ],
+    "layers": [
+      {
+        "name": "ground",
+        "type": "String",
+        "variant_type": 4
+      },
+      {
+        "name": "move_cost",
+        "type": "float",
+        "variant_type": 3
+      },
+      {
+        "name": "walkable",
+        "type": "bool",
+        "variant_type": 1
+      },
+      {
+        "name": "damage",
+        "type": "int",
+        "variant_type": 2
+      },
+      {
+        "name": "footstep",
+        "type": "String",
+        "variant_type": 4
+      }
+    ],
+    "kinds": [
+      {
+        "role": "path",
+        "terrain": 0,
+        "terrain_name": "Boardwalk",
+        "atlas": [
+          0,
+          0
+        ],
+        "ground": "boardwalk",
+        "move_cost": 1,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "wood"
+      },
+      {
+        "role": "ground",
+        "terrain": 1,
+        "terrain_name": "Moss",
+        "atlas": [
+          1,
+          0
+        ],
+        "ground": "moss",
+        "move_cost": 1.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "grass"
+      },
+      {
+        "role": "rough",
+        "terrain": 2,
+        "terrain_name": "Mud",
+        "atlas": [
+          2,
+          0
+        ],
+        "ground": "mud",
+        "move_cost": 3,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "mud"
+      },
+      {
+        "role": "slow",
+        "terrain": 3,
+        "terrain_name": "Bog Water",
+        "atlas": [
+          0,
+          1
+        ],
+        "ground": "bog_water",
+        "move_cost": 4,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "splash"
+      },
+      {
+        "role": "hazard",
+        "terrain": 4,
+        "terrain_name": "Poison Bog",
+        "atlas": [
+          1,
+          1
+        ],
+        "ground": "poison_bog",
+        "move_cost": 5,
+        "walkable": true,
+        "damage": 3,
+        "footstep": "splash"
+      },
+      {
+        "role": "blocked",
+        "terrain": 5,
+        "terrain_name": "Deep Bog",
+        "atlas": [
+          2,
+          1
+        ],
+        "ground": "deep_bog",
+        "move_cost": 10,
+        "walkable": false,
+        "damage": 0,
+        "footstep": "swim"
+      }
+    ],
+    "map": {
+      "w": 16,
+      "h": 10,
+      "fill": 1,
+      "rects": [
+        {
+          "role": 2,
+          "x0": 10,
+          "y0": 1,
+          "x1": 12,
+          "y1": 3
+        },
+        {
+          "role": 4,
+          "x0": 4,
+          "y0": 3,
+          "x1": 6,
+          "y1": 6
+        },
+        {
+          "role": 5,
+          "x0": 8,
+          "y0": 0,
+          "x1": 9,
+          "y1": 9
+        },
+        {
+          "role": 3,
+          "x0": 8,
+          "y0": 3,
+          "x1": 9,
+          "y1": 3
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 8,
+          "x1": 13,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 5,
+          "x1": 2,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 13,
+          "y0": 5,
+          "x1": 13,
+          "y1": 8
+        }
+      ],
+      "start": [
+        1,
+        5
+      ],
+      "goal": [
+        14,
+        5
+      ],
+      "bridge": [
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "ford": [
+        [
+          8,
+          3
+        ],
+        [
+          9,
+          3
+        ]
+      ]
+    }
+  },
+  {
+    "base": "swamp_data_32px",
+    "theme": "swamp",
+    "tile_size": 32,
+    "sheet_w": 96,
+    "sheet_h": 64,
+    "tiles": 6,
+    "mode": 2,
+    "roles": [
+      "path",
+      "ground",
+      "rough",
+      "slow",
+      "hazard",
+      "blocked"
+    ],
+    "layers": [
+      {
+        "name": "ground",
+        "type": "String",
+        "variant_type": 4
+      },
+      {
+        "name": "move_cost",
+        "type": "float",
+        "variant_type": 3
+      },
+      {
+        "name": "walkable",
+        "type": "bool",
+        "variant_type": 1
+      },
+      {
+        "name": "damage",
+        "type": "int",
+        "variant_type": 2
+      },
+      {
+        "name": "footstep",
+        "type": "String",
+        "variant_type": 4
+      }
+    ],
+    "kinds": [
+      {
+        "role": "path",
+        "terrain": 0,
+        "terrain_name": "Boardwalk",
+        "atlas": [
+          0,
+          0
+        ],
+        "ground": "boardwalk",
+        "move_cost": 1,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "wood"
+      },
+      {
+        "role": "ground",
+        "terrain": 1,
+        "terrain_name": "Moss",
+        "atlas": [
+          1,
+          0
+        ],
+        "ground": "moss",
+        "move_cost": 1.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "grass"
+      },
+      {
+        "role": "rough",
+        "terrain": 2,
+        "terrain_name": "Mud",
+        "atlas": [
+          2,
+          0
+        ],
+        "ground": "mud",
+        "move_cost": 3,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "mud"
+      },
+      {
+        "role": "slow",
+        "terrain": 3,
+        "terrain_name": "Bog Water",
+        "atlas": [
+          0,
+          1
+        ],
+        "ground": "bog_water",
+        "move_cost": 4,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "splash"
+      },
+      {
+        "role": "hazard",
+        "terrain": 4,
+        "terrain_name": "Poison Bog",
+        "atlas": [
+          1,
+          1
+        ],
+        "ground": "poison_bog",
+        "move_cost": 5,
+        "walkable": true,
+        "damage": 3,
+        "footstep": "splash"
+      },
+      {
+        "role": "blocked",
+        "terrain": 5,
+        "terrain_name": "Deep Bog",
+        "atlas": [
+          2,
+          1
+        ],
+        "ground": "deep_bog",
+        "move_cost": 10,
+        "walkable": false,
+        "damage": 0,
+        "footstep": "swim"
+      }
+    ],
+    "map": {
+      "w": 16,
+      "h": 10,
+      "fill": 1,
+      "rects": [
+        {
+          "role": 2,
+          "x0": 10,
+          "y0": 1,
+          "x1": 12,
+          "y1": 3
+        },
+        {
+          "role": 4,
+          "x0": 4,
+          "y0": 3,
+          "x1": 6,
+          "y1": 6
+        },
+        {
+          "role": 5,
+          "x0": 8,
+          "y0": 0,
+          "x1": 9,
+          "y1": 9
+        },
+        {
+          "role": 3,
+          "x0": 8,
+          "y0": 3,
+          "x1": 9,
+          "y1": 3
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 8,
+          "x1": 13,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 5,
+          "x1": 2,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 13,
+          "y0": 5,
+          "x1": 13,
+          "y1": 8
+        }
+      ],
+      "start": [
+        1,
+        5
+      ],
+      "goal": [
+        14,
+        5
+      ],
+      "bridge": [
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "ford": [
+        [
+          8,
+          3
+        ],
+        [
+          9,
+          3
+        ]
+      ]
+    }
+  },
+  {
+    "base": "snow_data_16px",
+    "theme": "snow",
+    "tile_size": 16,
+    "sheet_w": 48,
+    "sheet_h": 32,
+    "tiles": 6,
+    "mode": 2,
+    "roles": [
+      "path",
+      "ground",
+      "rough",
+      "slow",
+      "hazard",
+      "blocked"
+    ],
+    "layers": [
+      {
+        "name": "ground",
+        "type": "String",
+        "variant_type": 4
+      },
+      {
+        "name": "move_cost",
+        "type": "float",
+        "variant_type": 3
+      },
+      {
+        "name": "walkable",
+        "type": "bool",
+        "variant_type": 1
+      },
+      {
+        "name": "damage",
+        "type": "int",
+        "variant_type": 2
+      },
+      {
+        "name": "footstep",
+        "type": "String",
+        "variant_type": 4
+      }
+    ],
+    "kinds": [
+      {
+        "role": "path",
+        "terrain": 0,
+        "terrain_name": "Cleared Path",
+        "atlas": [
+          0,
+          0
+        ],
+        "ground": "cleared_path",
+        "move_cost": 1,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "stone"
+      },
+      {
+        "role": "ground",
+        "terrain": 1,
+        "terrain_name": "Snow",
+        "atlas": [
+          1,
+          0
+        ],
+        "ground": "snow",
+        "move_cost": 2,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "snow"
+      },
+      {
+        "role": "rough",
+        "terrain": 2,
+        "terrain_name": "Deep Snow",
+        "atlas": [
+          2,
+          0
+        ],
+        "ground": "deep_snow",
+        "move_cost": 3,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "snow"
+      },
+      {
+        "role": "slow",
+        "terrain": 3,
+        "terrain_name": "Ice",
+        "atlas": [
+          0,
+          1
+        ],
+        "ground": "ice",
+        "move_cost": 1.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "ice"
+      },
+      {
+        "role": "hazard",
+        "terrain": 4,
+        "terrain_name": "Freezing Water",
+        "atlas": [
+          1,
+          1
+        ],
+        "ground": "freezing_water",
+        "move_cost": 6,
+        "walkable": true,
+        "damage": 4,
+        "footstep": "splash"
+      },
+      {
+        "role": "blocked",
+        "terrain": 5,
+        "terrain_name": "Open Water",
+        "atlas": [
+          2,
+          1
+        ],
+        "ground": "open_water",
+        "move_cost": 10,
+        "walkable": false,
+        "damage": 0,
+        "footstep": "swim"
+      }
+    ],
+    "map": {
+      "w": 16,
+      "h": 10,
+      "fill": 1,
+      "rects": [
+        {
+          "role": 2,
+          "x0": 10,
+          "y0": 1,
+          "x1": 12,
+          "y1": 3
+        },
+        {
+          "role": 4,
+          "x0": 4,
+          "y0": 3,
+          "x1": 6,
+          "y1": 6
+        },
+        {
+          "role": 5,
+          "x0": 8,
+          "y0": 0,
+          "x1": 9,
+          "y1": 9
+        },
+        {
+          "role": 3,
+          "x0": 8,
+          "y0": 3,
+          "x1": 9,
+          "y1": 3
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 8,
+          "x1": 13,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 5,
+          "x1": 2,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 13,
+          "y0": 5,
+          "x1": 13,
+          "y1": 8
+        }
+      ],
+      "start": [
+        1,
+        5
+      ],
+      "goal": [
+        14,
+        5
+      ],
+      "bridge": [
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "ford": [
+        [
+          8,
+          3
+        ],
+        [
+          9,
+          3
+        ]
+      ]
+    }
+  },
+  {
+    "base": "snow_data_32px",
+    "theme": "snow",
+    "tile_size": 32,
+    "sheet_w": 96,
+    "sheet_h": 64,
+    "tiles": 6,
+    "mode": 2,
+    "roles": [
+      "path",
+      "ground",
+      "rough",
+      "slow",
+      "hazard",
+      "blocked"
+    ],
+    "layers": [
+      {
+        "name": "ground",
+        "type": "String",
+        "variant_type": 4
+      },
+      {
+        "name": "move_cost",
+        "type": "float",
+        "variant_type": 3
+      },
+      {
+        "name": "walkable",
+        "type": "bool",
+        "variant_type": 1
+      },
+      {
+        "name": "damage",
+        "type": "int",
+        "variant_type": 2
+      },
+      {
+        "name": "footstep",
+        "type": "String",
+        "variant_type": 4
+      }
+    ],
+    "kinds": [
+      {
+        "role": "path",
+        "terrain": 0,
+        "terrain_name": "Cleared Path",
+        "atlas": [
+          0,
+          0
+        ],
+        "ground": "cleared_path",
+        "move_cost": 1,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "stone"
+      },
+      {
+        "role": "ground",
+        "terrain": 1,
+        "terrain_name": "Snow",
+        "atlas": [
+          1,
+          0
+        ],
+        "ground": "snow",
+        "move_cost": 2,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "snow"
+      },
+      {
+        "role": "rough",
+        "terrain": 2,
+        "terrain_name": "Deep Snow",
+        "atlas": [
+          2,
+          0
+        ],
+        "ground": "deep_snow",
+        "move_cost": 3,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "snow"
+      },
+      {
+        "role": "slow",
+        "terrain": 3,
+        "terrain_name": "Ice",
+        "atlas": [
+          0,
+          1
+        ],
+        "ground": "ice",
+        "move_cost": 1.5,
+        "walkable": true,
+        "damage": 0,
+        "footstep": "ice"
+      },
+      {
+        "role": "hazard",
+        "terrain": 4,
+        "terrain_name": "Freezing Water",
+        "atlas": [
+          1,
+          1
+        ],
+        "ground": "freezing_water",
+        "move_cost": 6,
+        "walkable": true,
+        "damage": 4,
+        "footstep": "splash"
+      },
+      {
+        "role": "blocked",
+        "terrain": 5,
+        "terrain_name": "Open Water",
+        "atlas": [
+          2,
+          1
+        ],
+        "ground": "open_water",
+        "move_cost": 10,
+        "walkable": false,
+        "damage": 0,
+        "footstep": "swim"
+      }
+    ],
+    "map": {
+      "w": 16,
+      "h": 10,
+      "fill": 1,
+      "rects": [
+        {
+          "role": 2,
+          "x0": 10,
+          "y0": 1,
+          "x1": 12,
+          "y1": 3
+        },
+        {
+          "role": 4,
+          "x0": 4,
+          "y0": 3,
+          "x1": 6,
+          "y1": 6
+        },
+        {
+          "role": 5,
+          "x0": 8,
+          "y0": 0,
+          "x1": 9,
+          "y1": 9
+        },
+        {
+          "role": 3,
+          "x0": 8,
+          "y0": 3,
+          "x1": 9,
+          "y1": 3
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 8,
+          "x1": 13,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 2,
+          "y0": 5,
+          "x1": 2,
+          "y1": 8
+        },
+        {
+          "role": 0,
+          "x0": 13,
+          "y0": 5,
+          "x1": 13,
+          "y1": 8
+        }
+      ],
+      "start": [
+        1,
+        5
+      ],
+      "goal": [
+        14,
+        5
+      ],
+      "bridge": [
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "ford": [
+        [
+          8,
+          3
+        ],
+        [
+          9,
+          3
+        ]
+      ]
+    }
+  }
+]

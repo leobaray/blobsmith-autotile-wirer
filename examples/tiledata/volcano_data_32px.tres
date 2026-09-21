@@ -1,0 +1,82 @@
+[gd_resource type="TileSet" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="volcano_data_32px.png" id="1_bsmith"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bsmith"]
+texture = ExtResource("1_bsmith")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/custom_data_0 = "basalt_road"
+0:0/0/custom_data_1 = 1.0
+0:0/0/custom_data_2 = true
+0:0/0/custom_data_3 = 0
+0:0/0/custom_data_4 = "stone"
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 1
+1:0/0/custom_data_0 = "ash"
+1:0/0/custom_data_1 = 1.5
+1:0/0/custom_data_2 = true
+1:0/0/custom_data_3 = 0
+1:0/0/custom_data_4 = "ash"
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 2
+2:0/0/custom_data_0 = "cinder"
+2:0/0/custom_data_1 = 2.5
+2:0/0/custom_data_2 = true
+2:0/0/custom_data_3 = 0
+2:0/0/custom_data_4 = "gravel"
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrain = 3
+0:1/0/custom_data_0 = "hot_spring"
+0:1/0/custom_data_1 = 4.0
+0:1/0/custom_data_2 = true
+0:1/0/custom_data_3 = 0
+0:1/0/custom_data_4 = "splash"
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrain = 4
+1:1/0/custom_data_0 = "lava"
+1:1/0/custom_data_1 = 8.0
+1:1/0/custom_data_2 = true
+1:1/0/custom_data_3 = 10
+1:1/0/custom_data_4 = "sizzle"
+2:1/0 = 0
+2:1/0/terrain_set = 0
+2:1/0/terrain = 5
+2:1/0/custom_data_0 = "chasm"
+2:1/0/custom_data_1 = 10.0
+2:1/0/custom_data_2 = false
+2:1/0/custom_data_3 = 0
+2:1/0/custom_data_4 = "none"
+
+[resource]
+tile_size = Vector2i(32, 32)
+terrain_set_0/mode = 2
+terrain_set_0/terrain_0/name = "Basalt Road"
+terrain_set_0/terrain_0/color = Color(0.35, 0.33, 0.38, 1)
+terrain_set_0/terrain_1/name = "Ash"
+terrain_set_0/terrain_1/color = Color(0.56, 0.54, 0.53, 1)
+terrain_set_0/terrain_2/name = "Cinder"
+terrain_set_0/terrain_2/color = Color(0.42, 0.29, 0.24, 1)
+terrain_set_0/terrain_3/name = "Hot Spring"
+terrain_set_0/terrain_3/color = Color(0.37, 0.66, 0.63, 1)
+terrain_set_0/terrain_4/name = "Lava"
+terrain_set_0/terrain_4/color = Color(0.78, 0.26, 0.11, 1)
+terrain_set_0/terrain_5/name = "Chasm"
+terrain_set_0/terrain_5/color = Color(0.11, 0.1, 0.13, 1)
+custom_data_layer_0/name = "ground"
+custom_data_layer_0/type = 4
+custom_data_layer_1/name = "move_cost"
+custom_data_layer_1/type = 3
+custom_data_layer_2/name = "walkable"
+custom_data_layer_2/type = 1
+custom_data_layer_3/name = "damage"
+custom_data_layer_3/type = 2
+custom_data_layer_4/name = "footstep"
+custom_data_layer_4/type = 4
+sources/0 = SubResource("TileSetAtlasSource_bsmith")

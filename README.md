@@ -173,6 +173,30 @@ authored from `(0,0)` (half a tile off), a wall carrying a navigation polygon.
 
 ![the same room painted four times by Godot, with the path NavigationServer2D returned drawn over it: around the inner wall, straight through a door, and stopping short against a closed gap](examples/navigation/navigation_preview.png)
 
+**New: tiles that say what they are — move cost, walkable, damage, footstep — plus a checker for YOUR TileSet** — [`examples/tiledata/`](examples/tiledata/):
+eight **top-down ground** TileSets — meadow, volcano, swamp, snow, 16px and 32px — one Match Sides terrain
+set with six ground kinds (path, ground, rough, slow, hazard, blocked), every tile carrying five **custom
+data layers** already filled in: `ground` (String), `move_cost` (float, never below 1.0), `walkable` (bool),
+`damage` (int) and `footstep` (String) — every value written, the `false`s and `0`s included, because Godot
+reads a value never written as the type's default, the same as a real `0`. The gate paints a 16×10 map into a live `TileMapLayer`, reads
+every cell back through `get_cell_tile_data().get_custom_data()`, and feeds an `AStarGrid2D` from it: the
+path takes the road over the bridge at the true minimum cost (a Dijkstra over the same data agrees), while
+the same grid fed `walkable` only cuts across 3 hazard cells. It also measures the ways it goes wrong without
+a word: `local_to_map(global_position)` on a moved, scaled layer found the right cell for 0 of 160 cells, a
+tile added after the layers reads `""`/`0.0`/`false`, a `move_cost` of `0.0` is accepted and the path stops
+being the cheapest, a misspelt layer name returns `null`, the grid is a copy that keeps routing over a bridge
+you painted shut. Checked in Godot 4.3, 4.4 and 4.7 — 161/161 on each. The pack also ships
+**`tile_data_example.gd`** (the ground under a position, and an A* grid from the tiles) and
+**`check_tileset_custom_data.gd`**, which runs headless over *your* TileSet — and, with `--scripts`, your
+code — and names the faults that read back wrong: no custom data layer, a layer with no type or no name, a
+value that loaded as `null`, a tile added after the layers were filled, an empty String, a layer name your
+code asks for that no TileSet declares.
+**[⬇ Download the tile custom-data pack (186 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/tiledata-pack-v1/godot-tile-data-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/tiledata-pack-v1)
+· [browse the files](examples/tiledata/)
+
+![the same 16 x 10 map painted four times by Godot — meadow, volcano, swamp, snow — with the path an AStarGrid2D fed the tiles' custom data returned (round the hazard, over the bridge) and the one it returns fed walkable only (through the hazard and the ford)](examples/tiledata/tiledata_preview.png)
+
 **New: animated water, every tile moving** — [`examples/animated-water/`](examples/animated-water/):
 a 47-tile blob **water-over-grass** terrain where all 47 tiles are animated (4 frames, 0.2 s each),
 laid out so Godot accepts the animation — frame cells are not tiles, `animation_columns` set,

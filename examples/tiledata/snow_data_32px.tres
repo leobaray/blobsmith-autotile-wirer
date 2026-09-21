@@ -1,0 +1,82 @@
+[gd_resource type="TileSet" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="snow_data_32px.png" id="1_bsmith"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bsmith"]
+texture = ExtResource("1_bsmith")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/custom_data_0 = "cleared_path"
+0:0/0/custom_data_1 = 1.0
+0:0/0/custom_data_2 = true
+0:0/0/custom_data_3 = 0
+0:0/0/custom_data_4 = "stone"
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 1
+1:0/0/custom_data_0 = "snow"
+1:0/0/custom_data_1 = 2.0
+1:0/0/custom_data_2 = true
+1:0/0/custom_data_3 = 0
+1:0/0/custom_data_4 = "snow"
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 2
+2:0/0/custom_data_0 = "deep_snow"
+2:0/0/custom_data_1 = 3.0
+2:0/0/custom_data_2 = true
+2:0/0/custom_data_3 = 0
+2:0/0/custom_data_4 = "snow"
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrain = 3
+0:1/0/custom_data_0 = "ice"
+0:1/0/custom_data_1 = 1.5
+0:1/0/custom_data_2 = true
+0:1/0/custom_data_3 = 0
+0:1/0/custom_data_4 = "ice"
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrain = 4
+1:1/0/custom_data_0 = "freezing_water"
+1:1/0/custom_data_1 = 6.0
+1:1/0/custom_data_2 = true
+1:1/0/custom_data_3 = 4
+1:1/0/custom_data_4 = "splash"
+2:1/0 = 0
+2:1/0/terrain_set = 0
+2:1/0/terrain = 5
+2:1/0/custom_data_0 = "open_water"
+2:1/0/custom_data_1 = 10.0
+2:1/0/custom_data_2 = false
+2:1/0/custom_data_3 = 0
+2:1/0/custom_data_4 = "swim"
+
+[resource]
+tile_size = Vector2i(32, 32)
+terrain_set_0/mode = 2
+terrain_set_0/terrain_0/name = "Cleared Path"
+terrain_set_0/terrain_0/color = Color(0.6, 0.64, 0.68, 1)
+terrain_set_0/terrain_1/name = "Snow"
+terrain_set_0/terrain_1/color = Color(0.91, 0.93, 0.96, 1)
+terrain_set_0/terrain_2/name = "Deep Snow"
+terrain_set_0/terrain_2/color = Color(0.81, 0.85, 0.9, 1)
+terrain_set_0/terrain_3/name = "Ice"
+terrain_set_0/terrain_3/color = Color(0.66, 0.85, 0.92, 1)
+terrain_set_0/terrain_4/name = "Freezing Water"
+terrain_set_0/terrain_4/color = Color(0.3, 0.56, 0.72, 1)
+terrain_set_0/terrain_5/name = "Open Water"
+terrain_set_0/terrain_5/color = Color(0.14, 0.29, 0.43, 1)
+custom_data_layer_0/name = "ground"
+custom_data_layer_0/type = 4
+custom_data_layer_1/name = "move_cost"
+custom_data_layer_1/type = 3
+custom_data_layer_2/name = "walkable"
+custom_data_layer_2/type = 1
+custom_data_layer_3/name = "damage"
+custom_data_layer_3/type = 2
+custom_data_layer_4/name = "footstep"
+custom_data_layer_4/type = 4
+sources/0 = SubResource("TileSetAtlasSource_bsmith")
