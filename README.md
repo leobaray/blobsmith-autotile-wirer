@@ -151,6 +151,28 @@ a tile with no polygon, a polygon with fewer than 3 points.
 
 ![a rock platform run, a brick wall with a hole and an ice floor with a pit, each outlined where the physics server says its collision ends](examples/collision/collision_preview.png)
 
+**New: a floor the navigation server paths across the moment it is painted — plus a checker for YOUR TileSet** — [`examples/navigation/`](examples/navigation/):
+eight **top-down floor + wall** TileSets — dungeon, meadow, deck, cave, 16px and 32px — one Match Sides
+terrain set with a Floor and a Wall terrain, 17 tiles: 16 floor tiles each carrying a full-cell navigation
+polygon on a layer whose bitmask is 1 (what a `NavigationAgent2D` asks for by default), authored centred
+`(-8,-8)..(8,8)` and not `(0,0)..(16,16)`, and one wall tile carrying collision and no navigation. The gate
+paints an 11×9 room with an inner wall into a live `TileMapLayer` and asks `NavigationServer2D`, only after
+`map_get_iteration_id()` has moved: one region per floor cell and none for the walls, a path that goes around
+the wall with not one sample inside a wall cell, endpoints at the exact centres of the start and goal cells,
+and — with the gap painted shut — a path that comes back **shorter, not empty**, so `if path.is_empty()` never
+fires. It also measures the two ways to paint it wrong from code: leaving out the 4th argument of
+`set_cells_terrain_connect` (default `ignore_empty_terrains = true`) painted 20 of the room's 99 cells, and
+walls-before-floor leaves 21 floor cells without their edge shading. Checked in Godot 4.3, 4.4 and 4.7 —
+168/168 on each. The pack also ships **`check_tileset_navigation.gd`**, which runs headless over *your*
+TileSet and names the faults that leave an agent standing still or walking through walls: no navigation
+layer, a `layers` bitmask of 0, a floor tile with no polygon, a polygon that builds nothing, a polygon
+authored from `(0,0)` (half a tile off), a wall carrying a navigation polygon.
+**[⬇ Download the walkable-floor navigation pack (192 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/navigation-pack-v1/godot-walkable-navigation-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/navigation-pack-v1)
+· [browse the files](examples/navigation/)
+
+![the same room painted four times by Godot, with the path NavigationServer2D returned drawn over it: around the inner wall, straight through a door, and stopping short against a closed gap](examples/navigation/navigation_preview.png)
+
 **New: animated water, every tile moving** — [`examples/animated-water/`](examples/animated-water/):
 a 47-tile blob **water-over-grass** terrain where all 47 tiles are animated (4 frames, 0.2 s each),
 laid out so Godot accepts the animation — frame cells are not tiles, `animation_columns` set,
