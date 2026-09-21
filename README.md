@@ -118,6 +118,23 @@ set. Checked in Godot 4.3, 4.4 and 4.7 — 136/136 on each.
 
 ![the four corner terrains painted by Godot](examples/corners/corners_preview.png)
 
+**New: a painted field that does not look tiled** — [`examples/variants/`](examples/variants/):
+eight Match Sides TileSets — grass, stone, sand, water, 16px and 32px — with **19 tiles instead of 16**.
+The three extra tiles are decorated copies of the interior tile that declare the *same* four peering bits,
+so `set_cells_terrain_connect` treats them as interchangeable and picks among them at random, **weighted by
+each tile's `probability`** (plain `1.0`, each decorated one `0.35`). That is a Godot 4 feature almost nobody
+wires. The gate paints a 24×24 square and counts the 400 interior cells: all four tiles turn up, the plain
+one takes the 48.8% its weight asks for, setting the decorated tiles to `probability = 0` collapses the field
+back to one repeated tile, and `set_cell` ignores `probability` entirely. Checked in Godot 4.3, 4.4 and 4.7 —
+128/128 on each. Every decorated tile keeps its outer ring of pixels identical to the plain one — the
+generator refuses to write one that does not — because a variant is only interchangeable if it meets its
+neighbours the same way.
+**[⬇ Download the tile-variants pack (71 KB)](https://github.com/leobaray/blobsmith-autotile-wirer/releases/download/variants-pack-v1/godot-tile-variants-pack.zip)**
+· [release notes](https://github.com/leobaray/blobsmith-autotile-wirer/releases/tag/variants-pack-v1)
+· [browse the files](examples/variants/)
+
+![two panels of the same grass tileset painted by Godot: on the left the decorated tiles are at probability 0 and the field is one tile repeated; on the right the engine mixes in pebbles, flowers and tufts](examples/variants/variants_preview.png)
+
 **New: solid collision the physics server confirms — plus a checker for YOUR TileSet** — [`examples/collision/`](examples/collision/):
 eight **solid** Match Sides TileSets — rock, brick, ice, wood, 16px and 32px — every one of the 16 tiles
 carrying a physics layer, a non-zero `collision_layer` and a full-cell polygon. The gate does not count
